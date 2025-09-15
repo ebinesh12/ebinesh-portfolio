@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-const { autoIncrement } = require("mongoose-plugin-autoinc");
+import { autoIncrement } from "mongoose-plugin-autoinc";
 
 const contactSchema = new Schema(
   {
