@@ -1,0 +1,345 @@
+{
+  "Hero": {
+    "personalInfo": {
+      "greeting": "👋 Hi, I'm",
+      "name": "Alex Doe",
+      "title": "Creative Full Stack Developer",
+      "availability": "Open to new opportunities",
+      "photo": "/images/profile.jpg"
+    },
+    "about": {
+      "summary": "Innovative and detail-oriented Full Stack Developer with a passion for creating seamless and engaging user experiences. Proficient in modern web technologies and dedicated to building efficient and scalable applications. Excited to leverage my skills to solve complex problems and contribute to a forward-thinking team."
+    },
+    "actions": [
+      {
+        "id": "contact",
+        "text": "Contact Me",
+        "href": "#contact",
+        "icon": "fas fa-envelope"
+      },
+      {
+        "id": "resume",
+        "text": "View Resume",
+        "href": "/docs/Alex-Doe-Resume.pdf",
+        "icon": "fas fa-download"
+      }
+    ],
+    "socialLinks": [
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/in/alex-doe-mock",
+        "icon": "fab fa-linkedin-in"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/alexdoemock",
+        "icon": "fab fa-github"
+      },
+      {
+        "name": "Email",
+        "url": "mailto:alex.doe.mock@example.com",
+        "icon": "fas fa-envelope"
+      },
+      {
+        "name": "Twitter",
+        "url": "https://twitter.com/alexdoemock",
+        "icon": "fab fa-twitter"
+      }
+    ]
+  },
+  "About": {
+    "superTitle": "Learn More",
+    "title": "About Me",
+    "description": "A glimpse into my background, academic journey, and passion for software development.",
+    "icon": "fab fa-twitter",
+    "story": {
+      "title": "My Story",
+      "paragraphs": [
+        "From a young age, I've been captivated by how technology can shape our world. This curiosity led me to pursue a career in software development, where I can build digital solutions that are both functional and beautiful.",
+        "My expertise spans the full stack, from crafting intuitive user interfaces with React to architecting robust server-side logic with Node.js and Django. I thrive in collaborative environments and am always eager to learn new technologies and improve my craft."
+      ]
+    },
+    "education": [
+      {
+        "degree": "Master of Science in Software Engineering",
+        "institution": "University of Technology, San Francisco",
+        "duration": "August 2023 - May 2025",
+        "description": "Specialized in scalable systems, cloud computing, and advanced software architecture. Led a capstone project on a real-time data processing pipeline."
+      },
+      {
+        "degree": "Bachelor of Science in Information Technology",
+        "institution": "State College of Engineering",
+        "duration": "September 2019 - June 2023",
+        "description": "Gained a comprehensive understanding of programming fundamentals, database systems, and networking principles. Graduated with honors."
+      }
+    ]
+  },
+  "Sklls": {
+    "superTitle": "My Arsenal",
+    "title": "Skills & Technologies",
+    "description": "A look at the technical skills and tools I use to bring ideas to life.",
+    "categories": [
+      {
+        "title": "Frontend Development",
+        "icon": "fas fa-code",
+        "items": [
+          { "name": "HTML5", "level": "Expert", "icon": "fab fa-html5" },
+          { "name": "CSS3", "level": "Expert", "icon": "fab fa-css3-alt" },
+          {
+            "name": "JavaScript (ES6+)",
+            "level": "Expert",
+            "icon": "fab fa-js"
+          },
+          { "name": "React", "level": "Expert", "icon": "fab fa-react" },
+          { "name": "Vue.js", "level": "Intermediate", "icon": "fab fa-vuejs" },
+          { "name": "Tailwind CSS", "level": "Expert", "icon": "fas fa-wind" }
+        ]
+      },
+      {
+        "title": "Backend Development",
+        "icon": "fas fa-server",
+        "items": [
+          { "name": "Node.js", "level": "Expert", "icon": "fab fa-node-js" },
+          { "name": "Express.js", "level": "Expert", "icon": "fas fa-cogs" },
+          {
+            "name": "Python",
+            "level": "Intermediate",
+            "icon": "fab fa-python"
+          },
+          { "name": "Django", "level": "Intermediate", "icon": "fas fa-leaf" },
+          {
+            "name": "PostgreSQL",
+            "level": "Expert",
+            "icon": "fas fa-database"
+          },
+          { "name": "MongoDB", "level": "Intermediate", "icon": "fas fa-leaf" }
+        ]
+      },
+      {
+        "title": "Tools & Technologies",
+        "icon": "fas fa-tools",
+        "items": [
+          { "name": "Git", "level": "Expert", "icon": "fab fa-git-alt" },
+          { "name": "GitHub", "level": "Expert", "icon": "fab fa-github" },
+          {
+            "name": "Docker",
+            "level": "Intermediate",
+            "icon": "fab fa-docker"
+          },
+          { "name": "AWS", "level": "Beginner", "icon": "fab fa-aws" },
+          { "name": "Jest", "level": "Intermediate", "icon": "fas fa-vial" },
+          {
+            "name": "CI/CD",
+            "level": "Intermediate",
+            "icon": "fas fa-sync-alt"
+          }
+        ]
+      }
+    ]
+  },
+  "Projects": {
+    "superTitle": "My Portfolio",
+    "title": "Featured Projects",
+    "description": "Here are some of the projects I'm proud to have worked on.",
+    "items": [
+      {
+        "title": "E-commerce Platform 'ShopSphere'",
+        "description": "A full-featured e-commerce site with product listings, user authentication, and a Stripe-integrated checkout process, built with the MERN stack.",
+        "gradient": "bg-gradient-to-r from-blue-500 to-teal-400",
+        "icon": "fas fa-shopping-cart",
+        "github": "https://github.com/alexdoemock/shopsphere",
+        "demo": "#"
+      },
+      {
+        "title": "Task Management App 'TaskFlow'",
+        "description": "A Kanban-style task management application with drag-and-drop functionality, real-time collaboration features using WebSockets, and a clean UI.",
+        "gradient": "bg-gradient-to-r from-purple-500 to-pink-500",
+        "icon": "fas fa-tasks",
+        "github": "https://github.com/alexdoemock/taskflow",
+        "demo": "#"
+      },
+      {
+        "title": "Recipe Finder API 'CuisineCraft'",
+        "description": "A RESTful API built with Django and PostgreSQL that allows users to search for recipes, save favorites, and create meal plans.",
+        "gradient": "bg-gradient-to-r from-orange-400 to-yellow-500",
+        "icon": "fas fa-utensils",
+        "github": "https://github.com/alexdoemock/cuisinecraft-api",
+        "demo": "#"
+      },
+      {
+        "title": "Real-time Chat Application 'Connect'",
+        "description": "A chat application built with React and Socket.IO, featuring private messaging, chat rooms, and online user status indicators.",
+        "gradient": "bg-gradient-to-r from-green-400 to-cyan-500",
+        "icon": "fas fa-comments",
+        "github": "https://github.com/alexdoemock/connect-chat",
+        "demo": "#"
+      }
+    ]
+  },
+  "Certificates": {
+    "superTitle": "My Achievements",
+    "title": "Certifications",
+    "description": "A collection of certifications that validate my skills and expertise.",
+    "items": [
+      {
+        "title": "AWS Certified Cloud Practitioner",
+        "issuer": "Amazon Web Services",
+        "description": "Validated foundational, high-level understanding of AWS Cloud, services, and terminology.",
+        "date": "July 15, 2024",
+        "pdf": "/docs/aws-certificate.pdf"
+      },
+      {
+        "title": "Full-Stack Web Development",
+        "issuer": "CodeAcademy",
+        "description": "Completed an intensive bootcamp covering front-end and back-end technologies including React, Node.js, and PostgreSQL.",
+        "date": "March 22, 2024",
+        "pdf": "/docs/fullstack-certificate.pdf"
+      },
+      {
+        "title": "Certified Associate in Python Programming",
+        "issuer": "Python Institute",
+        "description": "Demonstrated proficiency in the Python language, including object-oriented programming and core libraries.",
+        "date": "November 5, 2023",
+        "pdf": "/docs/python-certificate.pdf"
+      }
+    ]
+  },
+  "Experience": {
+    "superTitle": "My Career",
+    "title": "Work Experience",
+    "description": "A summary of my professional roles and accomplishments.",
+    "jobs": [
+      {
+        "role": "Software Engineer",
+        "company": "Innovatech Solutions, Inc.",
+        "duration": "June 2023 - Present",
+        "responsibilities": [
+          "Develop and maintain full-stack web applications using React, Node.js, and PostgreSQL.",
+          "Collaborate with cross-functional teams to define, design, and ship new features.",
+          "Write clean, scalable, and well-documented code following best practices.",
+          "Improve application performance by identifying and resolving bottlenecks.",
+          "Participate in code reviews to maintain high-quality code standards."
+        ]
+      },
+      {
+        "role": "Web Development Intern",
+        "company": "Digital Creations, LLC",
+        "duration": "May 2022 - August 2022",
+        "responsibilities": [
+          "Assisted in developing and testing new features for a client's e-commerce website.",
+          "Translated UI/UX design wireframes into high-quality, responsive code.",
+          "Gained hands-on experience with version control using Git and GitHub.",
+          "Helped troubleshoot and debug issues to improve application stability."
+        ]
+      }
+    ]
+  },
+  "Contact": {
+    "superTitle": "Let's Talk",
+    "title": "Contact Me",
+    "description": "I'm always open to discussing new projects, creative ideas, or opportunities to be part of an amazing team.",
+    "connect": {
+      "title": "Get in Touch",
+      "methods": [
+        {
+          "type": "Email",
+          "value": "alex.doe.mock@example.com",
+          "href": "mailto:alex.doe.mock@example.com",
+          "icon": "fas fa-envelope"
+        },
+        {
+          "type": "LinkedIn",
+          "value": "linkedin.com/in/alex-doe-mock",
+          "href": "https://www.linkedin.com/in/alex-doe-mock",
+          "icon": "fab fa-linkedin"
+        },
+        {
+          "type": "GitHub",
+          "value": "github.com/alexdoemock",
+          "href": "https://github.com/alexdoemock",
+          "icon": "fab fa-github"
+        },
+        {
+          "type": "Location",
+          "value": "San Francisco, CA, USA",
+          "icon": "fas fa-map-marker-alt"
+        }
+      ]
+    }
+  },
+  "Form": {
+    "title": "Send a Message",
+    "fields": [
+      {
+        "label": "Your Name",
+        "type": "text",
+        "id": "name",
+        "name": "name",
+        "placeholder": "What's your name?",
+        "required": true
+      },
+      {
+        "label": "Your Email",
+        "type": "email",
+        "id": "email",
+        "name": "email",
+        "placeholder": "What's your email address?",
+        "required": true
+      },
+      {
+        "label": "Subject",
+        "type": "text",
+        "id": "subject",
+        "name": "subject",
+        "placeholder": "What's the subject?",
+        "required": true
+      },
+      {
+        "label": "Message",
+        "type": "textarea",
+        "id": "message",
+        "name": "message",
+        "placeholder": "Feel free to write your message here...",
+        "rows": 5,
+        "required": true
+      }
+    ],
+    "submitButton": {
+      "text": "Send Message",
+      "icon": "fas fa-paper-plane"
+    }
+  },
+
+  "Achievements": {
+    "superTitle": "My",
+    "title": "Achievements",
+    "description": "Awards and accomplishments that highlight my academic excellence and technical expertise",
+    "items": [
+      {
+        "icon": "fa-solid fa-trophy",
+        "title": "Programming Contest Participation",
+        "description": "Actively participated in programming debugging events and coding competitions during college functions. Demonstrated strong problem-solving skills and coding expertise."
+      },
+      {
+        "icon": "fa-solid fa-laptop-code",
+        "title": "Winner, InnovateX Hackathon 2024",
+        "description": "Led a team to victory in a 48-hour hackathon, developing an AI-powered accessibility tool for web content. Praised for innovative use of technology and a compelling final presentation."
+      },
+      {
+        "icon": "fa-solid fa-graduation-cap",
+        "title": "Academic Excellence Scholarship",
+        "description": "Awarded a merit-based scholarship for maintaining a 4.0 GPA and demonstrating exceptional promise in the field of computer science."
+      },
+      {
+        "icon": "fa-brands fa-github",
+        "title": "Open Source Contributor",
+        "description": "Contributed to the popular open-source project 'React-Table' by optimizing a key rendering function, resulting in a 15% performance improvement."
+      },
+      {
+        "icon": "fa-solid fa-award",
+        "title": "Best Capstone Project Award",
+        "description": "Received the 'Best Capstone Project' award for a full-stack application that streamlined university event management, recognized for its robust architecture and user-centric design."
+      }
+    ]
+  }
+}

@@ -1,0 +1,386 @@
+{
+  "Hero": {
+    "personalInfo": {
+      "greeting": "👋 Hello, I'm",
+      "name": "Ebinesh Rabin",
+      "title": "Aspiring Full Stack Developer",
+      "availability": "Available for opportunities"
+    },
+    "about": {
+      "summary": "Passionate and dedicated Software Developer with a solid foundation in software development, algorithms, data structures, and computer systems. Eager to apply academic knowledge and hands-on project experience to deliver impactful solutions in a dynamic IT environment."
+    },
+    "actions": [
+      {
+        "id": "contact",
+        "text": "Get In Touch",
+        "href": "#contact",
+        "icon": "fas fa-envelope"
+      },
+      {
+        "id": "resume",
+        "text": "Download CV",
+        "href": "/docs/Ebinesh-Resume.pdf",
+        "icon": "fas fa-download"
+      }
+    ],
+    "socialLinks": [
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/in/ebinesh-rabin-c19",
+        "icon": "fab fa-linkedin-in"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/ebinesh12",
+        "icon": "fab fa-github"
+      },
+      {
+        "name": "Email",
+        "url": "mailto:ebineshrabinc19@gmail.com",
+        "icon": "fas fa-envelope"
+      },
+      {
+        "name": "Twitter",
+        "url": "https://twitter.com/",
+        "icon": "fab fa-twitter"
+      }
+    ]
+  },
+  "About": {
+    "superTitle": "Get To Know More",
+    "title": "About Me",
+    "description": "Discover my journey, education, and passion for technology and quality assurance",
+    "story": {
+      "title": "My Story & Background",
+      "paragraphs": [
+        "I am a passionate and detail-oriented software developer with a strong academic foundation in Computer Science. My journey in technology has been driven by curiosity, continuous learning, and a desire to create meaningful digital solutions that make a difference.",
+        "With expertise in both frontend and backend development, I specialize in creating robust web applications using modern technologies. My academic projects, including the Face Recognition Attendance System, demonstrate my ability to handle full-stack development challenges and deliver quality software solutions."
+      ]
+    },
+    "education": [
+      {
+        "degree": "Master of Science in Computer Science",
+        "institution": "Government Arts College (Autonomous) - Coimbatore",
+        "duration": "September 2023 - April 2025",
+        "description": "An Autonomous Institution Affiliated to Bharathiar University. Focusing on advanced computer science concepts, software engineering principles, and modern development methodologies."
+      },
+      {
+        "degree": "Bachelor of Science in Computer Science",
+        "institution": "Bishop Appasamy College of Arts and Science - Coimbatore",
+        "duration": "July 2019 - May 2022",
+        "description": "Affiliated by Bharathiar University. Built a strong foundation in programming, database management, web development, and software engineering principles."
+      }
+    ]
+  },
+
+  "Sklls": {
+    "superTitle": "Explore My",
+    "title": "Skills & Technologies",
+    "description": "A comprehensive overview of my technical skills and expertise across different domains",
+    "categories": [
+      {
+        "title": "Frontend Development",
+        "icon": "fas fa-code",
+        "items": [
+          {
+            "name": "HTML5",
+            "level": "Expert",
+            "icon": "fab fa-html5"
+          },
+          {
+            "name": "CSS3",
+            "level": "Expert",
+            "icon": "fab fa-css3-alt"
+          },
+          {
+            "name": "JavaScript",
+            "level": "Intermediate",
+            "icon": "fab fa-js"
+          },
+          {
+            "name": "React",
+            "level": "Intermediate",
+            "icon": "fab fa-react"
+          },
+          {
+            "name": "Tailwind CSS",
+            "level": "Intermediate",
+            "icon": "fas fa-wind"
+          },
+          {
+            "name": "Bootstrap",
+            "level": "Intermediate",
+            "icon": "fab fa-bootstrap"
+          }
+        ]
+      },
+      {
+        "title": "Backend Development",
+        "icon": "fas fa-server",
+        "items": [
+          {
+            "name": "Python",
+            "level": "Expert",
+            "icon": "fab fa-python"
+          },
+          {
+            "name": "Django",
+            "level": "Expert",
+            "icon": "fas fa-leaf"
+          },
+          {
+            "name": "FastAPI",
+            "level": "Intermediate",
+            "icon": "fas fa-bolt"
+          },
+          {
+            "name": "PostgreSQL",
+            "level": "Intermediate",
+            "icon": "fas fa-database"
+          },
+          {
+            "name": "MongoDB",
+            "level": "Intermediate",
+            "icon": "fas fa-leaf"
+          },
+          {
+            "name": "Java",
+            "level": "Intermediate",
+            "icon": "fab fa-java"
+          }
+        ]
+      },
+      {
+        "title": "Tools & Technologies",
+        "icon": "fas fa-tools",
+        "items": [
+          {
+            "name": "Git",
+            "level": "Intermediate",
+            "icon": "fab fa-git-alt"
+          },
+          {
+            "name": "GitHub",
+            "level": "Intermediate",
+            "icon": "fab fa-github"
+          },
+          {
+            "name": "Docker",
+            "level": "Intermediate",
+            "icon": "fab fa-docker"
+          },
+          {
+            "name": "Agile Method",
+            "level": "Beginner",
+            "icon": "fas fa-project-diagram"
+          },
+          {
+            "name": "Debugging",
+            "level": "Beginner",
+            "icon": "fas fa-bug"
+          },
+          {
+            "name": "Testing",
+            "level": "Beginner",
+            "icon": "fas fa-vial"
+          }
+        ]
+      }
+    ]
+  },
+
+  "Projects": {
+    "superTitle": "Browse My Recent",
+    "title": "Featured Projects",
+    "description": "Showcasing my latest work and development projects with modern technologies",
+    "items": [
+      {
+        "title": "Modern Portfolio Website",
+        "description": "A responsive and interactive portfolio website built with HTML5, CSS3, and JavaScript.",
+        "gradient": "bg-gradient-to-r from-indigo-500 to-purple-500",
+        "icon": "fas fa-laptop-code",
+        "github": "https://github.com/ebinesh12",
+        "demo": "#"
+      },
+      {
+        "title": "Web Bible",
+        "description": "A comprehensive web bible built with React and Django framework, featuring user authentication, and modern UI/UX design.",
+        "gradient": "bg-gradient-to-r from-green-400 to-blue-500",
+        "icon": "fas fa-book-bible",
+        "github": "https://github.com/ebinesh12",
+        "demo": "https://ebin-bible.vercel.app/"
+      },
+      {
+        "title": "Web Bible API",
+        "description": "A comprehensive data management and analysis system built with Python and Django. Features real-time data visualization, advanced filtering, export functionality, and interactive dashboards.",
+        "gradient": "bg-gradient-to-r from-yellow-400 to-orange-500",
+        "icon": "fa-brands fa-node",
+        "github": "https://github.com/ebinesh12",
+        "demo": "https://youversion-api.vercel.app/api/v1/status"
+      },
+      {
+        "title": "Nick CAPH",
+        "description": "A React-based project demonstrating data management, interactive dashboards, and modern web application features.",
+        "gradient": "bg-gradient-to-r from-pink-400 to-red-500",
+        "icon": "fa-brands fa-react",
+        "github": "https://github.com/ebinesh12",
+        "demo": "https://caph-react.vercel.app/"
+      },
+      {
+        "title": "CAPH API",
+        "description": "A data management and visualization system built with Python and Django. Includes filtering, export, and real-time analytics features.",
+        "gradient": "bg-gradient-to-r from-purple-400 to-indigo-500",
+        "icon": "fas fa-chart-line",
+        "github": "https://github.com/ebinesh12",
+        "demo": "https://caph.vercel.app/swagger-ui/"
+      },
+      {
+        "title": "FRAS",
+        "description": "A full-stack data management system built with Python and Django. Features real-time dashboards, interactive analytics, and modern UI design.",
+        "gradient": "bg-gradient-to-r from-green-400 to-teal-500",
+        "icon": "fas fa-clipboard-user",
+        "github": "https://github.com/ebinesh12",
+        "demo": "#"
+      }
+    ]
+  },
+
+  "Certificates": {
+    "superTitle": "My Learning Journey",
+    "title": "Certificates",
+    "description": "Professional certifications and courses that have enhanced my technical skills",
+    "items": [
+      {
+        "title": "EXL Certified Finance & Database Process Associate",
+        "issuer": "Edubridge Learning Portal",
+        "description": "Learned Python basics with hands-on exercises and mini projects. Gained foundational Django skills and built a simple CRUD web application.",
+        "date": "December 7 2024",
+        "pdf": "/docs/exl-certificate.pdf"
+      },
+      {
+        "title": "MongoDB for Developers",
+        "issuer": "MongoDB University",
+        "description": "Learned MongoDB basics with real-time exercises and hands-on projects to store and query data efficiently.",
+        "date": "December 7 2024",
+        "pdf": "/docs/mongodb-certificate.pdf"
+      },
+      {
+        "title": "Programming Language",
+        "issuer": "Sololearn",
+        "description": "Learned Python, JavaScript, Java with hands-on exercises and mini projects. Gained foundational skills.",
+        "date": "December 7 2024",
+        "pdf": "/docs/programming-certificate.pdf"
+      }
+    ]
+  },
+
+  "Achievements": {
+    "superTitle": "My",
+    "title": "Achievements",
+    "description": "Awards and accomplishments that highlight my academic excellence and technical expertise",
+    "items": [
+      {
+        "icon": "fa-solid fa-trophy",
+        "title": "Programming Contest Participation",
+        "description": "Actively participated in programming debugging events and coding competitions during college functions. Demonstrated strong problem-solving skills and coding expertise."
+      }
+    ]
+  },
+
+  "Experience": {
+    "superTitle": "Professional Journey",
+    "title": "Work Experience",
+    "description": "My professional roles and contributions in the tech industry",
+    "jobs": [
+      {
+        "role": "Frontend Development Intern",
+        "company": "10X Scale.AI, Secunderabad, Telangana",
+        "duration": "5 Months",
+        "responsibilities": [
+          "Worked on Frontend development using JavaScript in React",
+          "Developed responsive, pixel-perfect web interfaces from Figma designs",
+          "Implemented state management using Redux Toolkit & integrated GraphQL APIs",
+          "Integrated backend services using Axios & TanStack Query for performance",
+          "Collaborated using Git & GitHub for version control & team-based development"
+        ]
+      }
+    ]
+  },
+
+  "Contact": {
+    "superTitle": "Get In Touch",
+    "title": "Contact Me",
+    "description": "Let's discuss opportunities, collaborations, or any questions you might have",
+    "connect": {
+      "title": "Let's Connect",
+      "methods": [
+        {
+          "type": "Email",
+          "value": "Connect with me on Email",
+          "href": "mailto:ebineshrabinc19@gmail.com",
+          "icon": "fas fa-envelope"
+        },
+        {
+          "type": "LinkedIn",
+          "value": "Connect with me on LinkedIn",
+          "href": "https://www.linkedin.com/in/ebinesh-rabin-c19",
+          "icon": "fab fa-linkedin"
+        },
+        {
+          "type": "GitHub",
+          "value": "View my projects",
+          "href": "https://github.com/ebinesh12",
+          "icon": "fab fa-github"
+        },
+        {
+          "type": "Location",
+          "value": "Coimbatore, Tamil Nadu, India",
+          "icon": "fas fa-map-marker-alt"
+        }
+      ]
+    }
+  },
+
+  "Form": {
+    "title": "Send a Message",
+    "fields": [
+      {
+        "label": "Your Name",
+        "type": "text",
+        "id": "name",
+        "name": "name",
+        "placeholder": "Enter your name",
+        "required": true
+      },
+      {
+        "label": "Your Email",
+        "type": "email",
+        "id": "email",
+        "name": "email",
+        "placeholder": "Enter your email",
+        "required": true
+      },
+      {
+        "label": "Subject",
+        "type": "text",
+        "id": "subject",
+        "name": "subject",
+        "placeholder": "Enter subject",
+        "required": true
+      },
+      {
+        "label": "Message",
+        "type": "textarea",
+        "id": "message",
+        "name": "message",
+        "placeholder": "Write your message...",
+        "rows": 5,
+        "required": true
+      }
+    ],
+    "submitButton": {
+      "text": "Send Message",
+      "icon": "fas fa-paper-plane"
+    }
+  }
+}
