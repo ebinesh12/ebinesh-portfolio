@@ -1,4 +1,5 @@
 "use client";
+
 import EditHero from "@/components/admin/EditHero";
 import EditAbout from "@/components/admin/EditAbout";
 import EditSkill from "@/components/admin/EditSkill";
@@ -16,51 +17,8 @@ export default function AdminDashboardPage() {
   const { theme } = useTheme();
 
   return (
-    <div
-      className={cn(
-        "relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",
-        theme?.isGradient
-          ? theme?.sectionGradient
-          : "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
-      )}
-    >
-      {/* Floating gradient effects with blue glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Left Blob */}
-        <div
-          className={cn(
-            "absolute top-0 right-0 w-[350px] h-[350px] opacity-20 rounded-full blur-3xl animate-pulse",
-            theme?.isGradient
-              ? theme?.primaryGradient
-              : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
-          )}
-        ></div>
-        {/* Right Blob */}
-        <div
-          className="absolute bottom-0 left-0 w-[350px] h-[350px]
-                        bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-500
-                        dark:from-indigo-500 dark:via-blue-600 dark:to-cyan-500
-                        opacity-20 rounded-full blur-3xl animate-pulse"
-        ></div>
-      </div>
-
-      <h1
-        className={cn(
-          "text-3xl font-bold mb-6 bg-clip-text text-transparent",
-          theme?.isGradient
-            ? theme?.primaryGradient
-            : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500",
-        )}
-      >
-        Manage Portfolio Content
-      </h1>
-      <p className="text-muted-foreground mb-8">
-        Select a section below to update its content. Changes are saved
-        automatically when you click the save button in each section.
-      </p>
-
       <Tabs defaultValue="hero" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-8 h-auto bg-white/20 dark:bg-white/10 backdrop-blur-sm rounded-lg p-1.5">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-8 h-auto bg-white/20 dark:bg-white/15 border dark:border-white/30 backdrop-blur-sm rounded-lg p-1.5">
           {[
             "hero",
             "about",
@@ -75,9 +33,9 @@ export default function AdminDashboardPage() {
               key={tab}
               value={tab}
               className={cn(
-                "capitalize text-sm font-medium text-gray-600 dark:text-gray-300 transition-all duration-300",
-                "data-[state=active]:bg-white/30 data-[state=active]:dark:bg-black/30 data-[state=active]:shadow-md data-[state=active]:backdrop-blur-md data-[state=active]:rounded-md data-[state=active]:text-transparent data-[state=active]:bg-clip-text",
-                "data-[state=active]:bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500",
+                "capitalize text-sm font-medium text-gray-600 dark:text-gray-300 transition-all duration-300 data-[state=active]:bg-white/30 data-[state=active]:dark:bg-white/10 data-[state=active]:shadow-md ",
+                "data-[state=active]:backdrop-blur-md data-[state=active]:rounded-md data-[state=active]:text-transparent data-[state=active]:bg-clip-text", 
+                `data-[state=active]:${theme?.primaryGradient ?? "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500"}`
               )}
             >
               {tab}
@@ -110,6 +68,5 @@ export default function AdminDashboardPage() {
           <EditContact themes={theme} />
         </TabsContent>
       </Tabs>
-    </div>
   );
 }

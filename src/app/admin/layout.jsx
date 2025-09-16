@@ -1,4 +1,8 @@
+"use client";
+
 import { LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { useTheme } from "@/utils/ThemeProvider";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 // In a real app, you'd have a server-side function to verify authentication
@@ -11,11 +15,12 @@ const checkAuth = async () => {
 };
 
 export default async function AdminLayout({ children }) {
+  const { theme } = useTheme();
   await checkAuth();
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden lg:block w-64 flex-shrink-0 bg-white/40 dark:bg-white/10 backdrop-blur-lg p-8 rounded-r-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
+      <aside className="hidden lg:block w-64 flex-shrink-0 bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black backdrop-blur-lg p-8 border border-gray-300 dark:border-white/20 transition-colors duration-700">
         <h2 className="text-xl font-bold mb-8">Admin Panel</h2>
         <nav className="flex flex-col space-y-2">
           <Link
@@ -49,7 +54,54 @@ export default async function AdminLayout({ children }) {
           </Link>
         </nav>
       </aside>
-      <main className="flex-grow ">{children}</main>
+
+  
+      <main className="flex-grow ">
+        <div
+              className={cn(
+                "relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300", 
+                "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
+              )}
+            >
+              {/* Floating gradient effects with blue glow */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Left Blob */}
+                <div
+                  className={cn(
+                    "absolute top-0 right-0 w-[350px] h-[350px] opacity-20 rounded-full blur-3xl animate-pulse",
+                    theme?.isGradient
+                      ? theme?.primaryGradient
+                      : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
+                  )}
+                ></div>
+                {/* Right Blob */}
+                <div
+                  className="absolute bottom-0 left-0 w-[350px] h-[350px]
+                                bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-500
+                                dark:from-indigo-500 dark:via-blue-600 dark:to-cyan-500
+                                opacity-20 rounded-full blur-3xl animate-pulse"
+                ></div>
+              </div>
+        
+              <h1
+                className={cn(
+                  "text-3xl font-bold mb-6 bg-clip-text text-transparent",
+                  theme?.isGradient
+                    ? theme?.primaryGradient
+                    : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500",
+                )}
+              >
+                Manage Portfolio Content
+              </h1>
+              <p className="text-muted-foreground mb-8">
+                Select a section below to update its content. Changes are saved
+                automatically when you click the save button in each section.
+              </p>
+
+        {children}
+
+    </div>
+      </main>
     </div>
   );
 }

@@ -20,7 +20,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { toast } from "sonner";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // 1. Define Zod schemas for validation
@@ -155,9 +155,13 @@ export default function EditSkills({ themes }) {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <Card>
+    <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
-        <CardTitle>Edit Skills Section</CardTitle>
+        <CardTitle>
+           <span className={cn("w-1/4 bg-clip-text text-transparent text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
+              Edit Skills Section
+           </span>
+        </CardTitle>
         <CardDescription>
           Manage your technical skills and their categories.
         </CardDescription>
@@ -187,9 +191,14 @@ export default function EditSkills({ themes }) {
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">Skill Categories</h3>
-              <Button type="button" variant="outline" onClick={addCategory}>
-                Add Category
+              <h3 className={cn("bg-clip-text text-transparent text-lg text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
+                Skill Categories
+              </h3>
+              <Button type="button" onClick={addCategory}  className={cn(
+              "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}>
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
             <Accordion type="multiple" className="w-full">
@@ -203,12 +212,12 @@ export default function EditSkills({ themes }) {
                     </AccordionTrigger>
                     <Button
                       type="button"
-                      variant="ghost"
+                       className={cn( "text-white",themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
                       size="icon"
-                      className="mr-2 flex-shrink-0" // Add spacing and prevent shrinking
+                      // className="mr-2 flex-shrink-0" // Add spacing and prevent shrinking
                       onClick={() => removeCategory(catIndex)}
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash className="h-4 w-4" />
                     </Button>
                   </div>
                   {/* --- FIX END --- */}
@@ -238,10 +247,11 @@ export default function EditSkills({ themes }) {
                         <Button
                           type="button"
                           size="sm"
-                          variant="secondary"
                           onClick={() => addSkill(catIndex)}
-                        >
-                          Add Skill
+                          className={cn( "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                             themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                          )}>
+                          <Plus className="h-4 w-4" />
                         </Button>
                       </div>
                       {cat.items?.map((item, itemIndex) => (
@@ -281,11 +291,11 @@ export default function EditSkills({ themes }) {
                               />
                             </div>
                             <div>
-                              <Label>Color (Tailwind Class)</Label>
+                              <Label>Color (Tailwind)</Label>
                               <Input
                                 name="color"
                                 value={item.color || ""}
-                                placeholder="e.g., text-blue-500"
+                                placeholder="text-blue-500"
                                 onChange={(e) =>
                                   handleSkillChange(catIndex, itemIndex, e)
                                 }
@@ -294,11 +304,11 @@ export default function EditSkills({ themes }) {
                           </div>
                           <Button
                             type="button"
-                            variant="destructive"
+                           className={cn( "text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
                             size="icon"
                             onClick={() => removeSkill(catIndex, itemIndex)}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash className="h-4 w-4" />
                           </Button>
                         </div>
                       ))}
@@ -308,7 +318,15 @@ export default function EditSkills({ themes }) {
               ))}
             </Accordion>
           </div>
-          <Button type="submit">Save All Skills</Button>
+           <Button
+            className={cn(
+              "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              themes?.isGradient ? themes?.primaryGradient  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
+            type="submit"
+          >
+            Save Changes
+          </Button>
         </form>
       </CardContent>
     </Card>

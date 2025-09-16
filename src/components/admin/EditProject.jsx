@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Trash2 } from "lucide-react";
+import {Plus, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // 1. Define Zod schemas for validation
@@ -125,9 +125,13 @@ export default function EditProjects({ themes }) {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <Card>
+    <Card  className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
-        <CardTitle>Edit Projects Section</CardTitle>
+        <CardTitle>
+          <span className={cn("w-1/4 bg-clip-text text-transparent text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
+            Edit Projects Section
+          </span>
+        </CardTitle>
         <CardDescription>
           Manage the projects you want to showcase.
         </CardDescription>
@@ -157,9 +161,12 @@ export default function EditProjects({ themes }) {
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">Projects</h3>
-              <Button type="button" variant="outline" onClick={addItem}>
-                Add Project
+              <h3  className={cn("text-lg font-semibold bg-clip-text text-transparent", themes?.isGradient ? themes?.primaryGradient : "" )}>Projects</h3>
+              <Button type="button" onClick={addItem} className={cn(
+              "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}>
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
             {projectsData?.items?.map(
@@ -169,16 +176,16 @@ export default function EditProjects({ themes }) {
               ) => (
                 <div
                   key={index}
-                  className="space-y-4 p-4 border rounded-md relative"
+                  className="space-y-4 p-4 border hover:dark:bg-white/5 dark:border-white/20 rounded-md relative"
                 >
                   <Button
                     type="button"
-                    variant="destructive"
+                     className={cn( "absolute top-2 right-2 h-7 w-7 text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
                     size="icon"
-                    className="absolute top-2 right-2 h-7 w-7"
+                    // className="absolute top-2 right-2 h-7 w-7"
                     onClick={() => removeItem(index)}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash className="h-4 w-4" />
                   </Button>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -224,7 +231,7 @@ export default function EditProjects({ themes }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <Label>Gradient (Tailwind CSS)</Label>
+                      <Label>Gradient (Tailwind)</Label>
                       <Input
                         name="gradient"
                         value={item.gradient}
@@ -238,7 +245,15 @@ export default function EditProjects({ themes }) {
             )}
           </div>
 
-          <Button type="submit">Save Changes</Button>
+          <Button
+            className={cn(
+              "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              themes?.isGradient ? themes?.primaryGradient  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
+            type="submit"
+          >
+            Save Changes
+          </Button>
         </form>
       </CardContent>
     </Card>

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { toast } from 'sonner';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,17 +37,17 @@ export default function LoginPage() {
       }, 1000),
     );
 
-    // toast.promise(promise, {
-    //   loading: 'Logging in...',
-    //   success: () => {
-    //     router.push('/admin'); // Redirect to dashboard on success
-    //     return 'Login successful!';
-    //   },
-    //   error: (err) => {
-    //     setIsLoading(false);
-    //     return err;
-    //   },
-    // });
+    toast.promise(promise, {
+      loading: 'Logging in...',
+      success: () => {
+        router.push('/admin'); // Redirect to dashboard on success
+        return 'Login successful!';
+      },
+      error: (err) => {
+        setIsLoading(false);
+        return err;
+      },
+    });
   };
 
   return (
