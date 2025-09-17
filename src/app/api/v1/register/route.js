@@ -20,13 +20,23 @@ export async function POST(req) {
       );
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const Username = await User.findOne({ username });
+    const Email = await User.findOne({ email });
+
+    if (Username) {
       return NextResponse.json(
-        { message: "User already exists" },
+        { message: "Username already exists" },
         { status: 400 },
       );
     }
+    
+    if (Email) {
+      return NextResponse.json(
+        { message: "Email already exists" },
+        { status: 400 },
+      );
+    }
+    
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

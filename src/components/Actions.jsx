@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,6 +11,7 @@ import {
   DialogTrigger,
   DialogFooter,
   DialogClose,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -26,7 +28,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-export function ActionsCell({ message, onDelete, onUpdate }) {
+// The 'themes' prop is added to allow for dynamic gradient styling
+export function ActionsCell({ message, onDelete, onUpdate, themes }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: message.name,
@@ -52,13 +55,35 @@ export function ActionsCell({ message, onDelete, onUpdate }) {
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className={cn(
+                "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}>
             Edit
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent
+          className={cn(
+            "sm:max-w-[425px]",
+            "bg-white/40 dark:bg-white/25 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/40 transition-colors duration-700",
+          )}
+        >
           <DialogHeader>
-            <DialogTitle>Edit Message</DialogTitle>
+            <DialogTitle
+              className={cn(
+                "bg-clip-text text-transparent font-semibold",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 to-cyan-500",
+              )}
+            >
+              Edit Message
+            </DialogTitle>
+            <DialogDescription>
+              Update the details of the message below.
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -108,12 +133,26 @@ export function ActionsCell({ message, onDelete, onUpdate }) {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="secondary">
+              <Button type="button" className={cn(
+                "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="button" onClick={handleSaveChanges}>
-              Save Changes
+            <Button
+              type="button"
+              onClick={handleSaveChanges}
+              className={cn(
+                "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}
+            >
+              Save
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -122,21 +161,46 @@ export function ActionsCell({ message, onDelete, onUpdate }) {
       {/* Delete Alert Dialog */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" size="sm">
+          <Button variant="destructive" size="sm" className={cn(
+                "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}>
             Delete
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent
+          className={cn(
+            "bg-white/40 dark:bg-white/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700",
+          )}
+        >
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle
+              className={cn(
+                "bg-clip-text text-transparent font-semibold",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-red-500 to-orange-500", // Destructive gradient
+              )}
+            >
+              Are you absolutely sure?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
               message from {message.name}.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => onDelete(message.id)}>
+            <AlertDialogCancel className={cn(
+                "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              )}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => onDelete(message.id)} className={cn(
+                "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                themes?.isGradient
+                  ? themes?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

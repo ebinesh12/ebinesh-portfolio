@@ -51,7 +51,7 @@ export default function RegisterForm() {
         },
       });
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         router.push("/auth/login");
       }
     } catch (error) {
@@ -66,7 +66,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card className="w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
+    <Card className="md:w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
           <span className="w-1/4 bg-clip-text text-transparent text-left bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 font-semibold">

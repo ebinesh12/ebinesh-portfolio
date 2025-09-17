@@ -13,41 +13,9 @@ export default function AdminLayout({ children }) {
 
   return (
     <>
-      <Header />
+      <Header themes={theme}  />
       <div className="mt-12 min-h-screen">
-        {/* <aside className="hidden lg:block w-64 flex-shrink-0 bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black backdrop-blur-lg p-8  transition-colors duration-700">
-        <h2 className="text-xl font-bold mb-8">Admin Panel</h2>
-        <nav className="flex flex-col space-y-2">
-          <Link
-            href="/admin"
-            className="flex items-center gap-2 p-2 rounded-md hover:bg-primary hover:text-primary-foreground"
-          >
-            <LayoutDashboard size={20} />
-            <span>Dashboard</span>
-          </Link>
-          <Link
-            href="/admin/contacts"
-            className="flex items-center gap-2 p-2 rounded-md hover:bg-primary hover:text-primary-foreground"
-          >
-            <Settings size={20} />
-            <span>Messages</span>
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-2 p-2 rounded-md hover:bg-primary hover:text-primary-foreground"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-2 p-2 mt-auto rounded-md hover:bg-destructive hover:text-destructive-foreground"
-          >
-            <LogOut size={20} />
-            <Logout />
-          </Link>
-        </nav>
-      </aside> */}
+
         <div
           className={cn(
             "relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",
@@ -92,7 +60,7 @@ export default function AdminLayout({ children }) {
           {children}
         </div>
       </div>
-      <Footer />
+      <Footer themes={theme} />
     </>
   );
 }

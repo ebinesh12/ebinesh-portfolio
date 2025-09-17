@@ -18,7 +18,7 @@ export async function middleware(request) {
   const token = request.cookies.get("token")?.value;
 
   // Define public paths that don't require authentication
-  const isPublicPath = path === "/auth/login" || path === "/auth/register";
+  const isPublicPath = path === "/" || path === "/auth/login" || path === "/auth/register";
 
   // If the user is trying to access a public path
   if (isPublicPath) {
@@ -62,6 +62,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|$).*)",
   ],
 };

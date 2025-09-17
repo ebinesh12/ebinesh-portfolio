@@ -40,7 +40,7 @@ export default function LoginForm() {
 
       if (res.status === 200) {
         // Redirect to a dashboard or home page on successful login
-        router.push("/admin/contacts");
+        router.push("/admin");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -54,7 +54,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
+    <Card className="md:w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
           <span className="w-1/4 bg-clip-text text-transparent text-left font-semibold bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500">

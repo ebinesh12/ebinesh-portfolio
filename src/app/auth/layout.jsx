@@ -1,21 +1,22 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 import { useTheme } from "@/utils/ThemeProvider";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import Logout from "@/components/Logout";
+import Header from "@/components/admin/Header";
+import Footer from "@/components/admin/Footer";
 
 export default function AdminLayout({ children }) {
   const { theme } = useTheme();
 
   return (
-    <div className="flex min-h-screen">
-      <main className="flex-grow ">
+    <>
+      <Header themes={theme} />
+
         <div
           className={cn(
-            "relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",
+            "mt-12 relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",
             "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
+            "flex justify-center items-center"
           )}
         >
           {/* Floating gradient effects with blue glow */}
@@ -37,9 +38,9 @@ export default function AdminLayout({ children }) {
                                 opacity-20 rounded-full blur-3xl animate-pulse"
             ></div>
           </div>
-          <div className="flex justify-center items-center">{children}</div>
+          {children}
         </div>
-      </main>
-    </div>
+      <Footer themes={theme} />
+    </>
   );
 }
