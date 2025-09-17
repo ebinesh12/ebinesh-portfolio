@@ -2,14 +2,6 @@
 
 import { useState, useEffect } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Card,
   CardContent,
   CardHeader,
@@ -23,12 +15,16 @@ import {
 } from "@/services/contactService";
 import { Toaster, toast } from "sonner";
 import { ActionsCell } from "@/components/Actions";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useTheme } from "@/utils/ThemeProvider";
+import { cn } from "@/lib/utils";
+import { Tables } from "@/components/Tables";
 
 export default function ContactAdminPage() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { theme } = useTheme();
 
   const fetchMessages = async () => {
     try {
@@ -51,7 +47,7 @@ export default function ContactAdminPage() {
     try {
       await deleteMessage(id);
       toast.success("Message has been deleted successfully.");
-      fetchMessages(); // Refresh the list after deleting
+      fetchMessages();
     } catch (err) {
       toast.error("An error occurred while deleting the message.");
     }
@@ -61,94 +57,55 @@ export default function ContactAdminPage() {
     try {
       await updateMessage(id, updatedData);
       toast.success("Message has been updated successfully.");
-      fetchMessages(); // Refresh the list after updating
-      return true; // Indicate success to close the dialog
+      fetchMessages();
+      return true;
     } catch (err) {
       toast.error("An error occurred while updating the message.");
-      return false; // Indicate failure
+      return false;
     }
   };
 
-  const renderSkeleton = () =>
-    Array.from({ length: 5 }).map((_, index) => (
-      <TableRow key={index}>
-        <TableCell>
-          <Skeleton className="h-4 w-32" />
-        </TableCell>
-        <TableCell>
-          <Skeleton className="h-4 w-48" />
-        </TableCell>
-        <TableCell>
-          <Skeleton className="h-4 w-24" />
-        </TableCell>
-        <TableCell>
-          <Skeleton className="h-4 w-full" />
-        </TableCell>
-        <TableCell>
-          <Skeleton className="h-8 w-20" />
-        </TableCell>
-      </TableRow>
-    ));
+  const columns = [
+    { header: "Name", key: "name" },
+    { header: "Email", key: "email" },
+    { header: "Subject", key: "subject" },
+    { header: "Message", key: "message" },
+  ];
 
   return (
     <div className="container mx-auto py-2">
       <Toaster position="top-center" richColors />
-      <Card>
+      <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
         <CardHeader>
-          <CardTitle>Contact Messages</CardTitle>
+          <CardTitle>
+            <span
+              className={cn(
+                "w-1/4 bg-clip-text text-transparent text-left font-semibold",
+                theme?.isGradient ? theme?.primaryGradient : "",
+              )}
+            >
+              Contact Messages
+            </span>
+          </CardTitle>
           <CardDescription>
             View and manage messages submitted through your contact form.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead>Message</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                renderSkeleton()
-              ) : error ? (
-                <TableRow>
-                  <TableCell colSpan="5" className="text-center text-red-500">
-                    {error}
-                  </TableCell>
-                </TableRow>
-              ) : messages.length > 0 ? (
-                messages.map((message) => (
-                  <TableRow key={message.id}>
-                    <TableCell className="font-medium">
-                      {message.name}
-                    </TableCell>
-                    <TableCell>{message.email}</TableCell>
-                    <TableCell>{message.subject}</TableCell>
-                    <TableCell className="max-w-xs truncate">
-                      {message.message}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <ActionsCell
-                        message={message}
-                        onDelete={handleDelete}
-                        onUpdate={handleUpdate}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan="5" className="text-center">
-                    No messages found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+          <Tables
+            columns={columns}
+            data={messages}
+            loading={loading}
+            error={error}
+            themes={theme}
+            renderActions={(message) => (
+              <ActionsCell
+                message={message}
+                onDelete={handleDelete}
+                onUpdate={handleUpdate}
+              />
+            )}
+          />
         </CardContent>
       </Card>
     </div>

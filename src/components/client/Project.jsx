@@ -38,9 +38,12 @@ const Projects = ({ data, themes }) => {
           >
             {data?.superTitle ?? "Browse My Recent"}
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold mt-2">{data?.title ?? "Featured Projects"}</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mt-2">
+            {data?.title ?? "Featured Projects"}
+          </h2>
           <p className="text-gray-600 dark:text-gray-300 mt-2 max-w-xl mx-auto">
-            {data?.description ?? "Showcasing my latest work and development projects with modern technologies"}
+            {data?.description ??
+              "Showcasing my latest work and development projects with modern technologies"}
           </p>
         </div>
 

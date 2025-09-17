@@ -128,8 +128,7 @@ export default function EditHero({ themes }) {
   };
 
   const removeSocialLink = (index) => {
-    const newLinks =
-      heroData?.socialLinks?.filter((_, i) => i !== index) || [];
+    const newLinks = heroData?.socialLinks?.filter((_, i) => i !== index) || [];
     setHeroData((prev) => ({ ...prev, socialLinks: newLinks }));
   };
 
@@ -159,10 +158,15 @@ export default function EditHero({ themes }) {
     <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-           <span className={cn("w-1/4 bg-clip-text text-transparent text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
-              Edit Hero Section
-           </span>
-          </CardTitle>
+          <span
+            className={cn(
+              "w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              themes?.isGradient ? themes?.primaryGradient : "",
+            )}
+          >
+            Edit Hero Section
+          </span>
+        </CardTitle>
         <CardDescription>
           Update the content for your portfolio's hero section.
         </CardDescription>
@@ -171,7 +175,14 @@ export default function EditHero({ themes }) {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Personal Info */}
           <div className="space-y-4">
-            <h3 className={cn("w-1/4 text-lg font-semibold bg-clip-text text-transparent", themes?.isGradient ? themes?.primaryGradient : "" )}>Personal Information</h3>
+            <h3
+              className={cn(
+                "w-1/4 text-lg font-semibold bg-clip-text text-transparent",
+                themes?.isGradient ? themes?.primaryGradient : "",
+              )}
+            >
+              Personal Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="greeting">Greeting</Label>
@@ -225,7 +236,14 @@ export default function EditHero({ themes }) {
 
           {/* About Summary */}
           <div className="space-y-2">
-            <h3 className={cn("w-1/4 text-lg font-semibold bg-clip-text text-transparent", themes?.isGradient ? themes?.primaryGradient : "" )}>About Summary</h3>
+            <h3
+              className={cn(
+                "w-1/4 text-lg font-semibold bg-clip-text text-transparent",
+                themes?.isGradient ? themes?.primaryGradient : "",
+              )}
+            >
+              About Summary
+            </h3>
             <Label htmlFor="summary">Summary</Label>
             <Textarea
               id="summary"
@@ -239,11 +257,24 @@ export default function EditHero({ themes }) {
           {/* Actions Section */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className={cn("text-lg font-semibold bg-clip-text text-transparent", themes?.isGradient ? themes?.primaryGradient : "" )}>Action Buttons</h3>
-              <Button type="button" onClick={addAction} className={cn(
-              "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-            )}>
+              <h3
+                className={cn(
+                  "text-lg font-semibold bg-clip-text text-transparent",
+                  themes?.isGradient ? themes?.primaryGradient : "",
+                )}
+              >
+                Action Buttons
+              </h3>
+              <Button
+                type="button"
+                onClick={addAction}
+                className={cn(
+                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  themes?.isGradient
+                    ? themes?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -288,7 +319,12 @@ export default function EditHero({ themes }) {
                 </div>
                 <Button
                   type="button"
-                 className={cn( "text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
+                  className={cn(
+                    "text-white",
+                    themes?.isGradient
+                      ? themes?.primaryGradient
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                  )}
                   size="icon"
                   onClick={() => removeAction(index)}
                 >
@@ -301,10 +337,24 @@ export default function EditHero({ themes }) {
           {/* Social Links */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className={cn("text-lg font-semibold bg-clip-text text-transparent", themes?.isGradient ? themes?.primaryGradient : "" )}>Social Links</h3>
-              <Button type="button" onClick={addSocialLink} className={cn(  themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-             "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-            )}>
+              <h3
+                className={cn(
+                  "text-lg font-semibold bg-clip-text text-transparent",
+                  themes?.isGradient ? themes?.primaryGradient : "",
+                )}
+              >
+                Social Links
+              </h3>
+              <Button
+                type="button"
+                onClick={addSocialLink}
+                className={cn(
+                  themes?.isGradient
+                    ? themes?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                )}
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -341,7 +391,12 @@ export default function EditHero({ themes }) {
                 </div>
                 <Button
                   type="button"
-                  className={cn( "text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
+                  className={cn(
+                    "text-white",
+                    themes?.isGradient
+                      ? themes?.primaryGradient
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                  )}
                   size="icon"
                   onClick={() => removeSocialLink(index)}
                 >
@@ -354,7 +409,9 @@ export default function EditHero({ themes }) {
           <Button
             className={cn(
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
           >

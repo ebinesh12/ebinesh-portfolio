@@ -33,7 +33,7 @@ const Achivement = ({ data, themes }) => {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {/* <!-- Achievement Card --> */}
 
-           {data?.items?.map((achievement, index) => (
+          {data?.items?.map((achievement, index) => (
             <div
               key={index}
               className="bg-white/40 dark:bg-white/10 backdrop-blur-lg border border-gray-300 dark:border-white/20 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition duration-300 text-center p-6"

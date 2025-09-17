@@ -19,7 +19,7 @@ const page = () => {
   const [portfolioData, setPortfolioData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-   const { theme } = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => {
     // Define an async function inside useEffect to call the data fetcher

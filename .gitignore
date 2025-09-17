@@ -40,4 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 text.js
-src/services/appSchema.js
+new.js

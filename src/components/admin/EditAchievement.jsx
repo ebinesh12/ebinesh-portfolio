@@ -126,10 +126,15 @@ export default function EditAchievements({ themes }) {
     <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-          <span className={cn("w-1/4 bg-clip-text text-transparent text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
+          <span
+            className={cn(
+              "w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              themes?.isGradient ? themes?.primaryGradient : "",
+            )}
+          >
             Edit Achievements Section
           </span>
-          </CardTitle>
+        </CardTitle>
         <CardDescription>
           Highlight your key accomplishments and awards.
         </CardDescription>
@@ -159,11 +164,24 @@ export default function EditAchievements({ themes }) {
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className={cn("w-1/4 text-lg font-semibold bg-clip-text text-transparent", themes?.isGradient ? themes?.primaryGradient : "" )}>Achievements</h3>
-              <Button type="button" onClick={addItem}className={cn(
-              "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-            )}>
+              <h3
+                className={cn(
+                  "w-1/4 text-lg font-semibold bg-clip-text text-transparent",
+                  themes?.isGradient ? themes?.primaryGradient : "",
+                )}
+              >
+                Achievements
+              </h3>
+              <Button
+                type="button"
+                onClick={addItem}
+                className={cn(
+                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  themes?.isGradient
+                    ? themes?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -179,7 +197,12 @@ export default function EditAchievements({ themes }) {
                 >
                   <Button
                     type="button"
-                     className={cn( "absolute top-2 right-2 h-7 w-7 text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
+                    className={cn(
+                      "absolute top-2 right-2 h-7 w-7 text-white",
+                      themes?.isGradient
+                        ? themes?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}
                     size="icon"
                     onClick={() => removeItem(index)}
                   >
@@ -218,10 +241,12 @@ export default function EditAchievements({ themes }) {
             )}
           </div>
 
-         <Button
+          <Button
             className={cn(
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
           >

@@ -158,9 +158,14 @@ export default function EditSkills({ themes }) {
     <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-           <span className={cn("w-1/4 bg-clip-text text-transparent text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
-              Edit Skills Section
-           </span>
+          <span
+            className={cn(
+              "w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              themes?.isGradient ? themes?.primaryGradient : "",
+            )}
+          >
+            Edit Skills Section
+          </span>
         </CardTitle>
         <CardDescription>
           Manage your technical skills and their categories.
@@ -191,13 +196,24 @@ export default function EditSkills({ themes }) {
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className={cn("bg-clip-text text-transparent text-lg text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
+              <h3
+                className={cn(
+                  "bg-clip-text text-transparent text-lg text-left font-semibold",
+                  themes?.isGradient ? themes?.primaryGradient : "",
+                )}
+              >
                 Skill Categories
               </h3>
-              <Button type="button" onClick={addCategory}  className={cn(
-              "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-            )}>
+              <Button
+                type="button"
+                onClick={addCategory}
+                className={cn(
+                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  themes?.isGradient
+                    ? themes?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -212,7 +228,12 @@ export default function EditSkills({ themes }) {
                     </AccordionTrigger>
                     <Button
                       type="button"
-                       className={cn( "text-white",themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
+                      className={cn(
+                        "text-white",
+                        themes?.isGradient
+                          ? themes?.primaryGradient
+                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                      )}
                       size="icon"
                       // className="mr-2 flex-shrink-0" // Add spacing and prevent shrinking
                       onClick={() => removeCategory(catIndex)}
@@ -248,9 +269,13 @@ export default function EditSkills({ themes }) {
                           type="button"
                           size="sm"
                           onClick={() => addSkill(catIndex)}
-                          className={cn( "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                             themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                          )}>
+                          className={cn(
+                            "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                            themes?.isGradient
+                              ? themes?.primaryGradient
+                              : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                          )}
+                        >
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
@@ -304,7 +329,12 @@ export default function EditSkills({ themes }) {
                           </div>
                           <Button
                             type="button"
-                           className={cn( "text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
+                            className={cn(
+                              "text-white",
+                              themes?.isGradient
+                                ? themes?.primaryGradient
+                                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                            )}
                             size="icon"
                             onClick={() => removeSkill(catIndex, itemIndex)}
                           >
@@ -318,10 +348,12 @@ export default function EditSkills({ themes }) {
               ))}
             </Accordion>
           </div>
-           <Button
+          <Button
             className={cn(
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
           >

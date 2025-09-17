@@ -136,9 +136,14 @@ export default function EditAbout({ themes }) {
     <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-           <span className={cn("w-1/4 bg-clip-text text-transparent text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
-              Edit About Section
-           </span>
+          <span
+            className={cn(
+              "w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              themes?.isGradient ? themes?.primaryGradient : "",
+            )}
+          >
+            Edit About Section
+          </span>
         </CardTitle>
         <CardDescription>
           Manage your story and educational background.
@@ -191,8 +196,13 @@ export default function EditAbout({ themes }) {
             {/* My Story Section */}
             <AccordionItem value="story">
               <AccordionTrigger>
-                <span className={cn("w-1/4 bg-clip-text text-transparent text-lg text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
-                  My Story & Background 
+                <span
+                  className={cn(
+                    "w-1/4 bg-clip-text text-transparent text-lg text-left font-semibold",
+                    themes?.isGradient ? themes?.primaryGradient : "",
+                  )}
+                >
+                  My Story & Background
                 </span>
               </AccordionTrigger>
               <AccordionContent className="space-y-4 pt-4">
@@ -229,7 +239,12 @@ export default function EditAbout({ themes }) {
             {/* Education Section */}
             <AccordionItem value="education">
               <AccordionTrigger className="mt-5">
-                <span className={cn("w-1/4 bg-clip-text text-transparent text-lg text-left font-semibold", themes?.isGradient ? themes?.primaryGradient : "")}>
+                <span
+                  className={cn(
+                    "w-1/4 bg-clip-text text-transparent text-lg text-left font-semibold",
+                    themes?.isGradient ? themes?.primaryGradient : "",
+                  )}
+                >
                   Education
                 </span>
               </AccordionTrigger>
@@ -238,10 +253,14 @@ export default function EditAbout({ themes }) {
                   <Button
                     type="button"
                     onClick={addEducation}
-                    className={cn( "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}>
-                     <Plus className="h-4 w-4" />
+                    className={cn(
+                      "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      themes?.isGradient
+                        ? themes?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}
+                  >
+                    <Plus className="h-4 w-4" />
                   </Button>
                 </div>
                 {aboutData?.education?.map((edu, index) => (
@@ -252,7 +271,12 @@ export default function EditAbout({ themes }) {
                     <Button
                       type="button"
                       size="icon"
-                      className={cn( "absolute top-2 right-2 h-7 w-7 text-white", themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" )}
+                      className={cn(
+                        "absolute top-2 right-2 h-7 w-7 text-white",
+                        themes?.isGradient
+                          ? themes?.primaryGradient
+                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                      )}
                       onClick={() => removeEducation(index)}
                     >
                       <Trash className="h-4 w-4" />
@@ -297,10 +321,12 @@ export default function EditAbout({ themes }) {
             </AccordionItem>
           </Accordion>
 
-         <Button
+          <Button
             className={cn(
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient ? themes?.primaryGradient  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
           >

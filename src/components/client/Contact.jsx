@@ -57,7 +57,10 @@ const Contact = ({ themes, data }) => {
 
     try {
       // 3. Send the validated data to the API
-      const response = await axios.post("/api/v1/contact", validationResult.data);
+      const response = await axios.post(
+        "/api/v1/contact",
+        validationResult.data,
+      );
 
       if (response.data.code === 200) {
         toast.success("Message sent successfully!", {
@@ -111,7 +114,8 @@ const Contact = ({ themes, data }) => {
             {data?.title ?? "Contact Me"}
           </h2>
           <p className="text-gray-500 dark:text-gray-300 mt-2 max-w-xl mx-auto">
-            {data?.description ?? "Let's discuss opportunities, collaborations, or any questions you might have"}
+            {data?.description ??
+              "Let's discuss opportunities, collaborations, or any questions you might have"}
           </p>
         </div>
 
@@ -176,7 +180,11 @@ const Contact = ({ themes, data }) => {
             >
               Send a Message
             </h3>
-            <form id="contactForm" className="space-y-4" onSubmit={handleSubmit}>
+            <form
+              id="contactForm"
+              className="space-y-4"
+              onSubmit={handleSubmit}
+            >
               <div>
                 <label
                   htmlFor="name"

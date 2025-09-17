@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-const Experience = ({data, themes }) => {
+const Experience = ({ data, themes }) => {
   return (
     // <!-- Experience Section -->
     <section
@@ -42,17 +42,17 @@ const Experience = ({data, themes }) => {
             {data?.superTitle ?? "Professional Journey"}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">
-              {data?.title ?? "Work Experience"}
+            {data?.title ?? "Work Experience"}
           </h2>
           <p className="text-gray-500 dark:text-gray-300 mt-2 max-w-xl mx-auto">
-            {data?.description ?? "My professional roles and contributions in the tech industry"}
+            {data?.description ??
+              "My professional roles and contributions in the tech industry"}
           </p>
         </div>
 
         {/* <!-- Experience Timeline --> */}
         <div className="space-y-8">
-
-           {data?.jobs?.map((job, index) => (
+          {data?.jobs?.map((job, index) => (
             <div
               key={index}
               className="bg-white/40 dark:bg-white/10 backdrop-blur-lg border border-gray-300 dark:border-white/20

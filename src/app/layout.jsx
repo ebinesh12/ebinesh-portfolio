@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html suppressHydrationWarning lang="en">
-    {/* <html lang="en"> */}
+      {/* <html lang="en"> */}
       <head>
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"

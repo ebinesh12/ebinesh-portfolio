@@ -41,7 +41,8 @@ const Certificate = ({ data, themes }) => {
               {data?.title ?? "Certificates"}
             </h2>
             <p className="text-gray-500 dark:text-gray-300 mt-2 max-w-xl mx-auto">
-              {data?.description ?? "Professional certifications and courses that have enhanced my technical skills"}
+              {data?.description ??
+                "Professional certifications and courses that have enhanced my technical skills"}
             </p>
           </div>
 
