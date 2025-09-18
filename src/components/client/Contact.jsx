@@ -1,78 +1,36 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "sonner";
-import { z } from "zod"; // Import Zod
-
-// 1. Define the Zod schema for form validation
-const contactSchema = z.object({
-  name: z.string().min(1, { message: "Name is required." }),
-  email: z.string().email({ message: "Invalid email address." }),
-  subject: z.string().min(1, { message: "Subject is required." }),
-  message: z
-    .string()
-    .min(10, { message: "Message must be at least 10 characters long." }),
-});
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {contactSchema} from "@/services/schema";
+import { contactValues } from "@/utils/constant"
 
 const Contact = ({ themes, data }) => {
-  // State to manage form data
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(contactSchema),
+    defaultValues: contactValues,
   });
 
-  // State to manage loading status
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-
-    // 2. Validate form data with Zod
-    const validationResult = contactSchema.safeParse(formData);
-
-    // If validation fails, show errors and stop
-    if (!validationResult.success) {
-      validationResult.error.issues.forEach((issue) => {
-        toast.error(issue.message);
-      });
-      return;
-    }
-
-    setIsLoading(true);
+  const onSubmit = async (validatedData) => {
     const toastId = toast.loading("Sending your message...");
 
     try {
-      // 3. Send the validated data to the API
-      const response = await axios.post(
-        "/api/v1/contact",
-        validationResult.data,
-      );
+      // Send the validated data to the API
+      const response = await axios.post("/api/v1/contact", validatedData);
 
       if (response.data.code === 200) {
         toast.success("Message sent successfully!", {
           id: toastId,
         });
-        // Clear form fields after successful submission
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
+        reset(); 
       } else {
         toast.error(response.data.message || "Something went wrong.", {
           id: toastId,
@@ -83,8 +41,6 @@ const Contact = ({ themes, data }) => {
       toast.error("Failed to send message. Please try again later.", {
         id: toastId,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -98,14 +54,13 @@ const Contact = ({ themes, data }) => {
                 transition-colors duration-700"
     >
       <div className="container mx-auto px-4">
-        {/* <!-- Section Title --> */}
         <div className="text-center mb-12">
           <p
             className={cn(
               "bg-clip-text text-transparent font-semibold uppercase tracking-widest mb-2",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "text-blue-600 dark:text-cyan-400",
+                : "text-blue-600 dark:text-cyan-400"
             )}
           >
             {data?.superTitle ?? "Get in Touch"}
@@ -120,14 +75,13 @@ const Contact = ({ themes, data }) => {
         </div>
 
         <div className="grid gap-12 lg:grid-cols-2">
-          {/* <!-- Contact Info --> */}
           <div>
             <h3
               className={cn(
                 "text-2xl font-bold mb-6 bg-clip-text text-transparent",
                 themes?.isGradient
                   ? themes?.primaryGradient
-                  : "text-gray-900 dark:text-white",
+                  : "text-gray-900 dark:text-white"
               )}
             >
               {data?.connect?.title ?? "Let's Connect"}
@@ -151,7 +105,7 @@ const Contact = ({ themes, data }) => {
                         `${method.icon} text-2xl bg-clip-text text-transparent`,
                         themes?.isGradient
                           ? themes?.primaryGradient
-                          : "text-indigo-600",
+                          : "text-indigo-600"
                       )}
                     ></i>
                     <div>
@@ -168,22 +122,22 @@ const Contact = ({ themes, data }) => {
             </div>
           </div>
 
-          {/* <!-- Contact Form --> */}
           <div>
             <h3
               className={cn(
                 "text-2xl font-bold mb-6 bg-clip-text text-transparent",
                 themes?.isGradient
                   ? themes?.primaryGradient
-                  : "text-gray-900 dark:text-white",
+                  : "text-gray-900 dark:text-white"
               )}
             >
               Send a Message
             </h3>
+
             <form
               id="contactForm"
               className="space-y-4"
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
             >
               <div>
                 <label
@@ -192,15 +146,20 @@ const Contact = ({ themes, data }) => {
                 >
                   Your Name
                 </label>
+               
                 <input
                   type="text"
                   id="name"
-                  name="name"
                   placeholder="Enter your name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  {...register("name")}
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
+               
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -213,12 +172,15 @@ const Contact = ({ themes, data }) => {
                 <input
                   type="email"
                   id="email"
-                  name="email"
                   placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  {...register("email")}
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -231,12 +193,15 @@ const Contact = ({ themes, data }) => {
                 <input
                   type="text"
                   id="subject"
-                  name="subject"
                   placeholder="Enter subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  {...register("subject")}
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
+                {errors.subject && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.subject.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -248,30 +213,34 @@ const Contact = ({ themes, data }) => {
                 </label>
                 <textarea
                   id="message"
-                  name="message"
                   rows="5"
                   placeholder="Write your message..."
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  {...register("message")}
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                 ></textarea>
+                {errors.message && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.message.message}
+                  </p>
+                )}
               </div>
 
               <div>
+               
                 <button
                   type="submit"
                   id="contact-btn"
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                   className={cn(
                     "inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 hover:shadow-2xl transition transform duration-300",
                     themes?.isGradient
                       ? themes?.primaryGradient
                       : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    isLoading && "cursor-not-allowed opacity-70",
+                    isSubmitting && "cursor-not-allowed opacity-70"
                   )}
                 >
                   <i className="fas fa-paper-plane"></i>
-                  {isLoading ? "Sending..." : "Send Message"}
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </div>
             </form>

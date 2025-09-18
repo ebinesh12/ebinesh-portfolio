@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/services/appSchema"; // Adjust the import path
+import { loginSchema } from "@/services/schema"; // Adjust the import path
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
@@ -42,7 +42,10 @@ export default function LoginForm() {
 
       if (res.status === 200) {
         // Redirect to a dashboard or home page on successful login
-        router.push("/admin/contacts");
+        // router.push("/admin");
+        setTimeout(() => {
+          router.push("/admin");
+        }, 200);
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

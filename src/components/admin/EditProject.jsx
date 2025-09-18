@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios"; // Import axios
-import { z } from "zod"; // Import zod
+import { useEffect } from "react";
+import axios from "axios";
+import { z } from "zod";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,103 +19,47 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Plus, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-// 1. Define Zod schemas for validation
-const projectItemSchema = z.object({
-  title: z.string().min(1, "Project title cannot be empty."),
-  description: z.string().min(1, "Project description cannot be empty."),
-  icon: z.string().min(1, "Project icon is required."),
-  github: z.string().url("Invalid GitHub URL format."),
-  demo: z.string().url("Invalid Demo URL format."),
-  gradient: z.string().min(1, "Gradient is required."),
-});
-
-const projectsSchema = z.object({
-  superTitle: z.string().min(1, "Super Title is required."),
-  title: z.string().min(1, "Title is required."),
-  description: z.string().optional(),
-  items: z.array(projectItemSchema),
-});
+import { projectsSchema } from "@/services/schema";
+import { projectsValues } from "@/utils/constant";
 
 export default function EditProjects({ themes }) {
-  const [projectsData, setProjectsData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isLoading },
+  } = useForm({
+    resolver: zodResolver(projectsSchema),
+    defaultValues: projectsValues,
+  });
+
+  const {
+    fields: itemFields,
+    append: appendItem,
+    remove: removeItem,
+  } = useFieldArray({
+    control,
+    name: "items",
+  });
 
   useEffect(() => {
     const fetchProjectsData = async () => {
       try {
-        // Use axios for the GET request
         const response = await axios.get("/api/v1/project");
         if (response.data.success) {
-          setProjectsData(response.data.data);
+          reset(response.data.data); // Use reset to populate the form
         }
       } catch (error) {
         toast.error("Failed to fetch projects data.");
         console.error("Fetch error:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchProjectsData();
-  }, []);
+  }, [reset]);
 
-  const handleMainChange = (e) => {
-    const { name, value } = e.target;
-    setProjectsData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleItemChange = (index, e) => {
-    const { name, value } = e.target;
-    // Use optional chaining for safe access
-    const newItems = [...(projectsData?.items || [])];
-    if (newItems[index]) {
-      newItems[index] = { ...newItems[index], [name]: value };
-      setProjectsData((prev) => ({ ...prev, items: newItems }));
-    }
-  };
-
-  const addItem = () => {
-    setProjectsData((prev) => ({
-      ...prev,
-      items: [
-        ...(prev?.items || []), // Use optional chaining
-        {
-          title: "",
-          description: "",
-          gradient: "",
-          icon: "",
-          github: "",
-          demo: "",
-        },
-      ],
-    }));
-  };
-
-  const removeItem = (index) => {
-    // Use optional chaining for safer filtering
-    const newItems = projectsData?.items?.filter((_, i) => i !== index) || [];
-    setProjectsData((prev) => ({
-      ...prev,
-      items: newItems,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // 2. Validate data with Zod before sending to API
-    const validationResult = projectsSchema.safeParse(projectsData);
-
-    if (!validationResult.success) {
-      // If validation fails, show errors for each issue
-      validationResult.error.issues.forEach((issue) => {
-        toast.error(issue.message);
-      });
-      return; // Stop the submission
-    }
-
-    // 3. Use axios for the POST request if validation succeeds
-    const promise = axios.post("/api/v1/project", validationResult.data); // Send validated data
+  const onSubmit = async (data) => {
+    const promise = axios.post("/api/v1/project", data);
 
     toast.promise(promise, {
       loading: "Saving projects...",
@@ -131,7 +77,7 @@ export default function EditProjects({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : "",
+              themes?.isGradient ? themes?.primaryGradient : ""
             )}
           >
             Edit Projects Section
@@ -142,26 +88,19 @@ export default function EditProjects({ themes }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <Label>Super Title</Label>
-            <Input
-              name="superTitle"
-              value={projectsData?.superTitle || ""} // Add fallback
-              onChange={handleMainChange}
-            />
+            <Input {...register("superTitle")} />
+            {errors.superTitle && <p className="text-red-500 text-sm mt-1">{errors.superTitle.message}</p>}
+
             <Label>Title</Label>
-            <Input
-              name="title"
-              value={projectsData?.title || ""}
-              onChange={handleMainChange}
-            />
+            <Input {...register("title")} />
+            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+
             <Label>Description</Label>
-            <Input
-              name="description"
-              value={projectsData?.description || ""}
-              onChange={handleMainChange}
-            />
+            <Input {...register("description")} />
+            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 
           <div className="space-y-4">
@@ -169,103 +108,94 @@ export default function EditProjects({ themes }) {
               <h3
                 className={cn(
                   "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : "",
+                  themes?.isGradient ? themes?.primaryGradient : ""
                 )}
               >
                 Projects
               </h3>
               <Button
                 type="button"
-                onClick={addItem}
+                onClick={() =>
+                  appendItem({
+                    title: "",
+                    description: "",
+                    gradient: "",
+                    icon: "",
+                    github: "",
+                    demo: "",
+                  })
+                }
                 className={cn(
                   "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
                 )}
               >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-            {projectsData?.items?.map(
-              (
-                item,
-                index, // Optional chaining on map
-              ) => (
-                <div
-                  key={index}
-                  className="space-y-4 p-4 border hover:dark:bg-white/5 dark:border-white/20 rounded-md relative"
+            {itemFields.map((item, index) => (
+              <div
+                key={item.id}
+                className="space-y-4 p-4 border hover:dark:bg-white/5 dark:border-white/20 rounded-md relative"
+              >
+                <Button
+                  type="button"
+                  className={cn(
+                    "absolute top-2 right-2 h-7 w-7 text-white",
+                    themes?.isGradient
+                      ? themes?.primaryGradient
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                  )}
+                  size="icon"
+                  onClick={() => removeItem(index)}
                 >
-                  <Button
-                    type="button"
-                    className={cn(
-                      "absolute top-2 right-2 h-7 w-7 text-white",
-                      themes?.isGradient
-                        ? themes?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}
-                    size="icon"
-                    // className="absolute top-2 right-2 h-7 w-7"
-                    onClick={() => removeItem(index)}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Title</Label>
-                      <Input
-                        name="title"
-                        value={item.title}
-                        onChange={(e) => handleItemChange(index, e)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Icon</Label>
-                      <Input
-                        name="icon"
-                        value={item.icon}
-                        onChange={(e) => handleItemChange(index, e)}
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        name="description"
-                        value={item.description}
-                        onChange={(e) => handleItemChange(index, e)}
-                      />
-                    </div>
-                    <div>
-                      <Label>GitHub URL</Label>
-                      <Input
-                        name="github"
-                        value={item.github}
-                        onChange={(e) => handleItemChange(index, e)}
-                        placeholder="https://github.com/..."
-                      />
-                    </div>
-                    <div>
-                      <Label>Demo URL</Label>
-                      <Input
-                        name="demo"
-                        value={item.demo}
-                        onChange={(e) => handleItemChange(index, e)}
-                        placeholder="https://example.com/..."
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <Label>Gradient (Tailwind)</Label>
-                      <Input
-                        name="gradient"
-                        value={item.gradient}
-                        onChange={(e) => handleItemChange(index, e)}
-                        placeholder="from-blue-500 to-teal-400"
-                      />
-                    </div>
+                  <Trash className="h-4 w-4" />
+                </Button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Title</Label>
+                    <Input {...register(`items.${index}.title`)} />
+                    {errors.items?.[index]?.title && <p className="text-red-500 text-sm mt-1">{errors.items[index].title.message}</p>}
+                  </div>
+                  <div>
+                    <Label>Icon</Label>
+                    <Input {...register(`items.${index}.icon`)} />
+                    {errors.items?.[index]?.icon && <p className="text-red-500 text-sm mt-1">{errors.items[index].icon.message}</p>}
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label>Description</Label>
+                    <Textarea {...register(`items.${index}.description`)} />
+                    {errors.items?.[index]?.description && <p className="text-red-500 text-sm mt-1">{errors.items[index].description.message}</p>}
+                  </div>
+                  <div>
+                    <Label>GitHub URL</Label>
+                    <Input
+                      {...register(`items.${index}.github`)}
+                      placeholder="https://github.com/..."
+                    />
+                     {errors.items?.[index]?.github && <p className="text-red-500 text-sm mt-1">{errors.items[index].github.message}</p>}
+                  </div>
+                  <div>
+                    <Label>Demo URL</Label>
+                    <Input
+                      {...register(`items.${index}.demo`)}
+                      placeholder="https://example.com/..."
+                    />
+                     {errors.items?.[index]?.demo && <p className="text-red-500 text-sm mt-1">{errors.items[index].demo.message}</p>}
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label>Gradient (Tailwind)</Label>
+                    <Input
+                      {...register(`items.${index}.gradient`)}
+                      placeholder="from-blue-500 to-teal-400"
+                    />
+                     {errors.items?.[index]?.gradient && <p className="text-red-500 text-sm mt-1">{errors.items[index].gradient.message}</p>}
                   </div>
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </div>
 
           <Button
@@ -273,11 +203,12 @@ export default function EditProjects({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
             )}
             type="submit"
+            disabled={isSubmitting}
           >
-            Save Changes
+            {isSubmitting ? "Saving..." : "Save Changes"}
           </Button>
         </form>
       </CardContent>

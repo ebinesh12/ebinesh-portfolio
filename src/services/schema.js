@@ -1,17 +1,18 @@
+// 1. Define Zod schemas for validation
 import * as z from "zod";
 
-/*------------------- Contact Zod schemas for validation---------------------*/
+/*------------------- Contact Zod schemas for validation ----------------------------*/
 
 export const contactSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
-  email: z.string().email({ message: "Invalid email address." }),
+  email: z.string().min(1, { message: "Email is required." }).email({ message: "Invalid email address." }),
   subject: z.string().min(1, { message: "Subject is required." }),
   message: z
     .string()
     .min(10, { message: "Message must be at least 10 characters long." }),
 });
 
-/*------------------- EditHero Zod schemas for validation---------------------*/
+/*------------------- EditHero Zod schemas for validation ---------------------------*/
 
 const actionSchema = z.object({
   id: z.string().min(1, "Action ID cannot be empty."),
@@ -32,16 +33,18 @@ export const heroSchema = z.object({
     name: z.string().min(1, "Name is required."),
     title: z.string().min(1, "Title is required."),
     availability: z.string().min(1, "Availability is required."),
-    photo: z.string().optional(), // <-- Added photo validation
+    photo: z.string().optional(),
   }),
   about: z.object({
-    summary: z.string().min(10, "Summary must be at least 10 characters long."),
+    summary: z
+      .string()
+      .min(10, "Summary must be at least 10 characters long."),
   }),
   actions: z.array(actionSchema),
   socialLinks: z.array(socialLinkSchema),
 });
 
-/*------------------- EditAbout Zod schemas for validation---------------------*/
+/*------------------- EditAbout Zod schemas for validation --------------------------*/
 
 const educationSchema = z.object({
   degree: z.string().min(1, "Degree cannot be empty."),
@@ -61,31 +64,14 @@ export const aboutSchema = z.object({
   superTitle: z.string().min(1, "Super Title is required."),
   title: z.string().min(1, "Title is required."),
   description: z.string().min(1, "Section description is required."),
-  icon: z.string().min(1, "Icon class cannot be empty."), // <-- Added icon validation
+  icon: z.string().min(1, "Icon class cannot be empty."),
   story: storySchema,
   education: z.array(educationSchema),
 });
 
-/*------------------- EditExperience Zod schemas for validation---------------------*/
+/*------------------- EditSkill Zod schemas for validation --------------------------*/
 
-const jobSchema = z.object({
-  role: z.string().min(1, "Job role cannot be empty."),
-  company: z.string().min(1, "Company name cannot be empty."),
-  duration: z.string().min(1, "Job duration is required."),
-  responsibilities: z
-    .array(z.string().min(1, "Responsibility cannot be empty."))
-    .min(1, "At least one responsibility is required."),
-});
-
-export const experienceSchema = z.object({
-  superTitle: z.string().min(1, "Super Title is required."),
-  title: z.string().min(1, "Title is required."),
-  description: z.string().optional(),
-  jobs: z.array(jobSchema),
-});
-
-/*------------------- EditSkill Zod schemas for validation---------------------*/
-
+// 1. Define Zod schemas for validation
 const skillItemSchema = z.object({
   name: z.string().min(1, "Skill name is required."),
   level: z.string().min(1, "Skill level is required."),
@@ -108,7 +94,7 @@ export const skillsSchema = z.object({
   categories: z.array(skillCategorySchema),
 });
 
-/*------------------- EditProject Zod schemas for validation---------------------*/
+/*------------------- EditProject Zod schemas for validation ------------------------*/
 
 const projectItemSchema = z.object({
   title: z.string().min(1, "Project title cannot be empty."),
@@ -126,22 +112,25 @@ export const projectsSchema = z.object({
   items: z.array(projectItemSchema),
 });
 
-/*------------------- EditAchievement Zod schemas for validation---------------------*/
+/*------------------- EditExperience Zod schemas for validation ---------------------*/
 
-const achievementItemSchema = z.object({
-  icon: z.string().min(1, "Achievement icon is required."),
-  title: z.string().min(1, "Achievement title cannot be empty."),
-  description: z.string().min(1, "Achievement description cannot be empty."),
+const jobSchema = z.object({
+  role: z.string().min(1, "Job role cannot be empty."),
+  company: z.string().min(1, "Company name cannot be empty."),
+  duration: z.string().min(1, "Job duration is required."),
+  responsibilities: z
+    .array(z.string().min(1, "Responsibility cannot be empty."))
+    .min(1, "At least one responsibility is required."),
 });
 
-export const achievementsSchema = z.object({
+export const experienceSchema = z.object({
   superTitle: z.string().min(1, "Super Title is required."),
   title: z.string().min(1, "Title is required."),
   description: z.string().optional(),
-  items: z.array(achievementItemSchema),
+  jobs: z.array(jobSchema),
 });
 
-/*------------------- EditCertificate Zod schemas for validation---------------------*/
+/*------------------- EditCertificate Zod schemas for validation ---------------------*/
 
 const certificateItemSchema = z.object({
   title: z.string().min(1, "Certificate title cannot be empty."),
@@ -158,7 +147,22 @@ export const certificatesSchema = z.object({
   items: z.array(certificateItemSchema),
 });
 
-/*------------------- EditContact Zod schemas for validation---------------------*/
+/*------------------- EditAchievement Zod schemas for validation ---------------------*/
+
+const achievementItemSchema = z.object({
+  icon: z.string().min(1, "Achievement icon is required."),
+  title: z.string().min(1, "Achievement title cannot be empty."),
+  description: z.string().min(1, "Achievement description cannot be empty."),
+});
+
+export const achievementsSchema = z.object({
+  superTitle: z.string().min(1, "Super Title is required."),
+  title: z.string().min(1, "Title is required."),
+  description: z.string().optional(),
+  items: z.array(achievementItemSchema),
+});
+
+/*-------------------- EditContact Zod schemas for validation ------------------------*/
 
 const connectMethodSchema = z.object({
   type: z.string().min(1, "Method type cannot be empty."),
@@ -167,7 +171,7 @@ const connectMethodSchema = z.object({
   icon: z.string().min(1, "Method icon is required."),
 });
 
-export const linkSchema = z.object({
+export const linksSchema = z.object({
   superTitle: z.string().min(1, "Super Title is required."),
   title: z.string().min(1, "Title is required."),
   description: z.string().optional(),
@@ -177,7 +181,7 @@ export const linkSchema = z.object({
   }),
 });
 
-/*------------------- Register Zod schemas for validation---------------------*/
+/*------------------- Register Zod schemas for validation ----------------------------*/
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -226,7 +230,7 @@ export const registerSchema = z.object({
     .optional(),
 });
 
-/*------------------- Register Zod schemas for validation---------------------*/
+/*---------------------- Register Zod schemas for validation---------------------*/
 
 export const loginSchema = z.object({
   email: z

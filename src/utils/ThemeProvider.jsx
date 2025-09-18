@@ -7,7 +7,7 @@ const ThemeContext = createContext();
 
 const defaultTheme = {
   primaryGradient:
-    "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
+    "bg-gradient-to-r from-teal-300 to-sky-500 dark:from-teal-500 dark:to-sky-700",
   sectionGradient:
     "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
   outlineBtn:

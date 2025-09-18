@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "@/services/appSchema"; // Adjust the import path
+import { registerSchema } from "@/services/schema"; // Adjust the import path
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
