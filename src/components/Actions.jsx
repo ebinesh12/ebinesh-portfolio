@@ -51,7 +51,7 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
   };
 
   return (
-    <div className="flex gap-2 justify-end">
+    <div className="flex mx-auto gap-2 justify-end">
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogTrigger asChild>
@@ -66,7 +66,7 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
         </DialogTrigger>
         <DialogContent
           className={cn(
-            "sm:max-w-[425px]",
+            "sm:max-w-[425px] w-3/4",
             "bg-white/40 dark:bg-white/25 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/40 transition-colors duration-700",
           )}
         >
@@ -146,7 +146,7 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
               type="button"
               onClick={handleSaveChanges}
               className={cn(
-                "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                "px-6 py-2 mb-4 md:mb-0 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                 themes?.isGradient
                   ? themes?.primaryGradient
                   : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
@@ -172,7 +172,7 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
         </AlertDialogTrigger>
         <AlertDialogContent
           className={cn(
-            "bg-white/40 dark:bg-white/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700",
+            "w-3/4 bg-white/40 dark:bg-white/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700",
           )}
         >
           <AlertDialogHeader>
@@ -196,7 +196,7 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
                 "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               )}>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={() => onDelete(message.id)} className={cn(
-                "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                 themes?.isGradient
                   ? themes?.primaryGradient
                   : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",

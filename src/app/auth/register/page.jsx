@@ -18,9 +18,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils"; // Assuming you have a utility for classnames
+import { cn } from "@/lib/utils"; 
+import { useTheme } from "@/utils/ThemeProvider";
 
 export default function RegisterForm() {
+  const { theme } = useTheme();
   const router = useRouter();
   const [serverError, setServerError] = useState("");
 
@@ -69,7 +71,8 @@ export default function RegisterForm() {
     <Card className="md:w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-          <span className="w-1/4 bg-clip-text text-transparent text-left bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 font-semibold">
+          <span className={cn("md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500")}>
             Create an Account
           </span>
         </CardTitle>
@@ -137,7 +140,9 @@ export default function RegisterForm() {
             disabled={isSubmitting}
             className={cn(
               "w-full px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
           >
             {isSubmitting ? "Registering..." : "Register"}
@@ -149,7 +154,8 @@ export default function RegisterForm() {
           Already have an account?{" "}
           <Link
             href="/auth/login"
-            className="font-semibold text-blue-600 hover:underline"
+            className={cn("font-semibold bg-clip-text text-transparent hover:underline",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",)}
           >
             Log in
           </Link>

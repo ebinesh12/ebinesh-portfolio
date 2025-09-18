@@ -128,7 +128,7 @@ export default function EditAchievements({ themes }) {
         <CardTitle>
           <span
             className={cn(
-              "w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
               themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
@@ -166,7 +166,7 @@ export default function EditAchievements({ themes }) {
             <div className="flex justify-between items-center">
               <h3
                 className={cn(
-                  "w-1/4 text-lg font-semibold bg-clip-text text-transparent",
+                  "md:w-1/4 text-lg font-semibold bg-clip-text text-transparent",
                   themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
