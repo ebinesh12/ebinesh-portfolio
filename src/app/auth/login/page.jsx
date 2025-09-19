@@ -45,7 +45,8 @@ export default function LoginForm() {
 
       if (res.status === 200 && res.data.user) {
         loginUser(res.data.user);
-        router.push("/admin");
+        window.location.href = "/admin";
+        // router.push("/admin");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

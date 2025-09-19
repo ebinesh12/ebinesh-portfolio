@@ -165,15 +165,7 @@ const Header = ({ themes }) => {
                     <Button className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
                         <AvatarImage
-                          src={
-                            `data:${
-                              user?.profileImage?.contentType
-                            };base64,${Buffer?.from(
-                              user?.profileImage?.data,
-                            )?.toString("base64")}` ||
-                            imageUrl ||
-                            "/images/profile.jpg"
-                          }
+                          src={imageUrl || "/images/profile.jpg"}
                           alt={user?.username}
                         />
                         <AvatarFallback>
@@ -226,15 +218,7 @@ const Header = ({ themes }) => {
           {user && (
             <div className="flex items-center justify-center gap-x-4 border-b border-gray-200 dark:border-gray-700">
               <img
-                src={
-                  `data:${
-                    user?.profileImage?.contentType
-                  };base64,${Buffer?.from(user?.profileImage?.data)?.toString(
-                    "base64",
-                  )}` ||
-                  imageUrl ||
-                  "/images/profile.jpg"
-                }
+                src={imageUrl || "/images/profile.jpg"}
                 alt={user.username}
                 className="w-10 h-10 rounded-full"
               />

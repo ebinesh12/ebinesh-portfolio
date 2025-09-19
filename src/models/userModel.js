@@ -18,11 +18,11 @@ const UserSchema = new Schema({
     select: false,
   },
   profileImage: {
-    data: Buffer,
+    data: { type: Buffer, select: false },
     contentType: String,
   },
   resume: {
-    data: Buffer,
+    data: { type: Buffer, select: false },
     contentType: String,
     filename: String, // Store the original filename
   },
