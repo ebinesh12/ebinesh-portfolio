@@ -14,20 +14,45 @@ const navLinks = [
 
 // Social media links for reusability
 const socialLinks = [
-  { href: "https://www.facebook.com/", title: "Facebook", icon: "fab fa-facebook-f", hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400" },
-  { href: "https://twitter.com/", title: "Twitter", icon: "fab fa-twitter", hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400" },
-  { href: "https://www.instagram.com/", title: "Instagram", icon: "fab fa-instagram", hoverClass: "hover:text-pink-500 dark:hover:text-pink-400" },
-  { href: "https://www.linkedin.com/in/ebinesh-rabin-c19", title: "LinkedIn", icon: "fab fa-linkedin-in", hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400" },
-  { href: "https://github.com/ebinesh12", title: "GitHub", icon: "fab fa-github", hoverClass: "hover:text-gray-800 dark:hover:text-white" },
+  {
+    href: "https://www.facebook.com/",
+    title: "Facebook",
+    icon: "fab fa-facebook-f",
+    hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400",
+  },
+  {
+    href: "https://twitter.com/",
+    title: "Twitter",
+    icon: "fab fa-twitter",
+    hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400",
+  },
+  {
+    href: "https://www.instagram.com/",
+    title: "Instagram",
+    icon: "fab fa-instagram",
+    hoverClass: "hover:text-pink-500 dark:hover:text-pink-400",
+  },
+  {
+    href: "https://www.linkedin.com/in/ebinesh-rabin-c19",
+    title: "LinkedIn",
+    icon: "fab fa-linkedin-in",
+    hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400",
+  },
+  {
+    href: "https://github.com/ebinesh12",
+    title: "GitHub",
+    icon: "fab fa-github",
+    hoverClass: "hover:text-gray-800 dark:hover:text-white",
+  },
 ];
-
 
 const Footer = ({ themes }) => {
   const Year = () => new Date().getFullYear();
   const pathname = usePathname();
 
   // Check if the current page is an authentication page
-  const isAuthPage = pathname === "/auth/login" || pathname === "/auth/register";
+  const isAuthPage =
+    pathname === "/auth/login" || pathname === "/auth/register";
 
   return (
     <footer
@@ -63,10 +88,11 @@ const Footer = ({ themes }) => {
                     className={cn(
                       "nav-link transition-colors duration-300 p-2.5 bg-clip-text hover:text-transparent hover:rounded-md hover:bg-black/10",
                       "hover:dark:bg-white/10 hover:backdrop-blur-lg",
-                      pathname === link.href && "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg",
+                      pathname === link.href &&
+                        "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg",
                       themes?.isGradient
                         ? `hover:${themes?.primaryGradient}`
-                        : "hover:bg-gradient-to-r from-blue-600 to-cyan-600"
+                        : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
                     )}
                   >
                     {link.label}

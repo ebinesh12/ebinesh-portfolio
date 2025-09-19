@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/stores/userStore";
 
 const Hero = ({ data, themes }) => {
+  const { user } = useUserStore();
+
   return (
     // <!-- Hero Section -->
     <section
@@ -59,7 +62,11 @@ const Hero = ({ data, themes }) => {
             {data?.actions?.map((action) => (
               <a
                 key={action.id}
-                href={action.href}
+                href={
+                  action.id === "resume"
+                    ? `/api/v1/admin/${user.id}/res` || action.href
+                    : action.href
+                }
                 target={action.id === "resume" ? "_blank" : "_self"}
                 className={cn(
                   "px-6 py-3 rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
@@ -110,7 +117,11 @@ const Hero = ({ data, themes }) => {
             >
               {/* <!-- Profile Image Component --> */}
               <img
-                src={data?.personalInfo?.image ?? "/images/profile.jpg"}
+                src={
+                  `/api/v1/admin/${user?.id}/img` ||
+                  data?.personalInfo?.image ||
+                  "/images/profile.jpg"
+                }
                 alt="Profile"
                 className="w-full h-full object-cover rounded-full"
               />

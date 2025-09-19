@@ -51,7 +51,7 @@ function SkillsArray({ control, catIndex, themes }) {
             "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
             themes?.isGradient
               ? themes?.primaryGradient
-              : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+              : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
           )}
         >
           <Plus className="h-4 w-4" />
@@ -67,7 +67,7 @@ function SkillsArray({ control, catIndex, themes }) {
               <Label>Name</Label>
               <Input
                 {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.name`
+                  `categories.${catIndex}.items.${itemIndex}.name`,
                 )}
               />
             </div>
@@ -75,7 +75,7 @@ function SkillsArray({ control, catIndex, themes }) {
               <Label>Level</Label>
               <Input
                 {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.level`
+                  `categories.${catIndex}.items.${itemIndex}.level`,
                 )}
               />
             </div>
@@ -83,7 +83,7 @@ function SkillsArray({ control, catIndex, themes }) {
               <Label>Icon</Label>
               <Input
                 {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.icon`
+                  `categories.${catIndex}.items.${itemIndex}.icon`,
                 )}
               />
             </div>
@@ -91,7 +91,7 @@ function SkillsArray({ control, catIndex, themes }) {
               <Label>Color (Tailwind)</Label>
               <Input
                 {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.color`
+                  `categories.${catIndex}.items.${itemIndex}.color`,
                 )}
                 placeholder="text-blue-500"
               />
@@ -103,7 +103,7 @@ function SkillsArray({ control, catIndex, themes }) {
               "text-white",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             size="icon"
             onClick={() => removeSkill(itemIndex)}
@@ -170,7 +170,7 @@ export default function EditSkills({ themes }) {
           <span
             className={cn(
               "w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : ""
+              themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
             Edit Skills Section
@@ -185,15 +185,27 @@ export default function EditSkills({ themes }) {
           <div className="space-y-2">
             <Label>Super Title</Label>
             <Input {...register("superTitle")} />
-            {errors.superTitle && <p className="text-red-500 text-sm mt-1">{errors.superTitle.message}</p>}
+            {errors.superTitle && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.superTitle.message}
+              </p>
+            )}
 
             <Label>Title</Label>
             <Input {...register("title")} />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
+            )}
 
             <Label>Description</Label>
             <Input {...register("description")} />
-             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -201,19 +213,32 @@ export default function EditSkills({ themes }) {
               <h3
                 className={cn(
                   "bg-clip-text text-transparent text-lg text-left font-semibold",
-                  themes?.isGradient ? themes?.primaryGradient : ""
+                  themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
                 Skill Categories
               </h3>
               <Button
                 type="button"
-                onClick={() => appendCategory({ title: "", icon: "", items: [{ name: "New Skill", level: "Intermediate", icon: "fab fa-react", color: "text-blue-500" }] })}
+                onClick={() =>
+                  appendCategory({
+                    title: "",
+                    icon: "",
+                    items: [
+                      {
+                        name: "New Skill",
+                        level: "Intermediate",
+                        icon: "fab fa-react",
+                        color: "text-blue-500",
+                      },
+                    ],
+                  })
+                }
                 className={cn(
                   "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                 )}
               >
                 <Plus className="h-4 w-4" />
@@ -232,7 +257,7 @@ export default function EditSkills({ themes }) {
                         "text-white",
                         themes?.isGradient
                           ? themes?.primaryGradient
-                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                       )}
                       size="icon"
                       onClick={() => removeCategory(catIndex)}
@@ -266,7 +291,7 @@ export default function EditSkills({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
             disabled={isSubmitting}

@@ -1,9 +1,8 @@
-
 export const contactValues = {
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
 };
 
 export const heroValues = {
@@ -34,39 +33,38 @@ export const aboutValues = {
 };
 
 export const skillsValues = {
-    superTitle: "",
-    title: "",
-    description: "",
-    categories: [],
+  superTitle: "",
+  title: "",
+  description: "",
+  categories: [],
 };
 
 export const projectsValues = {
-    superTitle: "",
-    title: "",
-    description: "",
-    items: [],
+  superTitle: "",
+  title: "",
+  description: "",
+  items: [],
 };
 
-export const experienceValues ={
-    superTitle: "",
-    title: "",
-    description: "",
-    jobs: [],
+export const experienceValues = {
+  superTitle: "",
+  title: "",
+  description: "",
+  jobs: [],
 };
 
-
-export const certificatesValues ={
-    superTitle: "",
-    title: "",
-    description: "",
-    items: [],
+export const certificatesValues = {
+  superTitle: "",
+  title: "",
+  description: "",
+  items: [],
 };
 
 export const achievementsValues = {
-    superTitle: "",
-    title: "",
-    description: "",
-    items: [],
+  superTitle: "",
+  title: "",
+  description: "",
+  items: [],
 };
 
 export const linksValues = {

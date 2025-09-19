@@ -47,6 +47,8 @@ export async function POST(req) {
       id: user._id,
       username: user.username,
       email: user.email,
+      profileImage: user.profileImage,
+      resume: user.resume,
     };
 
     // --- Create the response and set the cookie ---

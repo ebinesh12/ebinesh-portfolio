@@ -21,7 +21,6 @@ import { cn } from "@/lib/utils";
 import { linksSchema } from "@/services/schema";
 import { linksValues } from "@/utils/constant";
 
-
 export default function EditContact({ themes }) {
   const {
     register,
@@ -79,7 +78,7 @@ export default function EditContact({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : ""
+              themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
             Edit Contact Section
@@ -94,15 +93,27 @@ export default function EditContact({ themes }) {
           <div className="space-y-2">
             <Label>Super Title</Label>
             <Input {...register("superTitle")} />
-            {errors.superTitle && <p className="text-red-500 text-sm mt-1">{errors.superTitle.message}</p>}
+            {errors.superTitle && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.superTitle.message}
+              </p>
+            )}
 
             <Label>Title</Label>
             <Input {...register("title")} />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
-            
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
+            )}
+
             <Label>Description</Label>
             <Input {...register("description")} />
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -110,19 +121,21 @@ export default function EditContact({ themes }) {
               <h3
                 className={cn(
                   "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : ""
+                  themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
                 Connect Methods
               </h3>
               <Button
                 type="button"
-                onClick={() => appendMethod({ type: "", value: "", href: "", icon: "" })}
+                onClick={() =>
+                  appendMethod({ type: "", value: "", href: "", icon: "" })
+                }
                 className={cn(
                   "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                 )}
               >
                 <Plus className="h-4 w-4" />
@@ -132,9 +145,13 @@ export default function EditContact({ themes }) {
             <div>
               <Label>Connect Section Title</Label>
               <Input {...register("connect.title")} />
-              {errors.connect?.title && <p className="text-red-500 text-sm mt-1">{errors.connect.title.message}</p>}
+              {errors.connect?.title && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.connect.title.message}
+                </p>
+              )}
             </div>
-            
+
             {methodFields.map((method, index) => (
               <div
                 key={method.id}
@@ -176,7 +193,7 @@ export default function EditContact({ themes }) {
                     "text-white",
                     themes?.isGradient
                       ? themes?.primaryGradient
-                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                   )}
                   size="icon"
                   onClick={() => removeMethod(index)}
@@ -192,7 +209,7 @@ export default function EditContact({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
             disabled={isSubmitting}

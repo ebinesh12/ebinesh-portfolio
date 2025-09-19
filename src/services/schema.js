@@ -5,7 +5,10 @@ import * as z from "zod";
 
 export const contactSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
-  email: z.string().min(1, { message: "Email is required." }).email({ message: "Invalid email address." }),
+  email: z
+    .string()
+    .min(1, { message: "Email is required." })
+    .email({ message: "Invalid email address." }),
   subject: z.string().min(1, { message: "Subject is required." }),
   message: z
     .string()
@@ -36,9 +39,7 @@ export const heroSchema = z.object({
     photo: z.string().optional(),
   }),
   about: z.object({
-    summary: z
-      .string()
-      .min(10, "Summary must be at least 10 characters long."),
+    summary: z.string().min(10, "Summary must be at least 10 characters long."),
   }),
   actions: z.array(actionSchema),
   socialLinks: z.array(socialLinkSchema),
@@ -183,7 +184,7 @@ export const linksSchema = z.object({
 
 /*------------------- Register Zod schemas for validation ----------------------------*/
 
-const MAX_FILE_SIZE = 5000000; // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -212,22 +213,20 @@ export const registerSchema = z.object({
     .regex(/[0-9]/, { message: "Password must contain at least one number." }),
 
   profileImage: z
-    .any()
-    // The field is optional. The following checks will only run if a file is provided.
-    // .refine((files) => files?.length > 0, "Profile image is required.")
-    .refine(
-      (files) =>
-        !files || files.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`,
-    )
-    .refine(
-      (files) =>
-        !files ||
-        files.length === 0 ||
-        ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted.",
-    )
-    .optional(),
+    // .instanceof(FileList)
+    .optional() // Make the file optional
+    .refine((files) => {
+      // If no file is selected, refinement passes.
+      if (!files || files.length === 0) return true;
+      // Check file size
+      return files[0].size <= MAX_FILE_SIZE;
+    }, `Max file size is 5MB.`)
+    .refine((files) => {
+      // If no file is selected, refinement passes.
+      if (!files || files.length === 0) return true;
+      // Check file type
+      return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
+    }, ".jpg, .jpeg, .png and .webp files are accepted."),
 });
 
 /*---------------------- Register Zod schemas for validation---------------------*/
@@ -241,3 +240,55 @@ export const loginSchema = z.object({
 });
 
 /*-------------------------------------------------------------------------------*/
+
+export const profileInfoSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters long."),
+  email: z.string().email("Please enter a valid email address."),
+});
+
+export const passwordChangeSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required."),
+    newPassword: z
+      .string()
+      .min(6, "New password must be at least 6 characters long."),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"], // path of error
+  });
+
+export const profileImageSchema = z.object({
+  profileImage: z
+    .any()
+    .refine((files) => files?.length == 1, "Image is required.")
+    .refine((files) => files?.[0]?.size <= 5000000, `Max file size is 5MB.`)
+    .refine(
+      (files) =>
+        ["image/jpeg", "image/png", "image/webp"].includes(files?.[0]?.type),
+      "Only .jpg, .png, and .webp formats are supported.",
+    ),
+});
+
+// --- ADD THIS SCHEMA ---
+const MAX_FILE_SIZES = 10 * 1024 * 1024; // 10MB
+const ACCEPTED_FILE_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
+export const resumeSchema = z.object({
+  resumeFile: z
+    .any()
+    .refine((files) => files?.length == 1, "A file is required.")
+    .refine(
+      (files) => files?.[0]?.size <= MAX_FILE_SIZES,
+      `Max file size is 10MB.`,
+    )
+    .refine(
+      (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+      ".pdf, .doc, and .docx files are accepted.",
+    ),
+});

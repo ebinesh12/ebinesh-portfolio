@@ -4,15 +4,33 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from "axios"; // Using axios for consistency
+import { useUserStore } from "@/stores/userStore"; // 1. Import the Zustand store
+
+// 2. Import UI components for the dropdown and avatar
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogOut } from "lucide-react";
 
 // Navigation links configuration for the main app
 const navLinks = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/contacts", label: "Messages" },
+  { href: "/admin/profile", label: "Profile" },
 ];
 
 const Header = ({ themes }) => {
+  // 3. Access user data and actions from the Zustand store
+  const { user, logoutUser } = useUserStore();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -20,16 +38,14 @@ const Header = ({ themes }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Determine if the current page is an authentication page
-  const isAuthPage = pathname === "/auth/login" || pathname === "/auth/register";
+  const isAuthPage =
+    pathname === "/auth/login" || pathname === "/auth/register";
 
-  // Effect for scroll progress bar (runs on all pages)
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      // Avoid division by zero on pages with no scroll
       const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
       setProgress(progress);
     };
@@ -38,40 +54,37 @@ const Header = ({ themes }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // 4. Enhanced logout function
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      const res = await fetch("/api/v1/logout", { method: "POST" });
-      if (res.ok) {
-        router.push("/auth/login");
-        router.refresh();
-      } else {
-        console.error("Logout failed");
-      }
+      // Immediately clear the user state from Zustand for a snappy UI response
+      logoutUser();
+      // Invalidate the session on the server
+      await axios.post("/api/v1/logout");
+      // Redirect to login page
+      router.push("/auth/login");
+      router.refresh();
     } catch (error) {
       console.error("An error occurred during logout:", error);
+      // Even if API fails, ensure user is logged out on the client and redirected
+      router.push("/auth/login");
     } finally {
       setIsLoggingOut(false);
     }
   };
 
-  // Button styles for consistency
-  const buttonClassName = cn(
-    "px-4 py-2 text-white rounded-lg font-semibold",
-    themes?.isGradient
-      ? themes?.primaryGradient
-      : "bg-gradient-to-r from-blue-600 to-cyan-600"
-  );
+  // Construct the URL to your new API endpoint.
+  const imageUrl = `/api/v1/admin/${user?.id}/img`;
 
   return (
     <nav className="fixed top-0 left-0 w-full text-black bg-gradient-to-r from-blue-100 via-white to-cyan-100 dark:bg-gradient-to-r dark:from-blue-950 dark:via-gray-900 dark:to-black dark:text-white shadow-md z-40 transition-all duration-700">
-      {/* Progress Bar */}
       <div
         className={cn(
           "fixed top-0 left-0 h-1 z-50",
           themes?.isGradient
             ? themes?.primaryGradient
-            : "bg-gradient-to-r from-blue-600 to-cyan-600"
+            : "bg-gradient-to-r from-blue-600 to-cyan-600",
         )}
         style={{ width: `${progress}%` }}
       />
@@ -83,15 +96,13 @@ const Header = ({ themes }) => {
             "text-xl font-bold bg-clip-text text-transparent",
             themes?.isGradient
               ? themes?.primaryGradient
-              : "bg-gradient-to-r from-blue-600 to-cyan-600"
+              : "bg-gradient-to-r from-blue-600 to-cyan-600",
           )}
         >
           {isAuthPage ? "Admin" : "Admin Panel"}
         </Link>
 
-        {/* === CONDITIONAL UI === */}
         {isAuthPage ? (
-          // --- UI for Login/Register pages ---
           <div className="flex justify-between items-center gap-5">
             <Link
               href={"/auth/register"}
@@ -102,7 +113,7 @@ const Header = ({ themes }) => {
                   "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20",
                 themes?.isGradient
                   ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600"
+                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
               )}
             >
               Register
@@ -116,14 +127,13 @@ const Header = ({ themes }) => {
                   "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20",
                 themes?.isGradient
                   ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600"
+                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
               )}
             >
               Login
             </Link>
           </div>
         ) : (
-          // --- UI for all other pages ---
           <>
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-6">
@@ -139,7 +149,7 @@ const Header = ({ themes }) => {
                           "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20",
                         themes?.isGradient
                           ? `hover:${themes?.primaryGradient}`
-                          : "hover:bg-gradient-to-r from-blue-600 to-cyan-600"
+                          : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
                       )}
                     >
                       {link.label}
@@ -147,13 +157,53 @@ const Header = ({ themes }) => {
                   </li>
                 ))}
               </ul>
-              <Button
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-                className={buttonClassName}
-              >
-                Logout
-              </Button>
+
+              {/* 5. User Profile Dropdown */}
+              {user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="relative h-8 w-8 rounded-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage
+                          src={
+                            `data:${
+                              user?.profileImage?.contentType
+                            };base64,${Buffer?.from(
+                              user?.profileImage?.data,
+                            )?.toString("base64")}` ||
+                            imageUrl ||
+                            "/images/profile.jpg"
+                          }
+                          alt={user?.username}
+                        />
+                        <AvatarFallback>
+                          {user?.username?.charAt(0).toUpperCase() || "A"}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">
+                          {user.username}
+                        </p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {user.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      disabled={isLoggingOut}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
 
             {/* Mobile Toggle */}
@@ -169,9 +219,32 @@ const Header = ({ themes }) => {
         )}
       </div>
 
-      {/* Mobile Menu (only shows if not on an auth page) */}
+      {/* Mobile Menu */}
       {!isAuthPage && menuOpen && (
         <div className="md:hidden flex flex-col bg-gradient-to-r from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black px-6 py-4 space-y-3 transition-all">
+          {/* 6. Mobile user info */}
+          {user && (
+            <div className="flex items-center justify-center gap-x-4 border-b border-gray-200 dark:border-gray-700">
+              <img
+                src={
+                  `data:${
+                    user?.profileImage?.contentType
+                  };base64,${Buffer?.from(user?.profileImage?.data)?.toString(
+                    "base64",
+                  )}` ||
+                  imageUrl ||
+                  "/images/profile.jpg"
+                }
+                alt={user.username}
+                className="w-10 h-10 rounded-full"
+              />
+              <div className="text-center py-2">
+                <p className="font-semibold">{user?.username}</p>
+                <p className="text-sm text-gray-500">{user?.email}</p>
+              </div>
+            </div>
+          )}
+
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -183,7 +256,7 @@ const Header = ({ themes }) => {
                   "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/50",
                 themes?.isGradient
                   ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600"
+                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
               )}
             >
               {link.label}
@@ -192,9 +265,12 @@ const Header = ({ themes }) => {
           <Button
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className={cn("w-full p-2",themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-600 to-cyan-600")}
+            className={cn(
+              "w-full p-2",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-600 to-cyan-600",
+            )}
           >
             {isLoggingOut ? "Logging out..." : "Logout"}
           </Button>

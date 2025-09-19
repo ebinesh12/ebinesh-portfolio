@@ -70,7 +70,8 @@ export default function EditAbout({ themes }) {
     toast.promise(promise, {
       loading: "Saving changes...",
       success: "About section updated successfully!",
-      error: (err) => err.response?.data?.message || "Failed to update about section.",
+      error: (err) =>
+        err.response?.data?.message || "Failed to update about section.",
     });
   };
 
@@ -83,7 +84,7 @@ export default function EditAbout({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : ""
+              themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
             Edit About Section
@@ -98,21 +99,30 @@ export default function EditAbout({ themes }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="superTitle">Super Title</Label>
-              <Input
-                id="superTitle"
-                {...register("superTitle")}
-              />
-              {errors.superTitle && <p className="text-red-500 text-sm mt-1">{errors.superTitle.message}</p>}
+              <Input id="superTitle" {...register("superTitle")} />
+              {errors.superTitle && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.superTitle.message}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="title">Title</Label>
               <Input id="title" {...register("title")} />
-              {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+              {errors.title && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.title.message}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="description">Section Description</Label>
               <Input id="description" {...register("description")} />
-              {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.description.message}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="icon">Icon</Label>
@@ -121,7 +131,11 @@ export default function EditAbout({ themes }) {
                 {...register("icon")}
                 placeholder="fas fa-user-graduate"
               />
-              {errors.icon && <p className="text-red-500 text-sm mt-1">{errors.icon.message}</p>}
+              {errors.icon && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.icon.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -136,7 +150,7 @@ export default function EditAbout({ themes }) {
                 <span
                   className={cn(
                     "md:w-1/4 bg-clip-text text-transparent text-lg text-left font-semibold",
-                    themes?.isGradient ? themes?.primaryGradient : ""
+                    themes?.isGradient ? themes?.primaryGradient : "",
                   )}
                 >
                   My Story & Background
@@ -145,11 +159,12 @@ export default function EditAbout({ themes }) {
               <AccordionContent className="space-y-4 pt-4">
                 <div>
                   <Label htmlFor="storyTitle">Story Title</Label>
-                  <Input
-                    id="storyTitle"
-                    {...register("story.title")}
-                  />
-                  {errors.story?.title && <p className="text-red-500 text-sm mt-1">{errors.story.title.message}</p>}
+                  <Input id="storyTitle" {...register("story.title")} />
+                  {errors.story?.title && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.story.title.message}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <Label htmlFor="storyParagraphs">
@@ -161,13 +176,23 @@ export default function EditAbout({ themes }) {
                     render={({ field }) => (
                       <Textarea
                         id="storyParagraphs"
-                        value={Array.isArray(field.value) ? field.value.join("\n") : ""}
-                        onChange={(e) => field.onChange(e.target.value.split("\n"))}
+                        value={
+                          Array.isArray(field.value)
+                            ? field.value.join("\n")
+                            : ""
+                        }
+                        onChange={(e) =>
+                          field.onChange(e.target.value.split("\n"))
+                        }
                         rows={5}
                       />
                     )}
                   />
-                  {errors.story?.paragraphs && <p className="text-red-500 text-sm mt-1">{errors.story.paragraphs.message}</p>}
+                  {errors.story?.paragraphs && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.story.paragraphs.message}
+                    </p>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -178,7 +203,7 @@ export default function EditAbout({ themes }) {
                 <span
                   className={cn(
                     "md:w-1/4 bg-clip-text text-transparent text-lg text-left font-semibold",
-                    themes?.isGradient ? themes?.primaryGradient : ""
+                    themes?.isGradient ? themes?.primaryGradient : "",
                   )}
                 >
                   Education
@@ -188,12 +213,19 @@ export default function EditAbout({ themes }) {
                 <div className="flex justify-end">
                   <Button
                     type="button"
-                    onClick={() => appendEducation({ degree: "", institution: "", duration: "", description: "" })}
+                    onClick={() =>
+                      appendEducation({
+                        degree: "",
+                        institution: "",
+                        duration: "",
+                        description: "",
+                      })
+                    }
                     className={cn(
                       "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                       themes?.isGradient
                         ? themes?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                     )}
                   >
                     <Plus className="h-4 w-4" />
@@ -211,7 +243,7 @@ export default function EditAbout({ themes }) {
                         "absolute top-2 right-2 h-7 w-7 text-white",
                         themes?.isGradient
                           ? themes?.primaryGradient
-                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                       )}
                       onClick={() => removeEducation(index)}
                     >
@@ -224,7 +256,9 @@ export default function EditAbout({ themes }) {
                       </div>
                       <div>
                         <Label>Institution</Label>
-                        <Input {...register(`education.${index}.institution`)} />
+                        <Input
+                          {...register(`education.${index}.institution`)}
+                        />
                       </div>
                       <div>
                         <Label>Duration</Label>
@@ -233,7 +267,9 @@ export default function EditAbout({ themes }) {
                     </div>
                     <div>
                       <Label>Description</Label>
-                      <Textarea {...register(`education.${index}.description`)} />
+                      <Textarea
+                        {...register(`education.${index}.description`)}
+                      />
                     </div>
                   </div>
                 ))}
@@ -246,7 +282,7 @@ export default function EditAbout({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
             disabled={isSubmitting}

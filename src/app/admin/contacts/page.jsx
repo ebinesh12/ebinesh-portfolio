@@ -103,7 +103,7 @@ export default function ContactAdminPage() {
                 message={message}
                 onDelete={handleDelete}
                 onUpdate={handleUpdate}
-                 themes={theme}
+                themes={theme}
               />
             )}
           />

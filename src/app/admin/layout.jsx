@@ -13,9 +13,8 @@ export default function AdminLayout({ children }) {
 
   return (
     <>
-      <Header themes={theme}  />
+      <Header themes={theme} />
       <div className="mt-12 min-h-screen">
-
         <div
           className={cn(
             "relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",

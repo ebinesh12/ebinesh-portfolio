@@ -5,8 +5,8 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {contactSchema} from "@/services/schema";
-import { contactValues } from "@/utils/constant"
+import { contactSchema } from "@/services/schema";
+import { contactValues } from "@/utils/constant";
 
 const Contact = ({ themes, data }) => {
   const {
@@ -30,7 +30,7 @@ const Contact = ({ themes, data }) => {
         toast.success("Message sent successfully!", {
           id: toastId,
         });
-        reset(); 
+        reset();
       } else {
         toast.error(response.data.message || "Something went wrong.", {
           id: toastId,
@@ -60,7 +60,7 @@ const Contact = ({ themes, data }) => {
               "bg-clip-text text-transparent font-semibold uppercase tracking-widest mb-2",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "text-blue-600 dark:text-cyan-400"
+                : "text-blue-600 dark:text-cyan-400",
             )}
           >
             {data?.superTitle ?? "Get in Touch"}
@@ -81,7 +81,7 @@ const Contact = ({ themes, data }) => {
                 "text-2xl font-bold mb-6 bg-clip-text text-transparent",
                 themes?.isGradient
                   ? themes?.primaryGradient
-                  : "text-gray-900 dark:text-white"
+                  : "text-gray-900 dark:text-white",
               )}
             >
               {data?.connect?.title ?? "Let's Connect"}
@@ -105,7 +105,7 @@ const Contact = ({ themes, data }) => {
                         `${method.icon} text-2xl bg-clip-text text-transparent`,
                         themes?.isGradient
                           ? themes?.primaryGradient
-                          : "text-indigo-600"
+                          : "text-indigo-600",
                       )}
                     ></i>
                     <div>
@@ -128,7 +128,7 @@ const Contact = ({ themes, data }) => {
                 "text-2xl font-bold mb-6 bg-clip-text text-transparent",
                 themes?.isGradient
                   ? themes?.primaryGradient
-                  : "text-gray-900 dark:text-white"
+                  : "text-gray-900 dark:text-white",
               )}
             >
               Send a Message
@@ -146,7 +146,7 @@ const Contact = ({ themes, data }) => {
                 >
                   Your Name
                 </label>
-               
+
                 <input
                   type="text"
                   id="name"
@@ -154,7 +154,7 @@ const Contact = ({ themes, data }) => {
                   {...register("name")}
                   className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
-               
+
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.name.message}
@@ -226,7 +226,6 @@ const Contact = ({ themes, data }) => {
               </div>
 
               <div>
-               
                 <button
                   type="submit"
                   id="contact-btn"
@@ -236,7 +235,7 @@ const Contact = ({ themes, data }) => {
                     themes?.isGradient
                       ? themes?.primaryGradient
                       : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    isSubmitting && "cursor-not-allowed opacity-70"
+                    isSubmitting && "cursor-not-allowed opacity-70",
                   )}
                 >
                   <i className="fas fa-paper-plane"></i>

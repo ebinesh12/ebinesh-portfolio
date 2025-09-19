@@ -2,8 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/services/schema"; // Adjust the import path
-import { useRouter } from "next/navigation";
+import { loginSchema } from "@/services/schema";
 import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
@@ -18,13 +17,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils"; 
+import { cn } from "@/lib/utils";
 import { useTheme } from "@/utils/ThemeProvider";
+import { useRouter } from "next/navigation";
+import { useUserStore } from "@/stores/userStore";
 
 export default function LoginForm() {
   const { theme } = useTheme();
-  const router = useRouter();
   const [serverError, setServerError] = useState("");
+  const router = useRouter();
+
+  const { loginUser } = useUserStore();
 
   const {
     register,
@@ -40,12 +43,9 @@ export default function LoginForm() {
     try {
       const res = await axios.post("/api/v1/login", data);
 
-      if (res.status === 200) {
-        // Redirect to a dashboard or home page on successful login
-        // router.push("/admin");
-        setTimeout(() => {
-          router.push("/admin");
-        }, 200);
+      if (res.status === 200 && res.data.user) {
+        loginUser(res.data.user);
+        router.push("/admin");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -62,10 +62,14 @@ export default function LoginForm() {
     <Card className="md:w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-          <span className={cn(
+          <span
+            className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
-            )}>
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
+          >
             Login to Your Account
           </span>
         </CardTitle>
@@ -116,7 +120,7 @@ export default function LoginForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-             className={cn(
+            className={cn(
               "w-full px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               theme?.isGradient
                 ? theme?.primaryGradient
@@ -132,8 +136,12 @@ export default function LoginForm() {
           I don't have an account?{" "}
           <Link
             href="/auth/register"
-            className={cn("font-semibold bg-clip-text text-transparent hover:underline",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",)}
+            className={cn(
+              "font-semibold bg-clip-text text-transparent hover:underline",
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
           >
             Register
           </Link>

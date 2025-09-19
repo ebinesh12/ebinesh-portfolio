@@ -55,12 +55,16 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className={cn(
-                "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-              )}>
+          <Button
+            variant="outline"
+            size="sm"
+            className={cn(
+              "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
+          >
             Edit
           </Button>
         </DialogTrigger>
@@ -133,12 +137,15 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" className={cn(
-                "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-              )}>
+              <Button
+                type="button"
+                className={cn(
+                  "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  themes?.isGradient
+                    ? themes?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
+              >
                 Cancel
               </Button>
             </DialogClose>
@@ -161,12 +168,16 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
       {/* Delete Alert Dialog */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" size="sm" className={cn(
-                "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-              )}>
+          <Button
+            variant="destructive"
+            size="sm"
+            className={cn(
+              "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
+          >
             Delete
           </Button>
         </AlertDialogTrigger>
@@ -192,15 +203,22 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className={cn(
+            <AlertDialogCancel
+              className={cn(
                 "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              )}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => onDelete(message.id)} className={cn(
+              )}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => onDelete(message.id)}
+              className={cn(
                 "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                 themes?.isGradient
                   ? themes?.primaryGradient
                   : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-              )}>
+              )}
+            >
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -21,6 +21,11 @@ const UserSchema = new Schema({
     data: Buffer,
     contentType: String,
   },
+  resume: {
+    data: Buffer,
+    contentType: String,
+    filename: String, // Store the original filename
+  },
   createdAt: {
     type: Date,
     default: Date.now,

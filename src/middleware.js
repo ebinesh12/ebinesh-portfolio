@@ -18,7 +18,8 @@ export async function middleware(request) {
   const token = request.cookies.get("token")?.value;
 
   // Define public paths that don't require authentication
-  const isPublicPath = path === "/" || path === "/auth/login" || path === "/auth/register";
+  const isPublicPath =
+    path === "/" || path === "/auth/login" || path === "/auth/register";
 
   // If the user is trying to access a public path
   if (isPublicPath) {

@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils"; 
+import { cn } from "@/lib/utils";
 import { useTheme } from "@/utils/ThemeProvider";
 
 export default function RegisterForm() {
@@ -43,7 +43,7 @@ export default function RegisterForm() {
     formData.append("password", data.password);
 
     if (data.profileImage && data.profileImage.length > 0) {
-      formData.append("profileImage", data.profileImage);
+      formData.append("profileImage", data.profileImage[0]);
     }
 
     try {
@@ -71,8 +71,14 @@ export default function RegisterForm() {
     <Card className="md:w-1/2 bg-white/40 dark:bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-          <span className={cn("md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500")}>
+          <span
+            className={cn(
+              "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
+          >
             Create an Account
           </span>
         </CardTitle>
@@ -154,8 +160,12 @@ export default function RegisterForm() {
           Already have an account?{" "}
           <Link
             href="/auth/login"
-            className={cn("font-semibold bg-clip-text text-transparent hover:underline",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",)}
+            className={cn(
+              "font-semibold bg-clip-text text-transparent hover:underline",
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+            )}
           >
             Log in
           </Link>

@@ -29,14 +29,13 @@ export async function POST(req) {
         { status: 400 },
       );
     }
-    
+
     if (Email) {
       return NextResponse.json(
         { message: "Email already exists" },
         { status: 400 },
       );
     }
-    
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -47,7 +46,7 @@ export async function POST(req) {
       password: hashedPassword,
     });
 
-    if (profileImageFile) {
+    if (profileImageFile instanceof File && profileImageFile.size > 0) {
       const imageBuffer = Buffer.from(await profileImageFile.arrayBuffer());
       newUser.profileImage = {
         data: imageBuffer,

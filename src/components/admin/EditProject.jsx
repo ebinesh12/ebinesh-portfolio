@@ -77,7 +77,7 @@ export default function EditProjects({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : ""
+              themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
             Edit Projects Section
@@ -92,15 +92,27 @@ export default function EditProjects({ themes }) {
           <div className="space-y-2">
             <Label>Super Title</Label>
             <Input {...register("superTitle")} />
-            {errors.superTitle && <p className="text-red-500 text-sm mt-1">{errors.superTitle.message}</p>}
+            {errors.superTitle && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.superTitle.message}
+              </p>
+            )}
 
             <Label>Title</Label>
             <Input {...register("title")} />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
+            )}
 
             <Label>Description</Label>
             <Input {...register("description")} />
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -108,7 +120,7 @@ export default function EditProjects({ themes }) {
               <h3
                 className={cn(
                   "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : ""
+                  themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
                 Projects
@@ -129,7 +141,7 @@ export default function EditProjects({ themes }) {
                   "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                 )}
               >
                 <Plus className="h-4 w-4" />
@@ -146,7 +158,7 @@ export default function EditProjects({ themes }) {
                     "absolute top-2 right-2 h-7 w-7 text-white",
                     themes?.isGradient
                       ? themes?.primaryGradient
-                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                   )}
                   size="icon"
                   onClick={() => removeItem(index)}
@@ -157,17 +169,29 @@ export default function EditProjects({ themes }) {
                   <div>
                     <Label>Title</Label>
                     <Input {...register(`items.${index}.title`)} />
-                    {errors.items?.[index]?.title && <p className="text-red-500 text-sm mt-1">{errors.items[index].title.message}</p>}
+                    {errors.items?.[index]?.title && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.items[index].title.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label>Icon</Label>
                     <Input {...register(`items.${index}.icon`)} />
-                    {errors.items?.[index]?.icon && <p className="text-red-500 text-sm mt-1">{errors.items[index].icon.message}</p>}
+                    {errors.items?.[index]?.icon && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.items[index].icon.message}
+                      </p>
+                    )}
                   </div>
                   <div className="md:col-span-2">
                     <Label>Description</Label>
                     <Textarea {...register(`items.${index}.description`)} />
-                    {errors.items?.[index]?.description && <p className="text-red-500 text-sm mt-1">{errors.items[index].description.message}</p>}
+                    {errors.items?.[index]?.description && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.items[index].description.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label>GitHub URL</Label>
@@ -175,7 +199,11 @@ export default function EditProjects({ themes }) {
                       {...register(`items.${index}.github`)}
                       placeholder="https://github.com/..."
                     />
-                     {errors.items?.[index]?.github && <p className="text-red-500 text-sm mt-1">{errors.items[index].github.message}</p>}
+                    {errors.items?.[index]?.github && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.items[index].github.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label>Demo URL</Label>
@@ -183,7 +211,11 @@ export default function EditProjects({ themes }) {
                       {...register(`items.${index}.demo`)}
                       placeholder="https://example.com/..."
                     />
-                     {errors.items?.[index]?.demo && <p className="text-red-500 text-sm mt-1">{errors.items[index].demo.message}</p>}
+                    {errors.items?.[index]?.demo && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.items[index].demo.message}
+                      </p>
+                    )}
                   </div>
                   <div className="md:col-span-2">
                     <Label>Gradient (Tailwind)</Label>
@@ -191,7 +223,11 @@ export default function EditProjects({ themes }) {
                       {...register(`items.${index}.gradient`)}
                       placeholder="from-blue-500 to-teal-400"
                     />
-                     {errors.items?.[index]?.gradient && <p className="text-red-500 text-sm mt-1">{errors.items[index].gradient.message}</p>}
+                    {errors.items?.[index]?.gradient && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.items[index].gradient.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -203,7 +239,7 @@ export default function EditProjects({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
             disabled={isSubmitting}

@@ -76,7 +76,7 @@ export default function EditExperience({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : ""
+              themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
             Edit Experience Section
@@ -91,15 +91,27 @@ export default function EditExperience({ themes }) {
           <div className="space-y-2">
             <Label>Super Title</Label>
             <Input {...register("superTitle")} />
-            {errors.superTitle && <p className="text-red-500 text-sm mt-1">{errors.superTitle.message}</p>}
+            {errors.superTitle && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.superTitle.message}
+              </p>
+            )}
 
             <Label>Title</Label>
             <Input {...register("title")} />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
+            )}
 
             <Label>Description</Label>
             <Input {...register("description")} />
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -107,19 +119,26 @@ export default function EditExperience({ themes }) {
               <h3
                 className={cn(
                   "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : ""
+                  themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
                 Jobs
               </h3>
               <Button
                 type="button"
-                onClick={() => appendJob({ role: "", company: "", duration: "", responsibilities: [] })}
+                onClick={() =>
+                  appendJob({
+                    role: "",
+                    company: "",
+                    duration: "",
+                    responsibilities: [],
+                  })
+                }
                 className={cn(
                   "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                 )}
               >
                 <Plus className="h-4 w-4" />
@@ -138,7 +157,7 @@ export default function EditExperience({ themes }) {
                     "absolute top-2 right-2 h-7 w-7 text-white",
                     themes?.isGradient
                       ? themes?.primaryGradient
-                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                   )}
                   onClick={() => removeJob(index)}
                 >
@@ -148,17 +167,29 @@ export default function EditExperience({ themes }) {
                   <div>
                     <Label>Role</Label>
                     <Input {...register(`jobs.${index}.role`)} />
-                     {errors.jobs?.[index]?.role && <p className="text-red-500 text-sm mt-1">{errors.jobs[index].role.message}</p>}
+                    {errors.jobs?.[index]?.role && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.jobs[index].role.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label>Company</Label>
                     <Input {...register(`jobs.${index}.company`)} />
-                     {errors.jobs?.[index]?.company && <p className="text-red-500 text-sm mt-1">{errors.jobs[index].company.message}</p>}
+                    {errors.jobs?.[index]?.company && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.jobs[index].company.message}
+                      </p>
+                    )}
                   </div>
                   <div className="md:col-span-2">
                     <Label>Duration</Label>
                     <Input {...register(`jobs.${index}.duration`)} />
-                     {errors.jobs?.[index]?.duration && <p className="text-red-500 text-sm mt-1">{errors.jobs[index].duration.message}</p>}
+                    {errors.jobs?.[index]?.duration && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.jobs[index].duration.message}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -168,7 +199,11 @@ export default function EditExperience({ themes }) {
                     control={control}
                     render={({ field }) => (
                       <Textarea
-                        value={Array.isArray(field.value) ? field.value.join("\n") : ""}
+                        value={
+                          Array.isArray(field.value)
+                            ? field.value.join("\n")
+                            : ""
+                        }
                         onChange={(e) => {
                           const value = e.target.value;
                           field.onChange(value ? value.split("\n") : []);
@@ -177,7 +212,11 @@ export default function EditExperience({ themes }) {
                       />
                     )}
                   />
-                  {errors.jobs?.[index]?.responsibilities && <p className="text-red-500 text-sm mt-1">{errors.jobs[index].responsibilities.message}</p>}
+                  {errors.jobs?.[index]?.responsibilities && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.jobs[index].responsibilities.message}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -188,7 +227,7 @@ export default function EditExperience({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
             disabled={isSubmitting}

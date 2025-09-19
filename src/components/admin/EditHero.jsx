@@ -98,7 +98,7 @@ export default function EditHero({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : ""
+              themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
             Edit Hero Section
@@ -115,7 +115,7 @@ export default function EditHero({ themes }) {
             <h3
               className={cn(
                 "md:w-1/4 text-lg font-semibold bg-clip-text text-transparent",
-                themes?.isGradient ? themes?.primaryGradient : ""
+                themes?.isGradient ? themes?.primaryGradient : "",
               )}
             >
               Personal Information
@@ -123,10 +123,7 @@ export default function EditHero({ themes }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="greeting">Greeting</Label>
-                <Input
-                  id="greeting"
-                  {...register("personalInfo.greeting")}
-                />
+                <Input id="greeting" {...register("personalInfo.greeting")} />
               </div>
               <div>
                 <Label htmlFor="name">Name</Label>
@@ -160,7 +157,7 @@ export default function EditHero({ themes }) {
             <h3
               className={cn(
                 "md:w-1/4 text-lg font-semibold bg-clip-text text-transparent",
-                themes?.isGradient ? themes?.primaryGradient : ""
+                themes?.isGradient ? themes?.primaryGradient : "",
               )}
             >
               About Summary
@@ -175,7 +172,7 @@ export default function EditHero({ themes }) {
               <h3
                 className={cn(
                   "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : ""
+                  themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
                 Action Buttons
@@ -189,7 +186,7 @@ export default function EditHero({ themes }) {
                   "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                 )}
               >
                 <Plus className="h-4 w-4" />
@@ -224,7 +221,7 @@ export default function EditHero({ themes }) {
                     "text-white",
                     themes?.isGradient
                       ? themes?.primaryGradient
-                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                   )}
                   size="icon"
                   onClick={() => removeAction(index)}
@@ -241,7 +238,7 @@ export default function EditHero({ themes }) {
               <h3
                 className={cn(
                   "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : ""
+                  themes?.isGradient ? themes?.primaryGradient : "",
                 )}
               >
                 Social Links
@@ -255,7 +252,7 @@ export default function EditHero({ themes }) {
                   themes?.isGradient
                     ? themes?.primaryGradient
                     : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300"
+                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                 )}
               >
                 <Plus className="h-4 w-4" />
@@ -286,7 +283,7 @@ export default function EditHero({ themes }) {
                     "text-white",
                     themes?.isGradient
                       ? themes?.primaryGradient
-                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
                   )}
                   size="icon"
                   onClick={() => removeSocialLink(index)}
@@ -302,7 +299,7 @@ export default function EditHero({ themes }) {
               "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500"
+                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
             )}
             type="submit"
             disabled={isSubmitting}
