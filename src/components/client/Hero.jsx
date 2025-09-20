@@ -1,8 +1,34 @@
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/userStore";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
 
 const Hero = ({ data, themes }) => {
   const { user } = useUserStore();
+  const [resume, setResume]=useState();
+  const [profile, setProfile]=useState();
+
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        const res = await axios.get("/api/v1/admin/res");
+        const img = await axios.get("/api/v1/admin/img");
+
+        if (res.status==200){
+          setResume(`/api/v1/admin/res`)
+        }
+        if (img.status==200){
+          setProfile(`/api/v1/admin/img`)
+        }
+
+      } catch (error) {
+        toast.error("Failed to fetch about data.");
+        console.error("Fetch error:", error);
+      }
+    };
+    fetchAboutData();
+  }, [user]);
 
   return (
     // <!-- Hero Section -->
@@ -64,7 +90,7 @@ const Hero = ({ data, themes }) => {
                 key={action.id}
                 href={
                   action.id === "resume"
-                    ? `/api/v1/admin/${user.id}/res` || action.href
+                    ? (user!=null ? `/api/v1/admin/${user?.id}/res` : resume) || action.href
                     : action.href
                 }
                 target={action.id === "resume" ? "_blank" : "_self"}
@@ -118,7 +144,7 @@ const Hero = ({ data, themes }) => {
               {/* <!-- Profile Image Component --> */}
               <img
                 src={
-                  `/api/v1/admin/${user?.id}/img` ||
+                  (user!=null ? `/api/v1/admin/${user?.id}/img` : profile) ||
                   data?.personalInfo?.image ||
                   "/images/profile.jpg"
                 }

@@ -30,9 +30,11 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
+
   const router = useRouter();
   const { user, loginUser } = useUserStore();
-  const [previewImage, setPreviewImage] = useState(null);
+  const imageUrl = `/api/v1/admin/${user?.id}/img`;
+  const [previewImage, setPreviewImage] = useState(imageUrl);
 
   const [isInfoEditable, setIsInfoEditable] = useState(false);
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
@@ -193,7 +195,7 @@ export default function ProfilePage() {
               <img
                 src={previewImage}
                 alt="Preview"
-                className="w-20 h-20 rounded-full object-cover"
+                className="w-10 h-10 md:w-20 md:h-20 rounded-full object-cover"
               />
             ) : user.profileImage?.data ? (
               <img
@@ -201,12 +203,12 @@ export default function ProfilePage() {
                   user.profileImage.contentType
                 };base64,${Buffer.from(user.profileImage.data).toString(
                   "base64",
-                )}`}
+                )}` ?? imageUrl }
                 alt="Profile"
-                className="w-20 h-20 rounded-full object-cover"
+                className="w-10 h-10 md:w-20 md:h-20 rounded-full object-cover"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="w-10 h-10 md:w-20 md:h-20 rounded-full bg-gray-300 dark:bg-gray-600"></div>
             )}
             <div>
               <Label htmlFor="profileImage">Select new photo</Label>

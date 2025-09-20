@@ -2,12 +2,18 @@ import { NextResponse } from "next/server";
 import connectMongo from "@/utils/connectMongo";
 import User from "@/models/userModel";
 
-export async function GET(req, { params }) {
+export async function GET(req) {
   try {
+    const id = "68cc3f1a8aa2943ea1458f6a";
+    
+     if (!id) {
+      return NextResponse.json(
+        { message: "User ID is required" },
+        { status: 400 },
+      );
+    }
+    
     await connectMongo();
-
-    const { id } = await params;
-
     const user = await User?.findById(id)?.select("profileImage");
 
     if (!user || !user.profileImage || !user.profileImage.data) {

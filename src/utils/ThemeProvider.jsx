@@ -12,12 +12,12 @@ const defaultTheme = {
     "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
   outlineBtn:
     "border border-sky-400 text-cyan-300 hover:bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 hover:text-white",
-  bgHover:
-    "hover:bg-gradient-to-r hover:from-cyan-300 hover:via-sky-400 hover:to-blue-500",
-  outlineHover: "hover:outline-cyan-500",
-  textHover: "hover:text-blue-500",
+  // bgHover:
+  //   "hover:bg-gradient-to-r hover:from-cyan-300 hover:via-sky-400 hover:to-blue-500",
+  // outlineHover: "hover:outline-cyan-500",
+  // textHover: "hover:text-blue-500",
   border: "hover:border-sky-400",
-  text: "text-cyan-300",
+  // text: "text-cyan-300",
   isGradient: true,
   radius: 0.6,
 };
