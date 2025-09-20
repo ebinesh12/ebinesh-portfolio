@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/userStore";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
 const Hero = ({ data, themes }) => {
   const { user } = useUserStore();
@@ -23,7 +23,7 @@ const Hero = ({ data, themes }) => {
         }
 
       } catch (error) {
-        toast.error("Failed to fetch about data.");
+        // toast.error("Failed to fetch about data.");
         console.error("Fetch error:", error);
       }
     };
