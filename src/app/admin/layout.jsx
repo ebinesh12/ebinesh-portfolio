@@ -43,7 +43,7 @@ export default function AdminLayout({ children }) {
 
           <h1
             className={cn(
-              "text-3xl font-bold mb-6 bg-clip-text text-transparent",
+              "md:w-1/2 text-3xl font-bold mb-6 bg-clip-text text-transparent",
               theme?.isGradient
                 ? theme?.primaryGradient
                 : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500",

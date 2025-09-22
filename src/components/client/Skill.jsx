@@ -72,12 +72,12 @@ const Skills = ({ data, themes }) => {
                   <div
                     key={skillIndex}
                     className={cn(
-                      "skill-item bg-gray-100 dark:bg-gray-800/60 p-4 rounded-lg text-center hover:bg-gray-700 hover:shadow-lg transition flex flex-col items-center justify-center gap-1",
+                      "skill-item bg-gray-900/12 hover:bg-gray-900/15 dark:bg-white/2  dark:hover:bg-white/7 border border-gray-200 dark:border-white/5 p-4 rounded-lg text-center text-gray-800 hover:dark:text-white  hover:shadow-lg transition flex flex-col items-center justify-center gap-1",
                       `hover:${skill?.color}`,
                     )}
                   >
                     <i className={`${skill.icon} text-2xl transition`}></i>
-                    <div className="font-semibold text-gray-800 dark:text-gray-200">
+                    <div className="font-semibold  dark:text-gray-200">
                       {skill.name}
                     </div>
                     <div className="text-sm opacity-70 text-gray-500 dark:text-gray-400">

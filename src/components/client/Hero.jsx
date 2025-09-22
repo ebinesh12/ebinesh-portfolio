@@ -95,13 +95,13 @@ const Hero = ({ data, themes }) => {
                 }
                 target={action.id === "resume" ? "_blank" : "_self"}
                 className={cn(
-                  "px-6 py-3 rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  "px-6 py-3 rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300 text-white",
                   action.id === "contact"
                     ? themes?.isGradient
                       ? themes?.primaryGradient
                       : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 text-white"
                     : themes?.outlineBtn
-                      ? themes?.outlineBtn
+                      ? `${themes?.outlineBtn} hover:text-white`
                       : "border border-gray-800 dark:border-white text-gray-800 dark:text-white",
                 )}
                 rel="noreferrer"

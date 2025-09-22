@@ -73,7 +73,7 @@ const Footer = ({ themes }) => {
             ].map((link) => (
               <li key={link}>
                 <a
-                  href={link}
+                  href={`#${link}`}
                   className={cn(
                     "dark:text-white text-gray-800 hover:bg-clip-text hover:text-transparent",
                     themes?.isGradient

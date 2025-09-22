@@ -78,7 +78,7 @@ const Contact = ({ themes, data }) => {
           <div>
             <h3
               className={cn(
-                "text-2xl font-bold mb-6 bg-clip-text text-transparent",
+                "md:w-1/2 text-2xl font-bold mb-6 bg-clip-text text-transparent",
                 themes?.isGradient
                   ? themes?.primaryGradient
                   : "text-gray-900 dark:text-white",
@@ -125,7 +125,7 @@ const Contact = ({ themes, data }) => {
           <div>
             <h3
               className={cn(
-                "text-2xl font-bold mb-6 bg-clip-text text-transparent",
+                "md:w-1/2 text-2xl font-bold mb-6 bg-clip-text text-transparent",
                 themes?.isGradient
                   ? themes?.primaryGradient
                   : "text-gray-900 dark:text-white",

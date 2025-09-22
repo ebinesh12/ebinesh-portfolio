@@ -92,9 +92,9 @@ const Projects = ({ data, themes }) => {
                       href={project.github}
                       target="_blank"
                       className={cn(
-                        "px-4 py-2 rounded-full font-medium bg-gray-200 dark:bg-white/10 transition",
+                        "px-4 py-2 rounded-full font-medium bg-gray-200 dark:bg-white/10 transition hover:text-white",
                         themes?.isGradient
-                          ? themes?.bgHover
+                          ? `hover:${themes?.primaryGradient}`
                           : "hover:bg-gradient-to-r hover:from-blue-500 hover:to-sky-500 hover:text-white",
                       )}
                       rel="noreferrer"
@@ -106,9 +106,9 @@ const Projects = ({ data, themes }) => {
                         href={project.demo}
                         target="_blank"
                         className={cn(
-                          "px-4 py-2 rounded-full font-medium bg-gray-200 dark:bg-white/10 transition",
+                          "px-4 py-2 rounded-full font-medium bg-gray-200 dark:bg-white/10 transition hover:text-white",
                           themes?.isGradient
-                            ? themes?.bgHover
+                            ? `hover:${themes?.primaryGradient}`
                             : "hover:bg-gradient-to-r hover:from-blue-500 hover:to-sky-500 hover:text-white",
                         )}
                         rel="noreferrer"
