@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "sonner";
 import { useUserStore } from "@/stores/userStore";
+import { useTheme } from "@/utils/ThemeProvider";
 
 // Import your validation schemas
 import {
@@ -30,7 +31,8 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
-
+   const { theme } = useTheme();
+   
   const router = useRouter();
   const { user, loginUser } = useUserStore();
   const imageUrl = `/api/v1/admin/${user?.id}/img`;
@@ -175,7 +177,10 @@ export default function ProfilePage() {
     <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-500 font-semibold">
+          <span className={cn(
+              "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}>
             Manage Your Profile
           </span>
         </CardTitle>
@@ -187,7 +192,10 @@ export default function ProfilePage() {
       <CardContent className="space-y-12">
         {/* --- Profile Picture Form --- */}
         <form onSubmit={handleImageSubmit(onImageUpdate)} className="space-y-4">
-          <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-500">
+          <h3 className={cn(
+              "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}>
             Profile Picture
           </h3>
           <div className="flex items-center gap-4">
@@ -232,24 +240,34 @@ export default function ProfilePage() {
                 <Button
                   type="submit"
                   disabled={isImageSubmitting}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                 className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}
                 >
                   {isImageSubmitting ? "Uploading..." : "Update Photo"}
                 </Button>
                 <Button
                   type="button"
-                  variant="outline"
                   onClick={() => {
                     setIsImageEditable(false);
                     resetImageForm();
                     setPreviewImage(null);
                   }}
+                  className="py-3 px-6 shadow-lg hover:scale-105 hover:shadow-2xl transition text-white bg-gray-950 rounded-full"
                 >
                   Cancel
                 </Button>
               </>
             ) : (
-              <Button type="button" onClick={() => setIsImageEditable(true)}>
+              <Button type="button" onClick={() => setIsImageEditable(true)} className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}>
                 Edit Photo
               </Button>
             )}
@@ -258,7 +276,10 @@ export default function ProfilePage() {
 
         {/* --- Personal Information Form --- */}
         <form onSubmit={handleInfoSubmit(onInfoUpdate)} className="space-y-4">
-          <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-500">
+          <h3 className={cn(
+              "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}>
             Personal Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -295,21 +316,31 @@ export default function ProfilePage() {
               <Button
                 type="submit"
                 disabled={isInfoSubmitting}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}
               >
                 {isInfoSubmitting ? "Saving..." : "Save Changes"}
               </Button>
               <Button
                 type="button"
-                variant="outline"
+                className="ml-4 py-3 px-6 shadow-lg hover:scale-105 hover:shadow-2xl transition text-white bg-gray-950 rounded-full"
                 onClick={() => setIsInfoEditable(false)}
               >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button type="button" onClick={() => setIsInfoEditable(true)}>
-              Edit
+            <Button type="button" onClick={() => setIsInfoEditable(true)} className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}>
+              Edit Info
             </Button>
           )}
         </form>
@@ -319,7 +350,10 @@ export default function ProfilePage() {
           onSubmit={handlePasswordSubmit(onPasswordChange)}
           className="space-y-4"
         >
-          <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-500">
+          <h3 className={cn(
+              "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}>
             Change Password
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -371,21 +405,31 @@ export default function ProfilePage() {
               <Button
                 type="submit"
                 disabled={isPasswordSubmitting}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}
               >
                 {isPasswordSubmitting ? "Saving..." : "Change Password"}
               </Button>
               <Button
                 type="button"
-                variant="outline"
+                className="ml-4 py-3 px-6 shadow-lg hover:scale-105 hover:shadow-2xl transition text-white bg-gray-950 rounded-full"
                 onClick={() => setIsPasswordEditable(false)}
               >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button type="button" onClick={() => setIsPasswordEditable(true)}>
-              Edit
+            <Button type="button" onClick={() => setIsPasswordEditable(true)} className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}>
+              Edit Password
             </Button>
           )}
         </form>
@@ -395,7 +439,10 @@ export default function ProfilePage() {
           onSubmit={handleResumeSubmit(onResumeUpdate)}
           className="space-y-4"
         >
-          <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-500">
+          <h3 className={cn(
+              "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
+              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}>
             Manage Resume
           </h3>
           <div className="p-4 border dark:border-white/20 rounded-md space-y-4">
@@ -435,13 +482,18 @@ export default function ProfilePage() {
                   <Button
                     type="submit"
                     disabled={isResumeSubmitting}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                    className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}
                   >
                     {isResumeSubmitting ? "Uploading..." : "Upload Resume"}
                   </Button>
                   <Button
                     type="button"
-                    variant="outline"
+                    className="py-3 px-6 shadow-lg hover:scale-105 hover:shadow-2xl transition text-white bg-gray-950 rounded-full"
                     onClick={() => {
                       setIsResumeEditable(false);
                       resetResumeForm();
@@ -451,7 +503,12 @@ export default function ProfilePage() {
                   </Button>
                 </>
               ) : (
-                <Button type="button" onClick={() => setIsResumeEditable(true)}>
+                <Button type="button" onClick={() => setIsResumeEditable(true)} className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      theme?.isGradient
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )}>
                   {user.resume?.filename ? "Edit Resume" : "Add Resume"}
                 </Button>
               )}
@@ -460,8 +517,13 @@ export default function ProfilePage() {
                   href={`/api/v1/admin/${user.id}/res`}
                   download={user.resume.filename}
                 >
-                  <Button type="button" variant="outline">
-                    Download Current Resume
+                  <Button type="button" variant="outline" className={cn(
+                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                      isResumeEditable
+                        ? theme?.primaryGradient
+                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    )} >
+                    Download Resume
                   </Button>
                 </a>
               )}

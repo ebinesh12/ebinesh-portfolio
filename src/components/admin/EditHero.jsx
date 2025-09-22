@@ -98,7 +98,7 @@ export default function EditHero({ themes }) {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : "",
+              themes?.isGradient ? themes?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
             )}
           >
             Edit Hero Section
