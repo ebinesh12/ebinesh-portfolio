@@ -88,7 +88,7 @@ function SkillsArray({ control, catIndex, themes }) {
               />
             </div>
             <div>
-              <Label>Color (Tailwind)</Label>
+              <Label>Color</Label>
               <Input
                 {...control.register(
                   `categories.${catIndex}.items.${itemIndex}.color`,
@@ -247,7 +247,7 @@ export default function EditSkills({ themes }) {
             <Accordion type="multiple" className="w-full">
               {categoryFields.map((cat, catIndex) => (
                 <AccordionItem value={`category-${cat.id}`} key={cat.id}>
-                  <div className="flex w-full items-center justify-between">
+                  <div className="flex w-full items-center justify-between my-2">
                     <AccordionTrigger className="flex-1 text-left">
                       <span>{cat.title || "New Category"}</span>
                     </AccordionTrigger>

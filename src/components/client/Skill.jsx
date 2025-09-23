@@ -1,6 +1,28 @@
 import { cn } from "@/lib/utils";
 
 const Skills = ({ data, themes }) => {
+
+    const hoverColorClasses = {
+    'text-orange-600': 'group-hover:text-orange-600',  // HTML5
+    'text-blue-600': 'group-hover:text-blue-600',      // CSS3
+    'text-yellow-400': 'group-hover:text-yellow-400',  // JavaScript
+    'text-sky-400': 'group-hover:text-sky-400',        // React
+    'text-teal-400': 'group-hover:text-teal-400',      // Tailwind CSS
+    'text-purple-600': 'group-hover:text-purple-600',  // Bootstrap
+    'text-yellow-500': 'group-hover:text-yellow-500',  // Python
+    'text-green-700': 'group-hover:text-green-700',    // Django
+    'text-emerald-500': 'group-hover:text-emerald-500',// FastAPI
+    'text-sky-700': 'group-hover:text-sky-700',        // PostgreSQL
+    'text-green-500': 'group-hover:text-green-500',    // MongoDB
+    'text-red-600': 'group-hover:text-red-600',        // Java
+    'text-orange-500': 'group-hover:text-orange-500',  // Git
+    'text-gray-800': 'group-hover:text-gray-800',      // GitHub
+    'text-sky-500': 'group-hover:text-sky-500',        // Docker
+    'text-indigo-500': 'group-hover:text-indigo-500',  // Agile Method
+    'text-red-500': 'group-hover:text-red-500',        // Debugging
+    'text-pink-500': 'group-hover:text-pink-500'       // Testing
+  };
+
   return (
     // <!-- Skills Section -->
     <section
@@ -72,15 +94,14 @@ const Skills = ({ data, themes }) => {
                   <div
                     key={skillIndex}
                     className={cn(
-                      "skill-item bg-gray-900/12 hover:bg-gray-900/15 dark:bg-white/2  dark:hover:bg-white/7 border border-gray-200 dark:border-white/5 p-4 rounded-lg text-center text-gray-800 hover:dark:text-white  hover:shadow-lg transition flex flex-col items-center justify-center gap-1",
-                      `hover:${skill?.color}`,
+                      "skill-item group bg-gray-900/12 hover:bg-gray-900/15 dark:bg-white/2  dark:hover:bg-white/7 border border-gray-200 dark:border-white/5 p-4 rounded-lg text-center hover:shadow-lg transition flex flex-col items-center justify-center gap-1",
                     )}
                   >
-                    <i className={`${skill.icon} text-2xl transition`}></i>
-                    <div className="font-semibold  dark:text-gray-200">
+                    <i className={cn("text-2xl transition", skill.icon, hoverColorClasses[skill.color] )}></i>
+                    <div className={cn("font-semibold  dark:text-gray-200", hoverColorClasses[skill.color])}>
                       {skill.name}
                     </div>
-                    <div className="text-sm opacity-70 text-gray-500 dark:text-gray-400">
+                    <div className={cn("text-sm opacity-70 text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-200")}>
                       {skill.level}
                     </div>
                   </div>

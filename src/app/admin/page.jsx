@@ -35,7 +35,7 @@ export default function AdminDashboardPage() {
             className={cn(
               "capitalize text-sm font-medium text-gray-600 dark:text-gray-300 transition-all duration-300  data-[state=active]:shadow-md ",
               "data-[state=active]:backdrop-blur-md data-[state=active]:rounded-md data-[state=active]:text-transparent data-[state=active]:bg-clip-text",
-              `data-[state=active]:bg-gradient-to-r dark:from-pink-400 dark:to-blue-400`,
+              `data-[state=active]:bg-gradient-to-r from-pink-600 to-blue-300 dark:from-pink-400 dark:to-blue-300`,
             )}
           >
             {tab}
