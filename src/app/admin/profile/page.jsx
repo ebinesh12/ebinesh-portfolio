@@ -31,8 +31,8 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
-   const { theme } = useTheme();
-   
+  const { theme } = useTheme();
+
   const router = useRouter();
   const { user, loginUser } = useUserStore();
   const imageUrl = `/api/v1/admin/${user?.id}/img`;
@@ -177,10 +177,14 @@ export default function ProfilePage() {
     <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
       <CardHeader>
         <CardTitle>
-          <span className={cn(
+          <span
+            className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
-            )}>
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}
+          >
             Manage Your Profile
           </span>
         </CardTitle>
@@ -192,10 +196,14 @@ export default function ProfilePage() {
       <CardContent className="space-y-12">
         {/* --- Profile Picture Form --- */}
         <form onSubmit={handleImageSubmit(onImageUpdate)} className="space-y-4">
-          <h3 className={cn(
+          <h3
+            className={cn(
               "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
-            )}>
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}
+          >
             Profile Picture
           </h3>
           <div className="flex items-center gap-4">
@@ -207,11 +215,11 @@ export default function ProfilePage() {
               />
             ) : user.profileImage?.data ? (
               <img
-                src={`data:${
-                  user.profileImage.contentType
-                };base64,${Buffer.from(user.profileImage.data).toString(
-                  "base64",
-                )}` ?? imageUrl }
+                src={
+                  `data:${user.profileImage.contentType};base64,${Buffer.from(
+                    user.profileImage.data,
+                  ).toString("base64")}` ?? imageUrl
+                }
                 alt="Profile"
                 className="w-10 h-10 md:w-20 md:h-20 rounded-full object-cover"
               />
@@ -240,12 +248,12 @@ export default function ProfilePage() {
                 <Button
                   type="submit"
                   disabled={isImageSubmitting}
-                 className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}
+                  className={cn(
+                    "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                    theme?.isGradient
+                      ? theme?.primaryGradient
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                  )}
                 >
                   {isImageSubmitting ? "Uploading..." : "Update Photo"}
                 </Button>
@@ -262,12 +270,16 @@ export default function ProfilePage() {
                 </Button>
               </>
             ) : (
-              <Button type="button" onClick={() => setIsImageEditable(true)} className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}>
+              <Button
+                type="button"
+                onClick={() => setIsImageEditable(true)}
+                className={cn(
+                  "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  theme?.isGradient
+                    ? theme?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
+              >
                 Edit Photo
               </Button>
             )}
@@ -276,10 +288,14 @@ export default function ProfilePage() {
 
         {/* --- Personal Information Form --- */}
         <form onSubmit={handleInfoSubmit(onInfoUpdate)} className="space-y-4">
-          <h3 className={cn(
+          <h3
+            className={cn(
               "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
-            )}>
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}
+          >
             Personal Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -317,11 +333,11 @@ export default function ProfilePage() {
                 type="submit"
                 disabled={isInfoSubmitting}
                 className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}
+                  "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  theme?.isGradient
+                    ? theme?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
               >
                 {isInfoSubmitting ? "Saving..." : "Save Changes"}
               </Button>
@@ -334,12 +350,16 @@ export default function ProfilePage() {
               </Button>
             </>
           ) : (
-            <Button type="button" onClick={() => setIsInfoEditable(true)} className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}>
+            <Button
+              type="button"
+              onClick={() => setIsInfoEditable(true)}
+              className={cn(
+                "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                theme?.isGradient
+                  ? theme?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}
+            >
               Edit Info
             </Button>
           )}
@@ -350,10 +370,14 @@ export default function ProfilePage() {
           onSubmit={handlePasswordSubmit(onPasswordChange)}
           className="space-y-4"
         >
-          <h3 className={cn(
+          <h3
+            className={cn(
               "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
-            )}>
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}
+          >
             Change Password
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -406,11 +430,11 @@ export default function ProfilePage() {
                 type="submit"
                 disabled={isPasswordSubmitting}
                 className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}
+                  "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  theme?.isGradient
+                    ? theme?.primaryGradient
+                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                )}
               >
                 {isPasswordSubmitting ? "Saving..." : "Change Password"}
               </Button>
@@ -423,12 +447,16 @@ export default function ProfilePage() {
               </Button>
             </>
           ) : (
-            <Button type="button" onClick={() => setIsPasswordEditable(true)} className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}>
+            <Button
+              type="button"
+              onClick={() => setIsPasswordEditable(true)}
+              className={cn(
+                "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                theme?.isGradient
+                  ? theme?.primaryGradient
+                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+              )}
+            >
               Edit Password
             </Button>
           )}
@@ -439,10 +467,14 @@ export default function ProfilePage() {
           onSubmit={handleResumeSubmit(onResumeUpdate)}
           className="space-y-4"
         >
-          <h3 className={cn(
+          <h3
+            className={cn(
               "md:w-1/4 bg-clip-text text-lg text-transparent text-left font-semibold",
-              theme?.isGradient ? theme?.primaryGradient : "bg-gradient-to-r from-blue-500 to-cyan-500",
-            )}>
+              theme?.isGradient
+                ? theme?.primaryGradient
+                : "bg-gradient-to-r from-blue-500 to-cyan-500",
+            )}
+          >
             Manage Resume
           </h3>
           <div className="p-4 border dark:border-white/20 rounded-md space-y-4">
@@ -503,12 +535,16 @@ export default function ProfilePage() {
                   </Button>
                 </>
               ) : (
-                <Button type="button" onClick={() => setIsResumeEditable(true)} className={cn(
-                      "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                      theme?.isGradient
-                        ? theme?.primaryGradient
-                        : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )}>
+                <Button
+                  type="button"
+                  onClick={() => setIsResumeEditable(true)}
+                  className={cn(
+                    "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                    theme?.isGradient
+                      ? theme?.primaryGradient
+                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                  )}
+                >
                   {user.resume?.filename ? "Edit Resume" : "Add Resume"}
                 </Button>
               )}
@@ -517,12 +553,16 @@ export default function ProfilePage() {
                   href={`/api/v1/admin/${user.id}/res`}
                   download={user.resume.filename}
                 >
-                  <Button type="button" variant="outline" className={cn(
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn(
                       "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
                       isResumeEditable
                         ? theme?.primaryGradient
                         : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                    )} >
+                    )}
+                  >
                     Download Resume
                   </Button>
                 </a>

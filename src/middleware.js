@@ -19,7 +19,11 @@ export async function middleware(request) {
 
   // Define public paths that don't require authentication
   const isPublicPath =
-    path === "/" || path === "/auth/login" || path === "/auth/register" || path === "/docs/Ebinesh-Resume.pdf" || path === "/images/profile.jpg";
+    path === "/" ||
+    path === "/auth/login" ||
+    path === "/auth/register" ||
+    path === "/docs/Ebinesh-Resume.pdf" ||
+    path === "/images/profile.jpg";
 
   // If the user is trying to access a public path
   if (isPublicPath) {

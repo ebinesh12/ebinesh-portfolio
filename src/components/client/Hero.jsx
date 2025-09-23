@@ -6,8 +6,8 @@ import axios from "axios";
 
 const Hero = ({ data, themes }) => {
   const { user } = useUserStore();
-  const [resume, setResume]=useState();
-  const [profile, setProfile]=useState();
+  const [resume, setResume] = useState();
+  const [profile, setProfile] = useState();
 
   useEffect(() => {
     const fetchAboutData = async () => {
@@ -15,13 +15,12 @@ const Hero = ({ data, themes }) => {
         const res = await axios.get("/api/v1/admin/res");
         const img = await axios.get("/api/v1/admin/img");
 
-        if (res.status==200){
-          setResume(`/api/v1/admin/res`)
+        if (res.status == 200) {
+          setResume(`/api/v1/admin/res`);
         }
-        if (img.status==200){
-          setProfile(`/api/v1/admin/img`)
+        if (img.status == 200) {
+          setProfile(`/api/v1/admin/img`);
         }
-
       } catch (error) {
         // toast.error("Failed to fetch about data.");
         console.error("Fetch error:", error);
@@ -73,7 +72,7 @@ const Hero = ({ data, themes }) => {
           </h1>
           <p
             className={cn(
-              "text-xl font-medium opacity-90 bg-clip-text text-transparent",
+              "md:w-1/2 text-xl font-medium opacity-90 bg-clip-text text-transparent",
               themes?.isGradient ? themes?.primaryGradient : "",
             )}
           >
@@ -90,7 +89,9 @@ const Hero = ({ data, themes }) => {
                 key={action.id}
                 href={
                   action.id === "resume"
-                    ? (user!=null ? `/api/v1/admin/${user?.id}/res` : resume) || action.href
+                    ? (user != null
+                        ? `/api/v1/admin/${user?.id}/res`
+                        : resume) || action.href
                     : action.href
                 }
                 target={action.id === "resume" ? "_blank" : "_self"}
@@ -144,7 +145,7 @@ const Hero = ({ data, themes }) => {
               {/* <!-- Profile Image Component --> */}
               <img
                 src={
-                  (user!=null ? `/api/v1/admin/${user?.id}/img` : profile) ||
+                  (user != null ? `/api/v1/admin/${user?.id}/img` : profile) ||
                   data?.personalInfo?.image ||
                   "/images/profile.jpg"
                 }
