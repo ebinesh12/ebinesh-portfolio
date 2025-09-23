@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 const navLinks = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/contacts", label: "Messages" },
-    { href: "/admin/profile", label: "Profile" },
+  { href: "/admin/profile", label: "Profile" },
 ];
 
 // Social media links for reusability

@@ -119,10 +119,12 @@ const Hero = ({ data, themes }) => {
                 key={social.name}
                 href={social.url}
                 target="_blank"
-                className={cn("w-11 h-11 flex items-center justify-center rounded-full bg-gray-200 dark:bg-white/20 hover:text-white transition transform hover:-translate-y-1",
-                      themes?.isGradient
-                      ? `hover:${themes?.primaryGradient}`
-                      :"hover:bg-gradient-to-r hover:from-blue-500 hover:to-sky-500")}
+                className={cn(
+                  "w-11 h-11 flex items-center justify-center rounded-full bg-gray-200 dark:bg-white/20 hover:text-white transition transform hover:-translate-y-1",
+                  themes?.isGradient
+                    ? `hover:${themes?.primaryGradient}`
+                    : "hover:bg-gradient-to-r hover:from-blue-500 hover:to-sky-500",
+                )}
                 rel="noreferrer"
               >
                 <i className={social.icon}></i>

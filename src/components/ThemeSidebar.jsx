@@ -181,7 +181,7 @@ export default function ThemeSidebar() {
       outlineBtn:
         "border border-blue-400 text-pink-300 hover:bg-gradient-to-r from-pink-400 via-blue-500 to-indigo-600 hover:text-black",
       sectionBgGradient:
-       "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
+        "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
       isGradient: true,
       radius: 0.6,
     });
