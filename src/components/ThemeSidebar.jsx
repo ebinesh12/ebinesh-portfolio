@@ -189,11 +189,7 @@ export default function ThemeSidebar() {
   };
 
   return (
-    <Sheet
-      open={open}
-      onOpenChange={setOpen}
-      className="bg-white/40 dark:bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-gray-300 dark:border-white/20 transition-colors duration-700"
-    >
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           className="fixed bottom-6 right-6 rounded-full p-4 shadow-lg"
@@ -204,7 +200,7 @@ export default function ThemeSidebar() {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-[300px] sm:w-[400px] px-5 pb-5 overflow-y-auto"
+        className="w-[300px] sm:w-[400px] px-5 pb-5 overflow-y-auto bg-white/80 dark:bg-white/20 backdrop-blur-lg rounded-sm border border-gray-300 dark:border-white/30 transition-colors duration-700"
       >
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">

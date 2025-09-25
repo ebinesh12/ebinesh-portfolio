@@ -14,6 +14,7 @@ import Achievement from "@/components/client/Achivement";
 import Certificate from "@/components/client/Certificate";
 import Contact from "@/components/client/Contact";
 import Footer from "@/components/client/Footer";
+import Skeletons from "@/components/client/Skeletons";
 
 const page = () => {
   const [portfolioData, setPortfolioData] = useState({});
@@ -37,9 +38,9 @@ const page = () => {
     fetchData();
   }, []);
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (loading) {
+    return <Skeletons />;
+  }
 
   // if (error) {
   //   return <div>Error: {error}</div>;

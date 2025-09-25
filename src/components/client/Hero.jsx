@@ -3,6 +3,7 @@ import { useUserStore } from "@/stores/userStore";
 import { useEffect, useState } from "react";
 import axios from "axios";
 // import { toast } from "sonner";
+import TypingAnimation from "@/components/ui/typing-animation";
 
 const Hero = ({ data, themes }) => {
   const { user } = useUserStore();
@@ -67,9 +68,14 @@ const Hero = ({ data, themes }) => {
           <p className="text-lg opacity-90">
             {data?.personalInfo?.greeting || "👋 Hello, I'm"}
           </p>
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight ">
-            {data?.personalInfo?.name ?? "Nick Franklin"}
-          </h1>
+          <TypingAnimation
+            text={data?.personalInfo?.name}
+            duration={500}
+            className="text-5xl md:text-6xl text-left font-bold leading-tight "
+          />
+          {/* <h1 className="text-5xl md:text-6xl font-bold leading-tight ">
+            { data?.personalInfo?.name ?? "Nick Franklin"}
+          </h1> */}
           <p
             className={cn(
               "md:w-1/2 text-xl font-medium opacity-90 bg-clip-text text-transparent",
