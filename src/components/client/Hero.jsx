@@ -65,7 +65,7 @@ const Hero = ({ data, themes }) => {
       <div className="relative z-10 grid max-w-6xl mx-auto px-6 lg:grid-cols-2 gap-12 mt-6 items-center">
         {/* <!-- Text Section --> */}
         <div className="space-y-6 text-gray-800 dark:text-white transition-colors duration-700">
-          <p className="text-lg opacity-90">
+          <p className="text-lg opacity-90 animate-bounce">
             {data?.personalInfo?.greeting || "👋 Hello, I'm"}
           </p>
           <TypingAnimation

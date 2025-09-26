@@ -40,6 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 text.js
-new.js
-public/themes.json
-src/components/themes.js
+

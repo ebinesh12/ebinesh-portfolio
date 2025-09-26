@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const Certificate = ({ data, themes }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pdf, setPdf] = useState(null);
-  // State to manage expanded state for each certificate individually
+  const [pdfStatus, setPdfStatus] = useState("loading");
   const [expandedStates, setExpandedStates] = useState({});
 
   // Toggles the read more state for a specific certificate by its index
@@ -16,6 +16,23 @@ const Certificate = ({ data, themes }) => {
       [index]: !prev[index], // Toggle the boolean value
     }));
   };
+
+  useEffect(() => {
+    if (isModalOpen && pdf) {
+      setPdfStatus("loading");
+      fetch(pdf)
+        .then((res) => {
+          if (res.ok) {
+            setPdfStatus("valid");
+          } else {
+            setPdfStatus("invalid");
+          }
+        })
+        .catch(() => {
+          setPdfStatus("invalid");
+        });
+    }
+  }, [isModalOpen, pdf]);
 
   return (
     <>
@@ -135,11 +152,30 @@ const Certificate = ({ data, themes }) => {
             </button>
 
             {/* PDF Viewer */}
-            <iframe
-              src={pdf}
-              title="Certificate PDF"
-              className="w-full h-full rounded-lg border-none"
-            ></iframe>
+            {pdfStatus === "loading" && (
+              <div className="w-full h-full flex items-center justify-center text-gray-500 dark:text-gray-300">
+                Loading...
+              </div>
+            )}
+            {pdfStatus === "valid" && (
+              <iframe
+                src={pdf}
+                title="Certificate PDF"
+                className="w-full h-full rounded-lg border-none"
+              ></iframe>
+            )}
+            {pdfStatus === "invalid" && (
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg">
+                <div className="text-center">
+                  <h1 className="text-6xl font-bold text-red-500 mb-4 animate-bounce">
+                    404
+                  </h1>
+                  <p className="text-gray-600 dark:text-white font-semibold animate-pulse">
+                    The requested certificate could not be found.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
