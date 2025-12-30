@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import getData from "@/services/dataService";
-import { useTheme } from "@/utils/ThemeProvider";
+import { useTheme } from "@/providers/ThemeProvider";
 
 import Header from "@/components/client/Header";
 import Hero from "@/components/client/Hero";
@@ -16,7 +16,7 @@ import Contact from "@/components/client/Contact";
 import Footer from "@/components/client/Footer";
 import Skeletons from "@/components/client/Skeletons";
 
-const page = () => {
+const Page = () => {
   const [portfolioData, setPortfolioData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -61,4 +61,4 @@ const page = () => {
     </>
   );
 };
-export default page;
+export default Page;

@@ -1,98 +1,159 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Github,
+  ArrowUpRight,
+} from "lucide-react";
+
+// Social Data Configuration
+const socialLinks = [
+  {
+    href: "https://www.facebook.com/",
+    label: "Facebook",
+    icon: Facebook,
+    color: "hover:text-blue-600 dark:hover:text-blue-500",
+  },
+  {
+    href: "https://twitter.com/",
+    label: "Twitter",
+    icon: Twitter,
+    color: "hover:text-sky-500 dark:hover:text-sky-400",
+  },
+  {
+    href: "https://www.instagram.com/",
+    label: "Instagram",
+    icon: Instagram,
+    color: "hover:text-pink-600 dark:hover:text-pink-500",
+  },
+  {
+    href: "https://www.linkedin.com/in/ebinesh-rabin-c19",
+    label: "LinkedIn",
+    icon: Linkedin,
+    color: "hover:text-blue-700 dark:hover:text-blue-400",
+  },
+  {
+    href: "https://github.com/ebinesh12",
+    label: "GitHub",
+    icon: Github,
+    color: "hover:text-neutral-900 dark:hover:text-white",
+  },
+];
+
+const navLinks = [
+  "home",
+  "about",
+  "skills",
+  "projects",
+  "achievements",
+  "contact",
+];
 
 const Footer = ({ themes }) => {
-  const Year = () => new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
+
+  const handleScrollToTop = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    // <!-- Footer -->
-    <footer
-      className="bg-gradient-to-r from-blue-100 via-white to-cyan-100
-            dark:from-blue-950 dark:via-gray-900 dark:to-black
-            text-gray-800 dark:text-gray-300 py-8 transition-colors duration-700"
-    >
-      <div className="container mx-auto px-4 text-center">
-        {/* <!-- Social Links --> */}
-        <div className="flex justify-center space-x-6 mb-6">
-          <a
-            href="https://www.facebook.com/"
-            target="_blank"
-            title="Facebook"
-            className="hover:text-blue-600 dark:hover:text-cyan-400 transition-colors duration-300"
-            rel="noreferrer"
-          >
-            <i className="fab fa-facebook-f text-xl"></i>
-          </a>
-          <a
-            href="https://twitter.com/"
-            target="_blank"
-            title="Twitter"
-            className="hover:text-blue-600 dark:hover:text-cyan-400 transition-colors duration-300"
-            rel="noreferrer"
-          >
-            <i className="fab fa-twitter text-xl"></i>
-          </a>
-          <a
-            href="https://www.instagram.com/"
-            target="_blank"
-            title="Instagram"
-            className="hover:text-pink-500 dark:hover:text-pink-400 transition-colors duration-300"
-            rel="noreferrer"
-          >
-            <i className="fab fa-instagram text-xl"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/ebinesh-rabin-c19"
-            target="_blank"
-            title="LinkedIn"
-            className="hover:text-blue-600 dark:hover:text-cyan-400 transition-colors duration-300"
-            rel="noreferrer"
-          >
-            <i className="fab fa-linkedin-in text-xl"></i>
-          </a>
-          <a
-            href="https://github.com/ebinesh12"
-            target="_blank"
-            title="GitHub"
-            className="hover:text-gray-800 dark:hover:text-white transition-colors duration-300"
-            rel="noreferrer"
-          >
-            <i className="fab fa-github text-xl"></i>
-          </a>
-        </div>
+    <footer className="w-full border-t border-neutral-200 bg-white/50 py-12 backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-950/50">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col items-center gap-8">
+          {/* 1. CTA / Brand */}
+          <div className="text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+              Let&apos;s build something{" "}
+              <span
+                className={cn(
+                  "bg-clip-text text-transparent",
+                  themes?.primaryGradient || "bg-blue-600",
+                )}
+              >
+                amazing
+              </span>
+              .
+            </h2>
+            <p className="mt-2 text-neutral-500 dark:text-neutral-400">
+              Open for opportunities and collaborations.
+            </p>
+          </div>
 
-        {/* <!-- Footer Navigation --> */}
-        <div className="mb-4">
-          <ul className="flex flex-wrap justify-center gap-4 text-gray-600 dark:text-gray-400">
-            {[
-              "home",
-              "about",
-              "skills",
-              "projects",
-              "achievements",
-              "contact",
-            ].map((link) => (
-              <li key={link}>
+          {/* 2. Navigation Links */}
+          <nav>
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+              {navLinks.map((link) => (
+                <li key={link}>
+                  <a
+                    href={`#${link}`}
+                    className="group relative text-sm font-medium capitalize text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+                  >
+                    {link}
+                    <span
+                      className={cn(
+                        "absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full",
+                        themes?.isGradient
+                          ? themes?.primaryGradient
+                          : "bg-neutral-900 dark:bg-white",
+                      )}
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* 3. Social Icons */}
+          <div className="flex items-center gap-4">
+            {socialLinks.map((item) => {
+              const Icon = item.icon;
+              return (
                 <a
-                  href={`#${link}`}
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={item.label}
                   className={cn(
-                    "dark:text-white text-gray-800 hover:bg-clip-text hover:text-transparent",
-                    themes?.isGradient
-                      ? `hover:${themes?.primaryGradient}`
-                      : "bg-gradient-to-r from-blue-600 to-cyan-600",
+                    "group relative flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-neutral-900",
+                    "text-neutral-500 dark:text-neutral-400",
+                    item.color,
                   )}
                 >
-                  {link.charAt(0).toUpperCase() + link.slice(1)}
+                  <Icon className="h-5 w-5" />
                 </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+              );
+            })}
+          </div>
 
-        {/* <!-- Copyright --> */}
-        <p className="text-gray-500 dark:text-gray-400 text-sm">
-          &copy; {Year()} <a href="/admin">Ebinesh Rabin.</a>
-          All Rights Reserved.
-        </p>
+          {/* 4. Divider */}
+          <div className="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+
+          {/* 5. Copyright */}
+          <div className="flex flex-col items-center gap-2 text-center text-sm text-neutral-500 dark:text-neutral-400">
+            <p>
+              &copy; {currentYear}{" "}
+              <a
+                href="/admin"
+                className="hover:text-neutral-900 dark:hover:text-white transition-colors"
+              >
+                Ebinesh Rabin
+              </a>
+              . All Rights Reserved.
+            </p>
+            <button
+              onClick={handleScrollToTop}
+              className="flex items-center gap-1 text-xs hover:text-neutral-900 dark:hover:text-white transition-colors"
+            >
+              Back to top <ArrowUpRight className="h-3 w-3" />
+            </button>
+          </div>
+        </div>
       </div>
     </footer>
   );

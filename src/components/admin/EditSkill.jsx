@@ -1,18 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { z } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Cpu,
+  Layers,
+  Palette,
+  Plus,
+  Trash2,
+  Save,
+  Loader2,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { skillsSchema } from "@/services/schema";
+import { skillsValues } from "@/utils/constant";
+
+// UI Components
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -21,108 +30,169 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { toast } from "sonner";
-import { Plus, Trash } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { skillsSchema } from "@/services/schema";
-import { skillsValues } from "@/utils/constant";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
-function SkillsArray({ control, catIndex, themes }) {
+// --- Sub-Component: Skills List ---
+function SkillsList({ control, catIndex, register }) {
   const {
     fields: skillFields,
     append: appendSkill,
     remove: removeSkill,
+    move: moveSkill, // Destructure move
   } = useFieldArray({
     control,
     name: `categories.${catIndex}.items`,
   });
 
   return (
-    <div className="border-t pt-4 mt-4 space-y-2">
-      <div className="flex justify-between items-center">
-        <h4 className="font-semibold">Skills</h4>
+    <div className="mt-6 space-y-4">
+      <div className="flex items-center justify-between border-b border-gray-200 dark:border-white/10 pb-2">
+        <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          Skills List ({skillFields.length})
+        </h4>
         <Button
           type="button"
+          variant="outline"
           size="sm"
           onClick={() =>
-            appendSkill({ name: "", level: "", icon: "", color: "" })
+            appendSkill({
+              name: "",
+              level: "Intermediate",
+              icon: "",
+              color: "",
+            })
           }
-          className={cn(
-            "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-            themes?.isGradient
-              ? themes?.primaryGradient
-              : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-          )}
+          className="h-8 text-xs"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-3 w-3 mr-1" /> Add Skill
         </Button>
       </div>
-      {skillFields.map((item, itemIndex) => (
-        <div
-          key={item.id}
-          className="flex items-end gap-2 p-2 border rounded-md"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 flex-grow">
-            <div>
-              <Label>Name</Label>
-              <Input
-                {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.name`,
-                )}
-              />
+
+      <div className="grid grid-cols-1 gap-4">
+        {skillFields.map((item, itemIndex) => (
+          <div
+            key={item.id}
+            className="relative flex flex-col pt-12 md:pt-4 md:flex-row gap-4 p-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-zinc-950 shadow-sm transition-all hover:border-blue-300 dark:hover:border-blue-700 group"
+          >
+            {/* --- Action Buttons (Top Right) --- */}
+            <div className="absolute top-2 right-2 flex gap-1 z-10 bg-white dark:bg-zinc-950 p-1 rounded-lg border border-gray-100 dark:border-white/5 shadow-sm">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-gray-400 hover:text-blue-500 disabled:opacity-30"
+                disabled={itemIndex === 0}
+                onClick={() => moveSkill(itemIndex, itemIndex - 1)}
+              >
+                <ArrowUp className="w-3 h-3" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-gray-400 hover:text-blue-500 disabled:opacity-30"
+                disabled={itemIndex === skillFields.length - 1}
+                onClick={() => moveSkill(itemIndex, itemIndex + 1)}
+              >
+                <ArrowDown className="w-3 h-3" />
+              </Button>
+              <div className="w-px h-4 bg-gray-200 dark:bg-gray-700 mx-1 self-center" />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-gray-400 hover:text-red-500"
+                onClick={() => removeSkill(itemIndex)}
+              >
+                <Trash2 className="w-3 h-3" />
+              </Button>
             </div>
-            <div>
-              <Label>Level</Label>
-              <Input
-                {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.level`,
-                )}
-              />
-            </div>
-            <div>
-              <Label>Icon</Label>
-              <Input
-                {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.icon`,
-                )}
-              />
-            </div>
-            <div>
-              <Label>Color</Label>
-              <Input
-                {...control.register(
-                  `categories.${catIndex}.items.${itemIndex}.color`,
-                )}
-                placeholder="text-blue-500"
-              />
+
+            {/* Inputs Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-grow">
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground">
+                  Skill Name
+                </Label>
+                <Input
+                  {...register(
+                    `categories.${catIndex}.items.${itemIndex}.name`,
+                  )}
+                  placeholder="e.g. React"
+                  className="h-9 bg-gray-50 dark:bg-white/5"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground">
+                  Proficiency
+                </Label>
+                <Input
+                  {...register(
+                    `categories.${catIndex}.items.${itemIndex}.level`,
+                  )}
+                  placeholder="e.g. Advanced"
+                  className="h-9 bg-gray-50 dark:bg-white/5"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground">
+                  Icon Class
+                </Label>
+                <Input
+                  {...register(
+                    `categories.${catIndex}.items.${itemIndex}.icon`,
+                  )}
+                  placeholder="fab fa-react"
+                  className="h-9 bg-gray-50 dark:bg-white/5 font-mono text-xs"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground">
+                  Color Class
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    {...register(
+                      `categories.${catIndex}.items.${itemIndex}.color`,
+                    )}
+                    placeholder="text-blue-500"
+                    className="h-9 bg-gray-50 dark:bg-white/5 font-mono text-xs"
+                  />
+                  {/* Visual Color Preview */}
+                  <div className="w-9 h-9 rounded-md border border-gray-200 dark:border-white/10 flex items-center justify-center bg-gray-50 dark:bg-zinc-900 shrink-0">
+                    <Palette className="w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <Button
-            type="button"
-            className={cn(
-              "text-white",
-              themes?.isGradient
-                ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-            )}
-            size="icon"
-            onClick={() => removeSkill(itemIndex)}
-          >
-            <Trash className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
+        ))}
+
+        {skillFields.length === 0 && (
+          <div className="text-center py-8 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-xl text-gray-500 text-sm">
+            No skills added to this category yet.
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
+// --- Main Component ---
 export default function EditSkills({ themes }) {
+  const [isFetching, setIsFetching] = useState(true);
+
   const {
     register,
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(skillsSchema),
     defaultValues: skillsValues,
@@ -132,6 +202,7 @@ export default function EditSkills({ themes }) {
     fields: categoryFields,
     append: appendCategory,
     remove: removeCategory,
+    move: moveCategory, // Destructure move
   } = useFieldArray({
     control,
     name: "categories",
@@ -147,6 +218,8 @@ export default function EditSkills({ themes }) {
       } catch (error) {
         toast.error("Failed to fetch skills data.");
         console.error("Fetch error:", error);
+      } finally {
+        setIsFetching(false);
       }
     };
     fetchSkillsData();
@@ -161,61 +234,98 @@ export default function EditSkills({ themes }) {
     });
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isFetching) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
 
   return (
-    <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
-      <CardHeader>
-        <CardTitle>
-          <span
-            className={cn(
-              "w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : "",
-            )}
-          >
-            Edit Skills Section
-          </span>
-        </CardTitle>
-        <CardDescription>
-          Manage your technical skills and their categories.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-2">
-            <Label>Super Title</Label>
-            <Input {...register("superTitle")} />
-            {errors.superTitle && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.superTitle.message}
-              </p>
-            )}
-
-            <Label>Title</Label>
-            <Input {...register("title")} />
-            {errors.title && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.title.message}
-              </p>
-            )}
-
-            <Label>Description</Label>
-            <Input {...register("description")} />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.description.message}
-              </p>
-            )}
+    <div className="max-w-4xl mx-auto space-y-6 pb-20">
+      {/* Header Card */}
+      <Card className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-gray-200 dark:border-white/10 shadow-sm">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div
+              className={cn(
+                "p-2 rounded-lg text-white",
+                themes?.isGradient ? themes?.primaryGradient : "bg-blue-600",
+              )}
+            >
+              <Cpu className="w-5 h-5" />
+            </div>
+            <div>
+              <CardTitle className="text-xl">Skills & Tech Stack</CardTitle>
+              <CardDescription>
+                Categorize and list your technical proficiencies.
+              </CardDescription>
+            </div>
           </div>
+        </CardHeader>
+      </Card>
 
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Accordion
+          type="multiple"
+          defaultValue={["general"]}
+          className="space-y-4"
+        >
+          {/* 1. General Settings */}
+          <AccordionItem value="general" className="border-none">
+            <Card className="border-gray-200 dark:border-white/10 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                <div className="flex items-center gap-2 font-semibold text-lg text-gray-800 dark:text-gray-200">
+                  <Layers className="w-5 h-5 text-indigo-500" />
+                  General Section Info
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="superTitle">Super Title</Label>
+                    <Input
+                      {...register("superTitle")}
+                      placeholder="e.g. Explore My"
+                      className="dark:bg-zinc-900"
+                    />
+                    {errors.superTitle && (
+                      <p className="text-red-500 text-xs">
+                        {errors.superTitle.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Main Title</Label>
+                    <Input
+                      {...register("title")}
+                      placeholder="e.g. Skills"
+                      className="dark:bg-zinc-900"
+                    />
+                    {errors.title && (
+                      <p className="text-red-500 text-xs">
+                        {errors.title.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Input
+                      {...register("description")}
+                      placeholder="Brief overview..."
+                      className="dark:bg-zinc-900"
+                    />
+                  </div>
+                </div>
+              </AccordionContent>
+            </Card>
+          </AccordionItem>
+
+          {/* 2. Categories Wrapper */}
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h3
-                className={cn(
-                  "bg-clip-text text-transparent text-lg text-left font-semibold",
-                  themes?.isGradient ? themes?.primaryGradient : "",
-                )}
-              >
+            <div className="flex items-center justify-between px-2">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                 Skill Categories
               </h3>
               <Button
@@ -235,71 +345,133 @@ export default function EditSkills({ themes }) {
                   })
                 }
                 className={cn(
-                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+                  "text-white shadow-md transition-transform active:scale-95",
                   themes?.isGradient
                     ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                    : "bg-blue-600 hover:bg-blue-700",
                 )}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 mr-2" /> Add Category
               </Button>
             </div>
-            <Accordion type="multiple" className="w-full">
-              {categoryFields.map((cat, catIndex) => (
-                <AccordionItem value={`category-${cat.id}`} key={cat.id}>
-                  <div className="flex w-full items-center justify-between my-2">
-                    <AccordionTrigger className="flex-1 text-left">
-                      <span>{cat.title || "New Category"}</span>
-                    </AccordionTrigger>
-                    <Button
-                      type="button"
-                      className={cn(
-                        "text-white",
-                        themes?.isGradient
-                          ? themes?.primaryGradient
-                          : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                      )}
-                      size="icon"
-                      onClick={() => removeCategory(catIndex)}
-                    >
-                      <Trash className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <AccordionContent className="space-y-4 p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Category Title</Label>
-                        <Input {...register(`categories.${catIndex}.title`)} />
-                      </div>
-                      <div>
-                        <Label>Category Icon</Label>
-                        <Input {...register(`categories.${catIndex}.icon`)} />
+
+            {categoryFields.map((cat, catIndex) => (
+              <AccordionItem
+                key={cat.id}
+                value={`cat-${cat.id}`}
+                className="border-none"
+              >
+                <Card className="border-gray-200 dark:border-white/10 overflow-hidden bg-gray-50/30 dark:bg-zinc-900/30">
+                  <div className="flex items-center w-full px-6 py-2 border-b border-gray-100 dark:border-white/5">
+                    {/* Header with Title and Actions */}
+                    <div className="flex items-center justify-between w-full">
+                      <AccordionTrigger className="flex-1 hover:no-underline">
+                        <span className="font-semibold text-lg text-gray-700 dark:text-gray-200">
+                          {/* Fallback title if input is empty, using optional chaining carefully */}
+                          Category {catIndex + 1}
+                        </span>
+                      </AccordionTrigger>
+
+                      <div
+                        className="flex items-center gap-1 ml-4"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          disabled={catIndex === 0}
+                          onClick={() => moveCategory(catIndex, catIndex - 1)}
+                          className="h-8 w-8 text-gray-400 hover:text-blue-500 disabled:opacity-30"
+                        >
+                          <ArrowUp className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          disabled={catIndex === categoryFields.length - 1}
+                          onClick={() => moveCategory(catIndex, catIndex + 1)}
+                          className="h-8 w-8 text-gray-400 hover:text-blue-500 disabled:opacity-30"
+                        >
+                          <ArrowDown className="w-4 h-4" />
+                        </Button>
+                        <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                          onClick={() => removeCategory(catIndex)}
+                        >
+                          <Trash2 className="h-4 h-4" />
+                        </Button>
                       </div>
                     </div>
-                    <SkillsArray
-                      control={control}
-                      catIndex={catIndex}
-                      themes={themes}
-                    />
+                  </div>
+
+                  <AccordionContent className="px-6 pb-6 pt-6">
+                    {/* Category Details */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <div className="space-y-2">
+                        <Label>Category Title</Label>
+                        <Input
+                          {...register(`categories.${catIndex}.title`)}
+                          placeholder="e.g. Frontend Development"
+                          className="bg-white dark:bg-zinc-950"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Category Icon</Label>
+                        <Input
+                          {...register(`categories.${catIndex}.icon`)}
+                          placeholder="fas fa-code"
+                          className="bg-white dark:bg-zinc-950 font-mono text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Nested Skills List */}
+                    <div className="bg-gray-100/50 dark:bg-zinc-950/50 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-white/5">
+                      <SkillsList
+                        control={control}
+                        catIndex={catIndex}
+                        register={register}
+                      />
+                    </div>
                   </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                </Card>
+              </AccordionItem>
+            ))}
           </div>
+        </Accordion>
+
+        {/* Sticky Save Button */}
+        <div className="sticky bottom-4 mt-8 flex justify-end z-40">
           <Button
             className={cn(
-              "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              "px-8 py-2 rounded-full font-semibold text-white shadow-xl transition-all duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                : "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700",
             )}
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </>
+            )}
           </Button>
-        </form>
-      </CardContent>
-    </Card>
+        </div>
+      </form>
+    </div>
   );
 }

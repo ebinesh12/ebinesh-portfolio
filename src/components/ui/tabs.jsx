@@ -4,110 +4,51 @@ import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
 
-const Tabs = TabsPrimitive.Root;
+function Tabs({ className, ...props }) {
+  return (
+    <TabsPrimitive.Root
+      data-slot="tabs"
+      className={cn("flex flex-col gap-2", className)}
+      {...props}
+    />
+  );
+}
 
-const tabListVariants = cva("", {
-  variants: {
-    variant: {
-      timeline: "relative",
-      border: "relative  border-b-[#D9DBDE]",
-      default: "bg-slate-100 p-1.5 rounded-lg",
-    },
-    size: {
-      xs: "h-8",
-      sm: "h-9",
-      default: "h-10 ",
-      lg: "h-11  ",
-      xl: "h-12",
-      "2xl": "h-14 text-base py-1",
-    },
-  },
-  defaultVariants: {
-    // variant: "default",
-    // size: "default",
-  },
-});
-
-const TabsList = React.forwardRef(
-  ({ size, variant, className, ...props }, ref) => (
+function TabsList({ className, ...props }) {
+  return (
     <TabsPrimitive.List
-      ref={ref}
-      className={cn(tabListVariants({ size, variant, className }))}
+      data-slot="tabs-list"
+      className={cn(
+        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+        className,
+      )}
       {...props}
     />
-  ),
-);
-TabsList.displayName = TabsPrimitive.List.displayName;
+  );
+}
 
-const triggerVariants = cva(
-  `h-[40px] text-sm font-medium ring-offset-white transition-all 
-focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-slate-950 
-focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  p-[1rem_1.5rem] gap-4 inline-flex items-center justify-center whitespace-nowrap `,
-  {
-    variants: {
-      variant: {
-        timeline: "absolute w-[200px] text-left flex justify-start",
-        default:
-          "bg-slate-100 data-[state=active]:text-white  data-[state=active]:bg-primary dark:text-slate-500 dark:data-[state=active]:text-white  data-[state=active]:rounded-lg",
-        error: ` rounded-[100px]  
-       bg-[#EDEDED] mr-4 text-[#252525]
-               data-[state=active]:bg-red-500 data-[state=active]:text-white  
-        data-[state=active]:shadow-xs dark:ring-offset-slate-950
-         dark:focus-visible:ring-slate-300 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-slate-50,
-      success: "focus-visible:ring-green-600`,
-        primary: `rounded-[100px]  
-       bg-[#EDEDED] mr-4 text-[#252525]
-               data-[state=active]:bg-[#005BE6] data-[state=active]:text-white  
-        data-[state=active]:shadow-xs dark:ring-offset-slate-950 dark:bg-black dark:text-white dark:border-[2px] dark:border-bg-red-50/10
-         dark:focus-visible:ring-slate-300 dark:data-[state=active]:bg-primary dark:data-[state=active]:text-slate-50`,
-        secondary: `
-              mr-4 text-[#252525]
-               data-[state=active]:bg-[#005BE6] data-[state=active]:text-white  
-        data-[state=active]:shadow-xs dark:ring-offset-slate-950
-         dark:focus-visible:ring-slate-300 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-slate-50`,
-        border: `h-14 text-start absolute top-[.1em]  mr-4 
-          data-[state=active]:shadow-xs dark:ring-offset-slate-950
-         dark:focus-visible:ring-slate-300 dark:data-[state=active]:border-b-2 dark:data-[state=active]:border-b-[#005BE6] dark:data-[state=active]:text-slate-50`,
-      },
-      size: {
-        xs: "h-8",
-        sm: "h-9",
-        default: "h-10 ",
-        lg: "h-11  ",
-        xl: "h-12",
-        "2xl": "h-14 text-base py-1",
-      },
-    },
-    defaultVariants: {
-      // variant: "default",
-      // size: "default",
-    },
-  },
-);
-
-const TabsTrigger = React.forwardRef(
-  ({ size, variant, className, ...props }, ref) => (
+function TabsTrigger({ className, ...props }) {
+  return (
     <TabsPrimitive.Trigger
-      ref={ref}
-      className={cn(triggerVariants({ size, variant, className }))}
+      data-slot="tabs-trigger"
+      className={cn(
+        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className,
+      )}
       {...props}
     />
-  ),
-);
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+  );
+}
 
-const TabsContent = React.forwardRef(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn(
-      "mt-2 ring-offset-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300",
-      className,
-    )}
-    {...props}
-  />
-));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+function TabsContent({ className, ...props }) {
+  return (
+    <TabsPrimitive.Content
+      data-slot="tabs-content"
+      className={cn("flex-1 outline-none", className)}
+      {...props}
+    />
+  );
+}
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };

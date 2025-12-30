@@ -1,34 +1,53 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { z } from "zod";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+  Briefcase,
+  Building2,
+  Calendar,
+  FileText,
+  Save,
+  Loader2,
+  Plus,
+  Trash2,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
 import { toast } from "sonner";
-import { Plus, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { experienceSchema } from "@/services/schema";
 import { experienceValues } from "@/utils/constant";
 
+// UI Components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
 export default function EditExperience({ themes }) {
+  const [isFetching, setIsFetching] = useState(true);
+
   const {
     register,
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(experienceSchema),
     defaultValues: experienceValues,
@@ -38,6 +57,7 @@ export default function EditExperience({ themes }) {
     fields: jobFields,
     append: appendJob,
     remove: removeJob,
+    move: moveJob, // Destructure move for reordering
   } = useFieldArray({
     control,
     name: "jobs",
@@ -53,6 +73,8 @@ export default function EditExperience({ themes }) {
       } catch (error) {
         toast.error("Failed to fetch experience data.");
         console.error("Fetch error:", error);
+      } finally {
+        setIsFetching(false);
       }
     };
     fetchExperienceData();
@@ -67,175 +89,300 @@ export default function EditExperience({ themes }) {
     });
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isFetching) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
 
   return (
-    <Card className="bg-white/40 dark:bg-white/15 backdrop-blur-lg p-4 rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700">
-      <CardHeader>
-        <CardTitle>
-          <span
-            className={cn(
-              "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              themes?.isGradient ? themes?.primaryGradient : "",
-            )}
-          >
-            Edit Experience Section
-          </span>
-        </CardTitle>
-        <CardDescription>
-          Detail your professional journey and roles.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-2">
-            <Label>Super Title</Label>
-            <Input {...register("superTitle")} />
-            {errors.superTitle && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.superTitle.message}
-              </p>
-            )}
-
-            <Label>Title</Label>
-            <Input {...register("title")} />
-            {errors.title && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.title.message}
-              </p>
-            )}
-
-            <Label>Description</Label>
-            <Input {...register("description")} />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h3
-                className={cn(
-                  "text-lg font-semibold bg-clip-text text-transparent",
-                  themes?.isGradient ? themes?.primaryGradient : "",
-                )}
-              >
-                Jobs
-              </h3>
-              <Button
-                type="button"
-                onClick={() =>
-                  appendJob({
-                    role: "",
-                    company: "",
-                    duration: "",
-                    responsibilities: [],
-                  })
-                }
-                className={cn(
-                  "p-3 rounded-md font-bold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                  themes?.isGradient
-                    ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                )}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+    <div className="max-w-4xl mx-auto space-y-6 pb-20">
+      {/* Header Card */}
+      <Card className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-gray-200 dark:border-white/10 shadow-sm">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div
+              className={cn(
+                "p-2 rounded-lg text-white",
+                themes?.isGradient ? themes?.primaryGradient : "bg-blue-600",
+              )}
+            >
+              <Briefcase className="w-5 h-5" />
             </div>
-
-            {jobFields.map((job, index) => (
-              <div
-                key={job.id}
-                className="space-y-4 p-4 border rounded-md relative"
-              >
-                <Button
-                  type="button"
-                  size="icon"
-                  className={cn(
-                    "absolute top-2 right-2 h-7 w-7 text-white",
-                    themes?.isGradient
-                      ? themes?.primaryGradient
-                      : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                  )}
-                  onClick={() => removeJob(index)}
-                >
-                  <Trash className="h-4 w-4" />
-                </Button>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>Role</Label>
-                    <Input {...register(`jobs.${index}.role`)} />
-                    {errors.jobs?.[index]?.role && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.jobs[index].role.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>Company</Label>
-                    <Input {...register(`jobs.${index}.company`)} />
-                    {errors.jobs?.[index]?.company && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.jobs[index].company.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label>Duration</Label>
-                    <Input {...register(`jobs.${index}.duration`)} />
-                    {errors.jobs?.[index]?.duration && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.jobs[index].duration.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <Label>Responsibilities (one per line)</Label>
-                  <Controller
-                    name={`jobs.${index}.responsibilities`}
-                    control={control}
-                    render={({ field }) => (
-                      <Textarea
-                        value={
-                          Array.isArray(field.value)
-                            ? field.value.join("\n")
-                            : ""
-                        }
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? value.split("\n") : []);
-                        }}
-                        rows={4}
-                      />
-                    )}
-                  />
-                  {errors.jobs?.[index]?.responsibilities && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.jobs[index].responsibilities.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
+            <div>
+              <CardTitle className="text-xl">Experience Section</CardTitle>
+              <CardDescription>
+                Manage your professional history and timeline.
+              </CardDescription>
+            </div>
           </div>
+        </CardHeader>
+      </Card>
 
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Accordion
+          type="multiple"
+          defaultValue={["general", "jobs"]}
+          className="space-y-4"
+        >
+          {/* 1. General Section Info */}
+          <AccordionItem value="general" className="border-none">
+            <Card className="border-gray-200 dark:border-white/10 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                <div className="flex items-center gap-2 font-semibold text-lg text-gray-800 dark:text-gray-200">
+                  <FileText className="w-5 h-5 text-indigo-500" />
+                  General Section Info
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="superTitle">Super Title</Label>
+                    <Input
+                      id="superTitle"
+                      {...register("superTitle")}
+                      className="dark:bg-zinc-900"
+                      placeholder="e.g. My Journey"
+                    />
+                    {errors.superTitle && (
+                      <p className="text-red-500 text-xs">
+                        {errors.superTitle.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Main Title</Label>
+                    <Input
+                      id="title"
+                      {...register("title")}
+                      className="dark:bg-zinc-900"
+                      placeholder="e.g. Work Experience"
+                    />
+                    {errors.title && (
+                      <p className="text-red-500 text-xs">
+                        {errors.title.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="description">Section Description</Label>
+                    <Input
+                      id="description"
+                      {...register("description")}
+                      className="dark:bg-zinc-900"
+                      placeholder="Brief overview text..."
+                    />
+                    {errors.description && (
+                      <p className="text-red-500 text-xs">
+                        {errors.description.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </AccordionContent>
+            </Card>
+          </AccordionItem>
+
+          {/* 2. Job Timeline */}
+          <AccordionItem value="jobs" className="border-none">
+            <Card className="border-gray-200 dark:border-white/10 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                <div className="flex items-center gap-2 font-semibold text-lg text-gray-800 dark:text-gray-200">
+                  <Building2 className="w-5 h-5 text-emerald-500" />
+                  Job Timeline
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 pt-2">
+                <div className="space-y-4">
+                  {jobFields.map((job, index) => (
+                    <div
+                      key={job.id}
+                      className="relative p-5 rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-zinc-900/50 transition-all hover:border-blue-300 dark:hover:border-blue-700 group"
+                    >
+                      {/* Action Buttons (Right Top) */}
+                      <div className="absolute top-4 right-4 z-10 flex gap-2">
+                        {/* Move Up */}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          disabled={index === 0}
+                          onClick={() => moveJob(index, index - 1)}
+                          className="text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 disabled:opacity-30"
+                        >
+                          <ArrowUp className="w-4 h-4" />
+                        </Button>
+
+                        {/* Move Down */}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          disabled={index === jobFields.length - 1}
+                          onClick={() => moveJob(index, index + 1)}
+                          className="text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 disabled:opacity-30"
+                        >
+                          <ArrowDown className="w-4 h-4" />
+                        </Button>
+
+                        <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+
+                        {/* Remove */}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeJob(index)}
+                          className="text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-0 md:pr-32">
+                        {/* Role */}
+                        <div className="space-y-2">
+                          <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <Briefcase className="w-3 h-3" /> Job Role / Title
+                          </Label>
+                          <Input
+                            {...register(`jobs.${index}.role`)}
+                            placeholder="e.g. Senior Developer"
+                            className="bg-white dark:bg-zinc-950 font-semibold"
+                          />
+                          {errors.jobs?.[index]?.role && (
+                            <p className="text-red-500 text-xs">
+                              {errors.jobs[index].role.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Company */}
+                        <div className="space-y-2">
+                          <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <Building2 className="w-3 h-3" /> Company Name
+                          </Label>
+                          <Input
+                            {...register(`jobs.${index}.company`)}
+                            placeholder="e.g. Tech Corp"
+                            className="bg-white dark:bg-zinc-950"
+                          />
+                          {errors.jobs?.[index]?.company && (
+                            <p className="text-red-500 text-xs">
+                              {errors.jobs[index].company.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Duration */}
+                        <div className="space-y-2 md:col-span-2">
+                          <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <Calendar className="w-3 h-3" /> Duration
+                          </Label>
+                          <Input
+                            {...register(`jobs.${index}.duration`)}
+                            placeholder="e.g. Jan 2020 - Present"
+                            className="bg-white dark:bg-zinc-950"
+                          />
+                          {errors.jobs?.[index]?.duration && (
+                            <p className="text-red-500 text-xs">
+                              {errors.jobs[index].duration.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Responsibilities */}
+                        <div className="md:col-span-2 space-y-2">
+                          <Label className="text-xs font-medium text-muted-foreground">
+                            Key Responsibilities
+                          </Label>
+                          <div className="text-xs text-muted-foreground/70 mb-1">
+                            Tip: Press <strong>Enter</strong> to create a new
+                            bullet point.
+                          </div>
+                          <Controller
+                            name={`jobs.${index}.responsibilities`}
+                            control={control}
+                            render={({ field }) => (
+                              <Textarea
+                                value={
+                                  Array.isArray(field.value)
+                                    ? field.value.join("\n")
+                                    : ""
+                                }
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  field.onChange(
+                                    value ? value.split("\n") : [],
+                                  );
+                                }}
+                                placeholder="Developed new features..."
+                                className="bg-white dark:bg-zinc-950 resize-none leading-relaxed"
+                                rows={4}
+                              />
+                            )}
+                          />
+                          {errors.jobs?.[index]?.responsibilities && (
+                            <p className="text-red-500 text-xs">
+                              {errors.jobs[index].responsibilities.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      appendJob({
+                        role: "",
+                        company: "",
+                        duration: "",
+                        responsibilities: [],
+                      })
+                    }
+                    className="w-full border-dashed py-6 text-muted-foreground hover:text-primary mt-2"
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Add New Position
+                  </Button>
+                </div>
+              </AccordionContent>
+            </Card>
+          </AccordionItem>
+        </Accordion>
+
+        {/* Sticky Save Button */}
+        <div className="sticky bottom-4 mt-6 flex justify-end z-40">
           <Button
             className={cn(
-              "px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
+              "px-8 py-2 rounded-full font-semibold text-white shadow-xl transition-all duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+                : "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700",
             )}
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </>
+            )}
           </Button>
-        </form>
-      </CardContent>
-    </Card>
+        </div>
+      </form>
+    </div>
   );
 }

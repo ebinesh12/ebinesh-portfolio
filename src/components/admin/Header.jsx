@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios"; // Using axios for consistency
-import { useUserStore } from "@/stores/userStore"; // 1. Import the Zustand store
+import axios from "axios";
+// import { useUserStore } from "@/stores/userStore";
 
-// 2. Import UI components for the dropdown and avatar
+// UI Components
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,249 +18,315 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut } from "lucide-react";
 
-// Navigation links configuration for the main app
+// Icons
+import {
+  LogOut,
+  Menu,
+  X,
+  LayoutDashboard,
+  MessageSquare,
+  User,
+  ChevronDown,
+  ShieldCheck,
+} from "lucide-react";
+
+// Navigation Configuration
 const navLinks = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/contacts", label: "Messages" },
-  { href: "/admin/profile", label: "Profile" },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/contacts", label: "Messages", icon: MessageSquare },
+  { href: "/admin/profile", label: "Profile", icon: User },
 ];
 
-const Header = ({ themes }) => {
-  // 3. Access user data and actions from the Zustand store
-  const { user, logoutUser } = useUserStore();
-
+const Header = () => {
+  // const { user, logoutUser } = useUserStore();
+  const user = "ebin";
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
 
-  const isAuthPage =
-    pathname === "/auth/login" || pathname === "/auth/register";
+  // Detect Auth Pages to simplify header
+  const isAuthPage = pathname.startsWith("/auth");
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
-      setProgress(progress);
+
+      // Progress Bar logic
+      const prog = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+      setProgress(prog);
+
+      // Shadow/Blur trigger logic
+      setScrolled(scrollY > 10);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 4. Enhanced logout function
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      // Immediately clear the user state from Zustand for a snappy UI response
-      logoutUser();
-      // Invalidate the session on the server
+      // logoutUser();
       await axios.post("/api/v1/logout");
-      // Redirect to login page
       router.push("/auth/login");
       router.refresh();
     } catch (error) {
-      console.error("An error occurred during logout:", error);
-      // Even if API fails, ensure user is logged out on the client and redirected
+      console.error("Logout error:", error);
       router.push("/auth/login");
     } finally {
       setIsLoggingOut(false);
     }
   };
 
-  // Construct the URL to your new API endpoint.
-  const imageUrl = `/api/v1/admin/${user?.id}/img`;
+  const imageUrl = user?.id ? `/api/v1/admin/${user.id}/img` : null;
 
   return (
-    <nav className="fixed top-0 left-0 w-full text-black bg-gradient-to-r from-blue-100 via-white to-cyan-100 dark:bg-gradient-to-r dark:from-blue-950 dark:via-gray-900 dark:to-black dark:text-white shadow-md z-40 transition-all duration-700">
+    <header
+      className={cn(
+        "fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b",
+        scrolled
+          ? "bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border-neutral-200 dark:border-neutral-800"
+          : "bg-white dark:bg-neutral-950 border-transparent",
+      )}
+    >
+      {/* Reading Progress Bar */}
       <div
-        className={cn(
-          "fixed top-0 left-0 h-1 z-50",
-          themes?.isGradient
-            ? themes?.primaryGradient
-            : "bg-gradient-to-r from-blue-600 to-cyan-600",
-        )}
+        className="absolute top-0 left-0 h-[2px] bg-blue-600 dark:bg-blue-500 transition-all duration-150 ease-out z-[60]"
         style={{ width: `${progress}%` }}
       />
 
-      <div className="mx-auto flex justify-between items-center px-6 md:px-16 py-3">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo Area */}
         <Link
           href={isAuthPage ? "/auth/login" : "/admin"}
-          className={cn(
-            "text-xl font-bold bg-clip-text text-transparent",
-            themes?.isGradient
-              ? themes?.primaryGradient
-              : "bg-gradient-to-r from-blue-600 to-cyan-600",
-          )}
+          className="flex items-center gap-2 group"
         >
-          {isAuthPage ? "Admin" : "Admin Panel"}
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black transition-transform group-hover:scale-105">
+            <ShieldCheck className="h-5 w-5" />
+          </div>
+          <span className="text-lg font-bold tracking-tight text-neutral-900 dark:text-white">
+            Admin<span className="text-neutral-400">Panel</span>
+          </span>
         </Link>
 
-        {isAuthPage ? (
-          <div className="flex justify-between items-center gap-5">
-            <Link
-              href={"/auth/register"}
-              className={cn(
-                "nav-link transition-colors duration-300 p-2.5 bg-clip-text hover:text-transparent hover:rounded-md hover:bg-black/10",
-                "hover:dark:bg-white/10 hover:backdrop-blur-lg hover:border hover:border-black/15 hover:dark:border-white/20",
-                pathname === "/auth/register" &&
-                  "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20",
-                themes?.isGradient
-                  ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
-              )}
-            >
-              Register
-            </Link>
-            <Link
-              href={"/auth/login"}
-              className={cn(
-                "nav-link transition-colors duration-300 p-2.5 bg-clip-text hover:text-transparent hover:rounded-md hover:bg-black/10",
-                "hover:dark:bg-white/10 hover:backdrop-blur-lg hover:border hover:border-black/15 hover:dark:border-white/20",
-                pathname === "/auth/login" &&
-                  "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20",
-                themes?.isGradient
-                  ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
-              )}
-            >
-              Login
-            </Link>
-          </div>
-        ) : (
-          <>
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-6">
-              <ul className="flex items-center space-x-4 font-medium">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
+        {/* Right Side Actions */}
+        <div className="flex items-center gap-4">
+          {isAuthPage ? (
+            /* Auth Page Navigation (Login/Register) */
+            <nav className="hidden md:flex items-center gap-1">
+              <Link href="/auth/login">
+                <Button
+                  variant={pathname === "/auth/login" ? "secondary" : "ghost"}
+                  size="sm"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link href="/auth/register">
+                <Button
+                  variant={
+                    pathname === "/auth/register" ? "secondary" : "ghost"
+                  }
+                  size="sm"
+                >
+                  Register
+                </Button>
+              </Link>
+            </nav>
+          ) : (
+            /* Admin Navigation */
+            <>
+              {/* Desktop Nav Links */}
+              <nav className="hidden md:flex items-center gap-1">
+                {navLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = pathname === link.href;
+                  return (
                     <Link
+                      key={link.href}
                       href={link.href}
                       className={cn(
-                        "nav-link transition-colors duration-300 p-2.5 bg-clip-text hover:text-transparent hover:rounded-md hover:bg-black/10",
-                        "hover:dark:bg-white/10 hover:backdrop-blur-lg hover:border hover:border-black/15 hover:dark:border-white/20",
-                        pathname === link.href &&
-                          "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20",
-                        themes?.isGradient
-                          ? `hover:${themes?.primaryGradient}`
-                          : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
+                        "group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all",
+                        isActive
+                          ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
+                          : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white",
                       )}
                     >
+                      <Icon
+                        className={cn(
+                          "h-4 w-4",
+                          isActive
+                            ? "text-blue-600 dark:text-blue-400"
+                            : "text-neutral-400 group-hover:text-neutral-600",
+                        )}
+                      />
                       {link.label}
                     </Link>
-                  </li>
-                ))}
-              </ul>
+                  );
+                })}
+              </nav>
 
-              {/* 5. User Profile Dropdown */}
+              {/* User Dropdown */}
               {user && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button className="relative h-8 w-8 rounded-full">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage
-                          src={imageUrl || "/images/profile.jpg"}
-                          alt={user?.username}
-                        />
-                        <AvatarFallback>
-                          {user?.username?.charAt(0).toUpperCase() || "A"}
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
+                <div className="hidden md:block">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="relative h-10 gap-2 rounded-full pl-2 pr-4 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                      >
+                        <Avatar className="h-8 w-8 border border-neutral-200 dark:border-neutral-700">
+                          <AvatarImage
+                            src={imageUrl || "/images/profile.jpg"}
+                            alt={user.username}
+                          />
+                          <AvatarFallback className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-200">
+                            {user.username?.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm font-medium">
                           {user.username}
-                        </p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                          {user.email}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleLogout}
-                      disabled={isLoggingOut}
+                        </span>
+                        <ChevronDown className="h-4 w-4 text-neutral-400" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-56"
+                      align="end"
+                      forceMount
                     >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {user.username}
+                          </p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user.email}
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="text-red-600 dark:text-red-400 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>
+                          {isLoggingOut ? "Logging out..." : "Log out"}
+                        </span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               )}
-            </div>
 
-            {/* Mobile Toggle */}
-            <div
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden flex flex-col space-y-1 cursor-pointer"
-            >
-              <span className="block w-6 h-0.5 bg-gray-700 dark:bg-gray-200"></span>
-              <span className="block w-6 h-0.5 bg-gray-700 dark:bg-gray-200"></span>
-              <span className="block w-6 h-0.5 bg-gray-700 dark:bg-gray-200"></span>
-            </div>
-          </>
-        )}
+              {/* Mobile Menu Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                {menuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
-      {/* Mobile Menu */}
-      {!isAuthPage && menuOpen && (
-        <div className="md:hidden flex flex-col bg-gradient-to-r from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black px-6 py-4 space-y-3 transition-all">
-          {/* 6. Mobile user info */}
-          {user && (
-            <div className="flex items-center justify-center gap-x-4 border-b border-gray-200 dark:border-gray-700">
-              <img
-                src={imageUrl || "/images/profile.jpg"}
-                alt={user.username}
-                className="w-10 h-10 rounded-full"
-              />
-              <div className="text-center py-2">
-                <p className="font-semibold">{user?.username}</p>
-                <p className="text-sm text-gray-500">{user?.email}</p>
+      {/* Mobile Menu Dropdown */}
+      {menuOpen && (
+        <div className="md:hidden border-t border-neutral-200 bg-white px-4 py-6 shadow-lg dark:border-neutral-800 dark:bg-neutral-950">
+          <div className="flex flex-col space-y-4">
+            {/* Mobile User Info */}
+            {user && (
+              <div className="flex items-center gap-3 rounded-lg border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={imageUrl || "/images/profile.jpg"} />
+                  <AvatarFallback>
+                    {user.username?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium text-neutral-900 dark:text-white">
+                    {user.username}
+                  </p>
+                  <p className="text-xs text-neutral-500">{user.email}</p>
+                </div>
               </div>
-            </div>
-          )}
-
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={cn(
-                "nav-link transition-colors duration-300 p-2 text-md font-semibold text-center bg-clip-text hover:text-transparent",
-                pathname === link.href &&
-                  "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/50",
-                themes?.isGradient
-                  ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Button
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className={cn(
-              "w-full p-2",
-              themes?.isGradient
-                ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-600 to-cyan-600",
             )}
-          >
-            {isLoggingOut ? "Logging out..." : "Logout"}
-          </Button>
+
+            {/* Mobile Links */}
+            <nav className="flex flex-col space-y-1">
+              {!isAuthPage ? (
+                navLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400"
+                          : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white",
+                      )}
+                    >
+                      <Icon className="h-5 w-5" />
+                      {link.label}
+                    </Link>
+                  );
+                })
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-3 py-3 text-sm font-medium"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-3 py-3 text-sm font-medium"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </nav>
+
+            {/* Mobile Logout */}
+            {!isAuthPage && user && (
+              <Button
+                variant="destructive"
+                className="w-full justify-start gap-3"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+              >
+                <LogOut className="h-4 w-4" />
+                {isLoggingOut ? "Logging out..." : "Log out"}
+              </Button>
+            )}
+          </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

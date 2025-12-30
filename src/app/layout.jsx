@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { ThemeProvider } from "@/utils/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import ThemeSidebar from "@/components/ThemeSidebar";
 import { Toaster } from "@/components/ui/sonner";
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,10 +26,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Pencil, Trash2, Loader2, Save } from "lucide-react";
 
-// The 'themes' prop is added to allow for dynamic gradient styling
-export function ActionsCell({ message, onDelete, onUpdate, themes }) {
+export function ActionsCell({ message, onDelete, onUpdate }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
   const [formData, setFormData] = useState({
     name: message.name,
     email: message.email,
@@ -44,182 +45,113 @@ export function ActionsCell({ message, onDelete, onUpdate, themes }) {
   };
 
   const handleSaveChanges = async () => {
+    setIsSaving(true);
     const success = await onUpdate(message.id, formData);
+    setIsSaving(false);
     if (success) {
       setIsEditDialogOpen(false);
     }
   };
 
   return (
-    <div className="flex mx-auto gap-2 justify-end">
-      {/* Edit Dialog */}
+    <div className="flex items-center justify-end gap-2">
+      {/* --- Edit Dialog --- */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogTrigger asChild>
           <Button
-            variant="outline"
-            size="sm"
-            className={cn(
-              "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient
-                ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-            )}
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
-            Edit
+            <Pencil className="h-4 w-4" />
           </Button>
         </DialogTrigger>
-        <DialogContent
-          className={cn(
-            "sm:max-w-[425px] w-3/4",
-            "bg-white/40 dark:bg-white/25 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/40 transition-colors duration-700",
-          )}
-        >
+
+        <DialogContent className="sm:max-w-[500px] border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
           <DialogHeader>
-            <DialogTitle
-              className={cn(
-                "bg-clip-text text-transparent font-semibold",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-500 to-cyan-500",
-              )}
-            >
-              Edit Message
-            </DialogTitle>
+            <DialogTitle>Edit Message</DialogTitle>
             <DialogDescription>
-              Update the details of the message below.
+              Modify the content of the received message.
             </DialogDescription>
           </DialogHeader>
+
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
+            <div className="grid gap-2">
+              <Label htmlFor="name">Sender Name</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="email" className="text-right">
-                Email
-              </Label>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email Address</Label>
               <Input
                 id="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="subject" className="text-right">
-                Subject
-              </Label>
+            <div className="grid gap-2">
+              <Label htmlFor="subject">Subject</Label>
               <Input
                 id="subject"
                 value={formData.subject}
                 onChange={handleInputChange}
-                className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="message" className="text-right pt-2">
-                Message
-              </Label>
+            <div className="grid gap-2">
+              <Label htmlFor="message">Message Content</Label>
               <Textarea
                 id="message"
                 value={formData.message}
                 onChange={handleInputChange}
-                className="col-span-3"
+                className="min-h-[120px]"
               />
             </div>
           </div>
+
           <DialogFooter>
             <DialogClose asChild>
-              <Button
-                type="button"
-                className={cn(
-                  "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                  themes?.isGradient
-                    ? themes?.primaryGradient
-                    : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-                )}
-              >
-                Cancel
-              </Button>
+              <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button
-              type="button"
-              onClick={handleSaveChanges}
-              className={cn(
-                "px-6 py-2 mb-4 md:mb-0 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-              )}
-            >
-              Save
+            <Button onClick={handleSaveChanges} disabled={isSaving}>
+              {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Delete Alert Dialog */}
+      {/* --- Delete Alert --- */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
-            variant="destructive"
-            size="sm"
-            className={cn(
-              "px-6 py-2 rounded-md font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              themes?.isGradient
-                ? themes?.primaryGradient
-                : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-            )}
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-neutral-500 hover:bg-red-50 hover:text-red-600 dark:text-neutral-400 dark:hover:bg-red-900/20 dark:hover:text-red-400"
           >
-            Delete
+            <Trash2 className="h-4 w-4" />
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent
-          className={cn(
-            "w-3/4 bg-white/40 dark:bg-white/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/30 transition-colors duration-700",
-          )}
-        >
+        <AlertDialogContent className="border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
           <AlertDialogHeader>
-            <AlertDialogTitle
-              className={cn(
-                "bg-clip-text text-transparent font-semibold",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-red-500 to-orange-500", // Destructive gradient
-              )}
-            >
-              Are you absolutely sure?
-            </AlertDialogTitle>
+            <AlertDialogTitle>Delete Message?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              message from {message.name}.
+              This will permanently remove the message from{" "}
+              <span className="font-medium text-neutral-900 dark:text-white">
+                {message.name}
+              </span>
+              . This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel
-              className={cn(
-                "px-6 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              )}
-            >
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => onDelete(message.id)}
-              className={cn(
-                "px-6 py-2 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-                themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
-              )}
+              className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-900 dark:hover:bg-red-800"
             >
-              Continue
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

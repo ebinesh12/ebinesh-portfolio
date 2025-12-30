@@ -2,136 +2,191 @@
 
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { Menu, X, Code2 } from "lucide-react";
+
+const navItems = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "skills", label: "Skills" },
+  { id: "projects", label: "Projects" },
+  { id: "achievements", label: "Achievements" },
+  { id: "contact", label: "Contact" },
+];
 
 const Header = ({ themes }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("home");
   const [progress, setProgress] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    // Scroll events for progress bar & active link
     const handleScroll = () => {
       const scrollY = window.scrollY;
+
+      // 1. Progress Bar Logic
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      setProgress((scrollY / docHeight) * 100);
+      setProgress(docHeight > 0 ? (scrollY / docHeight) * 100 : 0);
 
-      document.querySelectorAll("section[id]").forEach((section) => {
-        if (scrollY >= section.offsetTop - 80) {
-          setActiveLink(section.id);
+      // 2. Header Background Logic
+      setIsScrolled(scrollY > 20);
+
+      // 3. Active Link Spy Logic
+      // Adding a small offset (100px) improves accuracy when clicking links
+      const offset = 100;
+      const sections = navItems.map((item) => document.getElementById(item.id));
+
+      let currentActive = "home";
+      sections.forEach((section) => {
+        if (section) {
+          const sectionTop = section.offsetTop - offset;
+          const sectionHeight = section.offsetHeight;
+          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            currentActive = section.id;
+          }
         }
       });
+      setActiveLink(currentActive);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Smooth scroll handler
   const handleNavClick = (e, id) => {
     e.preventDefault();
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      // Close menu first on mobile to prevent layout shift during scroll
+      setMenuOpen(false);
+
+      // Small timeout to allow menu close animation (optional)
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
   };
 
   return (
-    <nav className="fixed pt-1 top-0 left-0 w-full text-black bg-gradient-to-r from-blue-100 via-white to-cyan-100 dark:bg-gradient-to-r dark:from-blue-950 dark:via-gray-900 dark:to-black dark:text-white shadow-md z-40 transition-all duration-700">
-      {/* Progress Bar */}
+    <header
+      className={cn(
+        "fixed top-0 left-0 z-50 w-full transition-all duration-300",
+        isScrolled
+          ? "border-b border-neutral-200 bg-white/80 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/80"
+          : "bg-transparent border-transparent py-2",
+      )}
+    >
+      {/* Reading Progress Bar */}
       <div
         className={cn(
-          "fixed top-0 left-0 h-1 z-50",
+          "absolute top-0 left-0 h-[2px] transition-all duration-150 ease-out z-[60]",
           themes?.isGradient
             ? themes?.primaryGradient
-            : "bg-gradient-to-r from-blue-600 to-cyan-600",
+            : "bg-blue-600 dark:bg-blue-400",
         )}
         style={{ width: `${progress}%` }}
-      ></div>
+      />
 
-      <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-3">
-        <div
-          className={cn(
-            "text-xl font-bold bg-clip-text text-transparent",
-            themes?.isGradient
-              ? themes?.primaryGradient
-              : "bg-gradient-to-r from-blue-600 to-cyan-600",
-          )}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+        {/* Logo */}
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, "home")}
+          className="group flex items-center gap-2"
         >
-          Ebinesh Rabin
-        </div>
-
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6 font-medium">
-          {[
-            "home",
-            "about",
-            "skills",
-            "projects",
-            "achievements",
-            "contact",
-          ].map((link) => (
-            <li key={link}>
-              <a
-                href={`#${link}`}
-                onClick={(e) => handleNavClick(e, link)}
-                className={cn(
-                  "nav-link transition-colors duration-300 p-2.5 bg-clip-text hover:text-transparent hover:rounded-md hover:bg-black/10 ",
-                  "hover:dark:bg-white/10 hover:backdrop-blur-lg hover:border hover:border-black/15 hover:dark:border-white/20",
-                  `${activeLink === link ? "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/20" : ""}`,
-                  themes?.isGradient
-                    ? `hover:${themes?.primaryGradient}`
-                    : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
-                )}
-              >
-                {link.charAt(0).toUpperCase() + link.slice(1)}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {/* Dark Mode + Mobile Toggle */}
-        <div className="flex items-center space-x-4">
           <div
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col space-y-1 cursor-pointer"
+            className={cn(
+              "flex h-9 w-9 items-center justify-center rounded-lg text-white shadow-md transition-transform group-hover:scale-105",
+              themes?.isGradient
+                ? themes?.primaryGradient
+                : "bg-neutral-900 dark:bg-white dark:text-black",
+            )}
           >
-            <span className="block w-6 h-0.5 bg-gray-700 dark:bg-gray-200"></span>
-            <span className="block w-6 h-0.5 bg-gray-700 dark:bg-gray-200"></span>
-            <span className="block w-6 h-0.5 bg-gray-700 dark:bg-gray-200"></span>
+            <Code2 className="h-5 w-5" />
           </div>
+          <span className="text-xl font-bold tracking-tight text-neutral-900 dark:text-white">
+            Ebinesh<span className="text-neutral-400">.dev</span>
+          </span>
+        </a>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:block">
+          <ul className="flex items-center gap-1">
+            {navItems.map((item) => {
+              const isActive = activeLink === item.id;
+              return (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    onClick={(e) => handleNavClick(e, item.id)}
+                    className={cn(
+                      "relative px-4 py-2 text-sm font-medium transition-all rounded-full duration-300",
+                      isActive
+                        ? "text-white shadow-md"
+                        : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white",
+                      // Apply gradient only if active
+                      isActive &&
+                        (themes?.isGradient
+                          ? themes?.primaryGradient
+                          : "bg-neutral-900 dark:bg-white dark:text-neutral-950"),
+                    )}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-500 hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden flex flex-col bg-gradient-to-r from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black px-6 py-4 space-y-3 transition-all">
-          {[
-            "home",
-            "about",
-            "skills",
-            "projects",
-            "achievements",
-            "contact",
-          ].map((link) => (
-            <a
-              key={link}
-              href={`#${link}`}
-              onClick={(e) => handleNavClick(e, link)}
-              className={cn(
-                "nav-link transition-colors duration-300 p-2 text-md font-semibold text-center bg-clip-text hover:text-transparent",
-                `${activeLink === link ? "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg border border-black/15 dark:border-white/50" : ""}`,
-                themes?.isGradient
-                  ? `hover:${themes?.primaryGradient}`
-                  : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
-              )}
-            >
-              {link.charAt(0).toUpperCase() + link.slice(1)}
-            </a>
-          ))}
-        </div>
-      )}
-    </nav>
+      {/* Mobile Menu Dropdown */}
+      <div
+        className={cn(
+          "absolute left-0 w-full overflow-hidden bg-white/95 backdrop-blur-xl transition-all duration-300 dark:bg-neutral-950/95 md:hidden",
+          menuOpen
+            ? "max-h-[400px] border-b border-neutral-200 dark:border-neutral-800"
+            : "max-h-0",
+        )}
+      >
+        <ul className="flex flex-col space-y-2 px-6 py-6">
+          {navItems.map((item) => {
+            const isActive = activeLink === item.id;
+            return (
+              <li key={item.id}>
+                <a
+                  href={`#${item.id}`}
+                  onClick={(e) => handleNavClick(e, item.id)}
+                  className={cn(
+                    "block rounded-lg px-4 py-3 text-sm font-semibold transition-colors",
+                    isActive
+                      ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-white"
+                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-900/50 dark:hover:text-white",
+                  )}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </header>
   );
 };
 

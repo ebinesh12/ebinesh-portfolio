@@ -1,65 +1,47 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
-import { useTheme } from "@/utils/ThemeProvider";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import Logout from "@/components/Logout";
 import Header from "@/components/admin/Header";
 import Footer from "@/components/admin/Footer";
 
 export default function AdminLayout({ children }) {
-  const { theme } = useTheme();
-
   return (
-    <>
-      <Header themes={theme} />
-      <div className="mt-12 min-h-screen">
-        <div
-          className={cn(
-            "relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",
-            "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
-          )}
-        >
-          {/* Floating gradient effects with blue glow */}
-          <div className="absolute inset-0 pointer-events-none">
-            {/* Left Blob */}
-            <div
-              className={cn(
-                "absolute top-0 right-0 w-[350px] h-[350px] opacity-20 rounded-full blur-3xl animate-pulse",
-                theme?.isGradient
-                  ? theme?.primaryGradient
-                  : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
-              )}
-            ></div>
-            {/* Right Blob */}
-            <div
-              className="absolute bottom-0 left-0 w-[350px] h-[350px]
-                                bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-500
-                                dark:from-indigo-500 dark:via-blue-600 dark:to-cyan-500
-                                opacity-20 rounded-full blur-3xl animate-pulse"
-            ></div>
+    <div className="flex min-h-screen flex-col bg-neutral-50 font-sans text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-50">
+      {/* Fixed Header */}
+      <Header />
+
+      {/* Main Content Wrapper */}
+      {/* pt-20 ensures content isn't hidden behind the fixed header */}
+      <main className="relative isolate flex-1 pt-24 pb-12">
+        {/* --- Background: Technical Grid --- */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+          {/* Subtle Gradient Glow at top-center */}
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 blur-3xl opacity-20">
+            <div className="aspect-[1155/678] w-[72rem] bg-gradient-to-tr from-blue-500 to-cyan-500 opacity-30" />
+          </div>
+        </div>
+
+        {/* --- Content Container --- */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Page Header Area */}
+          <div className="mb-8 space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Dashboard
+            </h1>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              Manage your portfolio content, projects, and personal details.
+            </p>
           </div>
 
-          <h1
-            className={cn(
-              "md:w-1/2 text-3xl font-bold mb-6 bg-clip-text text-transparent",
-              theme?.isGradient
-                ? theme?.primaryGradient
-                : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500",
-            )}
-          >
-            Manage Portfolio Content
-          </h1>
-          <p className="text-muted-foreground mb-8">
-            Select a section below to update its content. Changes are saved
-            automatically when you click the save button in each section.
-          </p>
-
-          {children}
+          {/* Injected Page Content */}
+          <div className="min-h-[600px] rounded-xl border border-neutral-200 bg-white/50 p-1 shadow-sm backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-900/50">
+            {children}
+          </div>
         </div>
-      </div>
-      <Footer themes={theme} />
-    </>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

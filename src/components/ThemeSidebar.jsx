@@ -2,17 +2,147 @@
 
 import { useState, useEffect } from "react";
 import { useTheme as useNextTheme } from "next-themes";
-import { useTheme } from "@/utils/ThemeProvider";
+import { useTheme } from "@/providers/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Settings, Sun, Moon } from "lucide-react";
+import {
+  Settings,
+  Sun,
+  Moon,
+  Check,
+  RotateCcw,
+  Save,
+  Palette,
+  Monitor,
+} from "lucide-react";
+// import { Separator } from "@/components/ui/separator"; // Assuming you have a Separator or hr
+
+// --- Data Configuration ---
+const gradients = [
+  {
+    name: "Holographic",
+    color: "bg-pink-400", // Representative color for the swatch
+    primaryGradient:
+      "bg-gradient-to-r from-pink-400 to-blue-500 dark:from-pink-500 dark:to-blue-600",
+    sectionBgGradient:
+      "bg-gradient-to-br from-gray-900 via-black to-blue-950 dark:from-black dark:via-gray-900 dark:to-blue-900",
+    isGradient: true,
+  },
+  {
+    name: "Sunny Days",
+    color: "bg-orange-400",
+    primaryGradient:
+      "bg-gradient-to-r from-amber-300 to-orange-400 dark:from-amber-500 dark:to-orange-700",
+    sectionBgGradient:
+      "bg-gradient-to-br from-yellow-100 via-white to-orange-100 dark:from-yellow-950 dark:via-gray-900 dark:to-black",
+    isGradient: true,
+  },
+  {
+    name: "Ocean Breeze",
+    color: "bg-cyan-400",
+    primaryGradient:
+      "bg-gradient-to-r from-cyan-300 to-blue-500 dark:from-cyan-500 dark:to-blue-700",
+    sectionBgGradient:
+      "bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 dark:from-cyan-500 dark:via-sky-600 dark:to-blue-700",
+    isGradient: true,
+  },
+  {
+    name: "Tropical Punch",
+    color: "bg-pink-500",
+    primaryGradient:
+      "bg-gradient-to-r from-pink-400 to-orange-500 dark:from-pink-500 dark:to-orange-600",
+    sectionBgGradient:
+      "bg-gradient-to-br from-pink-100 via-white to-orange-100 dark:from-pink-950 dark:via-gray-900 dark:to-black",
+    isGradient: true,
+  },
+  {
+    name: "Aurora Purple",
+    color: "bg-purple-500",
+    primaryGradient:
+      "bg-gradient-to-r from-purple-400 to-pink-500 dark:from-purple-400 dark:to-pink-600",
+    sectionBgGradient:
+      "bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 dark:from-purple-600 dark:via-fuchsia-700 dark:to-pink-700",
+    isGradient: true,
+  },
+  {
+    name: "Galactic Teal",
+    color: "bg-teal-400",
+    primaryGradient:
+      "bg-gradient-to-r from-teal-300 to-sky-500 dark:from-teal-500 dark:to-sky-700",
+    sectionBgGradient:
+      "bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 dark:from-teal-500 dark:via-cyan-600 dark:to-sky-700",
+    isGradient: true,
+  },
+  {
+    name: "Olive Grove",
+    color: "bg-lime-600",
+    primaryGradient:
+      "bg-gradient-to-r from-lime-500 to-green-700 dark:from-emerald-500 dark:to-lime-600",
+    sectionBgGradient:
+      "bg-gradient-to-br from-lime-100 via-white to-green-100 dark:from-lime-900 dark:via-gray-800 dark:to-black",
+    isGradient: true,
+  },
+  {
+    name: "Wild Berry",
+    color: "bg-fuchsia-600",
+    primaryGradient:
+      "bg-gradient-to-r from-fuchsia-500 to-indigo-700 dark:from-fuchsia-700 dark:to-indigo-900",
+    sectionBgGradient:
+      "bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-700 dark:from-fuchsia-700 dark:via-purple-800 dark:to-indigo-900",
+    isGradient: true,
+  },
+  {
+    name: "Volcanic Ash",
+    color: "bg-slate-500",
+    primaryGradient:
+      "bg-gradient-to-r from-slate-400 to-zinc-600 dark:from-slate-600 dark:to-zinc-600",
+    sectionBgGradient:
+      "bg-gradient-to-r from-slate-500 via-gray-600 to-zinc-700 dark:from-slate-700 dark:via-gray-800 dark:to-zinc-900",
+    isGradient: true,
+  },
+  {
+    name: "Desert Mirage",
+    color: "bg-yellow-600",
+    primaryGradient:
+      "bg-gradient-to-r from-yellow-600 to-orange-800 dark:from-yellow-700 dark:to-orange-900",
+    sectionBgGradient:
+      "bg-gradient-to-r from-yellow-500 via-amber-600 to-orange-700 dark:from-yellow-700 dark:via-amber-800 dark:to-orange-900",
+    isGradient: true,
+  },
+  {
+    name: "Maroon Majesty",
+    color: "bg-red-700",
+    primaryGradient:
+      "bg-gradient-to-r from-red-600 to-red-800 dark:from-red-700 dark:to-red-900",
+    sectionBgGradient:
+      "bg-gradient-to-br from-red-100 via-white to-rose-100 dark:from-red-900 dark:via-gray-800 dark:to-black",
+    isGradient: true,
+  },
+  {
+    name: "Lavender Fields",
+    color: "bg-violet-400",
+    primaryGradient:
+      "bg-gradient-to-r from-violet-400 to-indigo-400 dark:from-purple-400 dark:to-indigo-600",
+    sectionBgGradient:
+      "bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 dark:from-violet-600 dark:via-purple-600 dark:to-indigo-600",
+    isGradient: true,
+  },
+];
+
+const radiuses = [
+  { name: "Small", value: 0.15, label: "0.2" },
+  { name: "Standard", value: 0.3, label: "0.5" },
+  { name: "Large", value: 0.6, label: "0.8" },
+  { name: "Full", value: 0.75, label: "1.0" },
+];
 
 export default function ThemeSidebar() {
   const { theme: mode, setTheme: setMode } = useNextTheme();
@@ -20,151 +150,10 @@ export default function ThemeSidebar() {
   const [open, setOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState(theme);
 
+  // Sync state when global theme changes
   useEffect(() => {
     setCurrentTheme(theme);
   }, [theme]);
-
-  const gradients = [
-    {
-      name: "Holographic",
-      text: "text-pink-300",
-      border: "hover:border-pink-400",
-      primaryGradient:
-        "bg-gradient-to-r from-pink-400 to-blue-500 dark:from-pink-500 dark:to-blue-600",
-      outlineBtn:
-        "border border-blue-400 text-pink-300 hover:bg-gradient-to-r from-pink-400 via-blue-500 to-indigo-600 hover:text-black",
-      sectionBgGradient:
-        "bg-gradient-to-br from-gray-900 via-black to-blue-950 dark:from-black dark:via-gray-900 dark:to-blue-900",
-    },
-    {
-      name: "Sunny Days",
-      text: "text-amber-600",
-      border: "hover:border-amber-500",
-      primaryGradient:
-        "bg-gradient-to-r from-amber-300 to-orange-400 dark:from-amber-500 dark:to-orange-700",
-      outlineBtn:
-        "border border-orange-400 text-amber-600 hover:bg-gradient-to-r from-amber-300 via-orange-400 to-red-500 hover:text-black",
-      sectionBgGradient:
-        "bg-gradient-to-br from-yellow-100 via-white to-orange-100 dark:from-yellow-950 dark:via-gray-900 dark:to-black",
-    },
-    {
-      name: "Ocean Breeze",
-      text: "text-cyan-300",
-      border: "hover:border-sky-400",
-      primaryGradient:
-        "bg-gradient-to-r from-cyan-300 to-blue-500 dark:from-cyan-500 dark:to-blue-700",
-      outlineBtn:
-        "border border-sky-400 text-cyan-300 hover:bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 dark:from-cyan-500 dark:via-sky-600 dark:to-blue-700",
-    },
-    {
-      name: "Tropical Punch",
-      text: "text-pink-500",
-      border: "hover:border-pink-600",
-      primaryGradient:
-        "bg-gradient-to-r from-pink-400 to-orange-500 dark:from-pink-500 dark:to-orange-600",
-      outlineBtn:
-        "border border-orange-500 text-pink-500 hover:bg-gradient-to-r from-pink-500 via-orange-500 to-red-600 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-br from-pink-100 via-white to-orange-100 dark:from-pink-950 dark:via-gray-900 dark:to-black",
-    },
-    {
-      name: "Aurora Purple",
-      text: "text-purple-400",
-      border: "hover:border-fuchsia-500",
-      primaryGradient:
-        "bg-gradient-to-r from-purple-400 to-pink-500 dark:from-purple-400 dark:to-pink-600",
-      outlineBtn:
-        "border border-fuchsia-500 text-purple-400 hover:bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 dark:from-purple-600 dark:via-fuchsia-700 dark:to-pink-700",
-    },
-    {
-      name: "Galactic Teal",
-      text: "text-teal-300",
-      border: "hover:border-cyan-400",
-      primaryGradient:
-        "bg-gradient-to-r from-teal-300 to-sky-500 dark:from-teal-500 dark:to-sky-700",
-      outlineBtn:
-        "border border-cyan-400 text-teal-300 hover:bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 hover:text-black",
-      sectionBgGradient:
-        "bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 dark:from-teal-500 dark:via-cyan-600 dark:to-sky-700",
-    },
-    {
-      name: "Olive Grove",
-      text: "text-lime-700",
-      border: "hover:border-lime-600",
-      primaryGradient:
-        "bg-gradient-to-r from-lime-500 to-green-700 dark:from-emerald-500 dark:to-lime-600",
-      outlineBtn:
-        "border border-green-600 text-lime-700 hover:bg-gradient-to-r from-lime-500 via-green-600 to-emerald-700 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-br from-lime-100 via-white to-green-100 dark:from-lime-900 dark:via-gray-800 dark:to-black",
-    },
-    {
-      name: "Wild Berry",
-      text: "text-fuchsia-500",
-      border: "hover:border-purple-600",
-      primaryGradient:
-        "bg-gradient-to-r from-fuchsia-500 to-indigo-700 dark:from-fuchsia-700 dark:to-indigo-900",
-      outlineBtn:
-        "border border-purple-600 text-fuchsia-500 hover:bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-700 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-700 dark:from-fuchsia-700 dark:via-purple-800 dark:to-indigo-900",
-    },
-    {
-      name: "Volcanic Ash",
-      text: "text-slate-400",
-      border: "hover:border-gray-500",
-      primaryGradient:
-        "bg-gradient-to-r from-slate-400 to-zinc-600 dark:from-slate-600 dark:to-zinc-600",
-      outlineBtn:
-        "border border-gray-500 text-slate-400 hover:bg-gradient-to-r from-slate-400 via-gray-500 to-zinc-600 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-r from-slate-500 via-gray-600 to-zinc-700 dark:from-slate-700 dark:via-gray-800 dark:to-zinc-900",
-    },
-    {
-      name: "Desert Mirage",
-      text: "text-yellow-600",
-      border: "hover:border-amber-700",
-      primaryGradient:
-        "bg-gradient-to-r from-yellow-600 to-orange-800 dark:from-yellow-700 dark:to-orange-900",
-      outlineBtn:
-        "border border-amber-700 text-yellow-600 hover:bg-gradient-to-r from-yellow-600 via-amber-700 to-orange-800 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-r from-yellow-500 via-amber-600 to-orange-700 dark:from-yellow-700 dark:via-amber-800 dark:to-orange-900",
-    },
-    {
-      name: "Maroon Majesty",
-      text: "text-red-800",
-      border: "hover:border-red-700",
-      primaryGradient:
-        "bg-gradient-to-r from-red-600 to-red-800 dark:from-red-700 dark:to-red-900",
-      outlineBtn:
-        "border border-red-700 text-red-800 hover:bg-gradient-to-r from-red-600 via-red-700 to-rose-800 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-br from-red-100 via-white to-rose-100 dark:from-red-900 dark:via-gray-800 dark:to-black",
-    },
-    {
-      name: "Lavender Fields",
-      text: "text-violet-400",
-      border: "hover:border-purple-400",
-      primaryGradient:
-        "bg-gradient-to-r from-violet-400 to-indigo-400 dark:from-purple-400 dark:to-indigo-600",
-      outlineBtn:
-        "border border-purple-400 text-violet-400 hover:bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 hover:text-white",
-      sectionBgGradient:
-        "bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 dark:from-violet-600 dark:via-purple-600 dark:to-indigo-600",
-    },
-  ];
-
-  const radiuses = [
-    { name: "Small", value: 0.15 },
-    { name: "Default", value: 0.3 },
-    { name: "Large", value: 0.6 },
-    { name: "Full", value: 0.75 },
-  ];
 
   const handleSave = () => {
     saveTheme(currentTheme);
@@ -173,13 +162,10 @@ export default function ThemeSidebar() {
 
   const handleClear = () => {
     clearTheme();
+    // Reset local state to default
     setCurrentTheme({
-      text: "text-pink-300",
-      border: "hover:border-pink-400",
       primaryGradient:
         "bg-gradient-to-r from-pink-400 to-blue-500 dark:from-pink-500 dark:to-blue-600",
-      outlineBtn:
-        "border border-blue-400 text-pink-300 hover:bg-gradient-to-r from-pink-400 via-blue-500 to-indigo-600 hover:text-black",
       sectionBgGradient:
         "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
       isGradient: true,
@@ -192,131 +178,162 @@ export default function ThemeSidebar() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
-          className="fixed bottom-6 right-6 rounded-full p-4 shadow-lg"
-          variant="default"
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all hover:scale-110 hover:shadow-neutral-500/50 dark:shadow-black/50"
+          size="icon"
         >
-          <Settings className="h-5 w-5" />
+          <Settings className="h-6 w-6 animate-spin-slow" />
         </Button>
       </SheetTrigger>
+
       <SheetContent
         side="right"
-        className="w-[300px] sm:w-[400px] px-5 pb-5 overflow-y-auto bg-white/80 dark:bg-white/20 backdrop-blur-lg rounded-sm border border-gray-300 dark:border-white/30 transition-colors duration-700"
+        className="w-full p-2  border-l border-neutral-200 bg-white/95 backdrop-blur-xl dark:border-neutral-800 dark:bg-neutral-950/95 sm:w-[400px]"
       >
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <Settings className="w-5 h-5" /> Customize Theme
+        <SheetHeader className="text-left">
+          <SheetTitle className="flex items-center gap-2 text-xl font-bold tracking-tight">
+            <Palette className="h-5 w-5 text-neutral-500" />
+            Customize Theme
           </SheetTitle>
+          <SheetDescription>
+            Personalize the interface to match your style.
+          </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-4 space-y-6">
-          {/* Dark Mode Toggle */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Theme Mode</label>
-            <div className="mt-3 flex gap-3">
-              <p className="text-xs">Light / Dark</p>
-              <Button
-                variant="default"
-                size="icon"
-                onClick={() => setMode(mode === "light" ? "dark" : "light")}
-              >
-                {mode === "light" ? (
-                  <Moon className="h-5 w-5" />
-                ) : (
-                  <Sun className="h-5 w-5" />
+        <div className="mt-8 flex flex-col gap-8 pb-10">
+          {/* 1. Theme Mode (Segmented Control) */}
+          <div className="space-y-3">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              Appearance
+            </label>
+            <div className="flex w-full items-center rounded-lg border border-neutral-200 bg-neutral-100 p-1 dark:border-neutral-800 dark:bg-neutral-900">
+              <button
+                onClick={() => setMode("light")}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-2 rounded-md py-2 text-sm font-medium transition-all",
+                  mode === "light"
+                    ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-800 dark:text-white"
+                    : "text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-300",
                 )}
-              </Button>
+              >
+                <Sun className="h-4 w-4" />
+                Light
+              </button>
+              <button
+                onClick={() => setMode("dark")}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-2 rounded-md py-2 text-sm font-medium transition-all",
+                  mode === "dark"
+                    ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-800 dark:text-white"
+                    : "text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-300",
+                )}
+              >
+                <Moon className="h-4 w-4" />
+                Dark
+              </button>
             </div>
           </div>
 
-          {/* Background Gradient */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Background</label>
-            <div className="grid grid-cols-2 gap-2">
+          {/* <Separator className="bg-neutral-200 dark:bg-neutral-800" /> */}
+
+          {/* 2. Color Scheme (Grid) */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                Color Profile
+              </label>
+              <span className="text-xs text-neutral-400">
+                {gradients.find(
+                  (g) => g.primaryGradient === currentTheme.primaryGradient,
+                )?.name || "Custom"}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-4 gap-3">
               {gradients.map((gradient) => {
                 const isActive =
                   currentTheme.primaryGradient === gradient.primaryGradient;
                 return (
                   <button
                     key={gradient.name}
-                    className={cn(
-                      "rounded-lg p-2 text-sm text-center border-2 transition-all",
-                      isActive ? "border-primary" : "border-transparent",
-                    )}
                     onClick={() =>
                       setCurrentTheme({
                         ...currentTheme,
-                        // sectionGradient: gradient.sectionBgGradient,
                         primaryGradient: gradient.primaryGradient,
-                        border: gradient.border,
-                        outlineBtn: gradient.outlineBtn,
+                        sectionBgGradient: gradient.sectionBgGradient, // Preserving logic
                         isGradient: true,
                       })
                     }
+                    className={cn(
+                      "group relative flex aspect-square w-full items-center justify-center rounded-full border-2 transition-all hover:scale-105",
+                      isActive
+                        ? "border-neutral-900 dark:border-white"
+                        : "border-transparent hover:border-neutral-300 dark:hover:border-neutral-700",
+                    )}
+                    title={gradient.name}
                   >
                     <div
                       className={cn(
-                        "h-12 w-full rounded-md",
-                        gradient.primaryGradient,
+                        "h-full w-full rounded-full",
+                        gradient.color,
                       )}
                     />
-                    <span
-                      className={cn(
-                        "mt-1 block bg-clip-text text-transparent font-medium",
-                        gradient.primaryGradient,
-                      )}
-                    >
-                      {gradient.name}
-                    </span>
+                    {isActive && (
+                      <div className="absolute inset-0 flex items-center justify-center text-white drop-shadow-md">
+                        <Check className="h-5 w-5" />
+                      </div>
+                    )}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Corner Radius */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Corner Radius
+          {/* <Separator className="bg-neutral-200 dark:bg-neutral-800" /> */}
+
+          {/* 3. Corner Radius */}
+          <div className="space-y-3">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              Border Radius
             </label>
-            <div className="flex w-full gap-x-4">
-              {radiuses.map((radius) => (
-                <Button
-                  className={cn(
-                    "w-full py-2",
-                    currentTheme.radius === radius.value
-                      ? currentTheme.primaryGradient
-                      : "",
-                  )}
-                  key={radius.name}
-                  variant={
-                    currentTheme.radius === radius.value ? "primary" : "default"
-                  }
-                  onClick={() =>
-                    setCurrentTheme({ ...currentTheme, radius: radius.value })
-                  }
-                >
-                  {radius.name}
-                </Button>
-              ))}
+            <div className="grid grid-cols-4 gap-2">
+              {radiuses.map((radius) => {
+                const isActive = currentTheme.radius === radius.value;
+                return (
+                  <button
+                    key={radius.name}
+                    onClick={() =>
+                      setCurrentTheme({ ...currentTheme, radius: radius.value })
+                    }
+                    className={cn(
+                      "flex flex-col items-center justify-center rounded-lg border-2 py-2 text-xs transition-all",
+                      isActive
+                        ? "border-neutral-900 bg-neutral-50 text-neutral-900 dark:border-white dark:bg-neutral-900 dark:text-white"
+                        : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 dark:border-neutral-800 dark:bg-transparent dark:hover:border-neutral-700",
+                    )}
+                  >
+                    <span className="font-medium">{radius.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-between gap-2 pt-4">
+          {/* 4. Action Footer */}
+          <div className="mt-auto flex gap-3 pt-4">
             <Button
-              className="flex-1 p-2 primary"
-              variant="default"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-
-            <Button
-              className="flex-1 p-2"
-              variant="default"
+              variant="outline"
+              className="flex-1 gap-2 border-neutral-200 dark:border-neutral-800"
               onClick={handleClear}
             >
-              Clear
+              <RotateCcw className="h-4 w-4" />
+              Reset
+            </Button>
+            <Button
+              className="flex-1 gap-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+              onClick={handleSave}
+            >
+              <Save className="h-4 w-4" />
+              Save Changes
             </Button>
           </div>
         </div>

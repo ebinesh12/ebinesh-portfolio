@@ -24,6 +24,7 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     const savedTheme = localStorage.getItem("custom-theme");
     if (savedTheme) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(JSON.parse(savedTheme));
     }
   }, []);

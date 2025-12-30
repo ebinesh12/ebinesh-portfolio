@@ -3,97 +3,104 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Github,
+  LayoutDashboard,
+  MessageSquare,
+  User,
+} from "lucide-react";
 
-// --- Data for Links ---
+// --- Configuration ---
 
-// Navigation links for the footer
 const navLinks = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/contacts", label: "Messages" },
-  { href: "/admin/profile", label: "Profile" },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/contacts", label: "Messages", icon: MessageSquare },
+  { href: "/admin/profile", label: "Profile", icon: User },
 ];
 
-// Social media links for reusability
 const socialLinks = [
   {
     href: "https://www.facebook.com/",
-    title: "Facebook",
-    icon: "fab fa-facebook-f",
-    hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400",
+    label: "Facebook",
+    icon: Facebook,
+    hoverColor: "hover:text-blue-600 dark:hover:text-blue-400",
   },
   {
     href: "https://twitter.com/",
-    title: "Twitter",
-    icon: "fab fa-twitter",
-    hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400",
+    label: "Twitter",
+    icon: Twitter,
+    hoverColor: "hover:text-sky-500 dark:hover:text-sky-400",
   },
   {
     href: "https://www.instagram.com/",
-    title: "Instagram",
-    icon: "fab fa-instagram",
-    hoverClass: "hover:text-pink-500 dark:hover:text-pink-400",
+    label: "Instagram",
+    icon: Instagram,
+    hoverColor: "hover:text-pink-600 dark:hover:text-pink-400",
   },
   {
     href: "https://www.linkedin.com/in/ebinesh-rabin-c19",
-    title: "LinkedIn",
-    icon: "fab fa-linkedin-in",
-    hoverClass: "hover:text-blue-600 dark:hover:text-cyan-400",
+    label: "LinkedIn",
+    icon: Linkedin,
+    hoverColor: "hover:text-blue-700 dark:hover:text-blue-500",
   },
   {
     href: "https://github.com/ebinesh12",
-    title: "GitHub",
-    icon: "fab fa-github",
-    hoverClass: "hover:text-gray-800 dark:hover:text-white",
+    label: "GitHub",
+    icon: Github,
+    hoverColor: "hover:text-neutral-900 dark:hover:text-white",
   },
 ];
 
-const Footer = ({ themes }) => {
-  const Year = () => new Date().getFullYear();
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
   const pathname = usePathname();
 
-  // Check if the current page is an authentication page
-  const isAuthPage =
-    pathname === "/auth/login" || pathname === "/auth/register";
+  // Check if we are on an auth page (Login/Register)
+  const isAuthPage = pathname.startsWith("/auth");
 
   return (
-    <footer
-      className="w-full bg-gradient-to-r from-blue-100 via-white to-cyan-100
-            dark:from-blue-950 dark:via-gray-900 dark:to-black
-            text-gray-800 dark:text-gray-300 py-8 transition-colors duration-700"
-    >
-      <div className="container mx-auto px-4 text-center">
-        {/* Social Links */}
-        <div className="flex justify-center space-x-6 mb-6">
-          {socialLinks.map((link) => (
-            <a
-              key={link.title}
-              href={link.href}
-              target="_blank"
-              title={link.title}
-              className={cn("transition-colors duration-300", link.hoverClass)}
-              rel="noopener noreferrer"
-            >
-              <i className={cn(link.icon, "text-xl")}></i>
-            </a>
-          ))}
+    <footer className="w-full border-t border-neutral-200 bg-white py-8 text-sm dark:border-neutral-800 dark:bg-neutral-950 transition-colors duration-300">
+      <div className="container mx-auto flex flex-col items-center gap-6 px-4">
+        {/* Social Media Icons */}
+        <div className="flex items-center gap-4">
+          {socialLinks.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.label}
+                className={cn(
+                  "group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-all hover:scale-110 dark:bg-neutral-900",
+                  "text-neutral-500 dark:text-neutral-400",
+                  item.hoverColor,
+                )}
+              >
+                <Icon className="h-5 w-5 transition-colors" />
+              </a>
+            );
+          })}
         </div>
 
-        {/* Footer Navigation (hidden on auth pages) */}
+        {/* Navigation Links (Hidden on Auth Pages) */}
         {!isAuthPage && (
-          <div className="mb-4">
-            <ul className="flex flex-wrap justify-center gap-4 text-gray-600 dark:text-gray-400">
+          <nav>
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     className={cn(
-                      "nav-link transition-colors duration-300 p-2.5 bg-clip-text hover:text-transparent hover:rounded-md hover:bg-black/10",
-                      "hover:dark:bg-white/10 hover:backdrop-blur-lg",
-                      pathname === link.href &&
-                        "text-transparent bg-gradient-to-r rounded-md backdrop-blur-lg",
-                      themes?.isGradient
-                        ? `hover:${themes?.primaryGradient}`
-                        : "hover:bg-gradient-to-r from-blue-600 to-cyan-600",
+                      "font-medium transition-colors hover:underline hover:underline-offset-4",
+                      pathname === link.href
+                        ? "text-neutral-900 dark:text-white"
+                        : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200",
                     )}
                   >
                     {link.label}
@@ -101,17 +108,28 @@ const Footer = ({ themes }) => {
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         )}
 
+        {/* Separator Line (Small visual detail) */}
+        <div className="h-px w-12 bg-neutral-200 dark:bg-neutral-800" />
+
         {/* Copyright */}
-        <p className="text-gray-500 dark:text-gray-400 text-sm">
-          &copy; {Year()}{" "}
-          <Link href="/admin" className="hover:underline">
-            Ebinesh Rabin.
-          </Link>{" "}
-          All Rights Reserved.
-        </p>
+        <div className="text-center text-neutral-500 dark:text-neutral-400">
+          <p>
+            &copy; {currentYear}{" "}
+            <Link
+              href="/admin"
+              className="font-semibold text-neutral-900 hover:underline dark:text-white"
+            >
+              Ebinesh Rabin
+            </Link>
+            . All Rights Reserved.
+          </p>
+          <p className="mt-1 text-xs text-neutral-400">
+            Designed for Portfolio Admin Panel
+          </p>
+        </div>
       </div>
     </footer>
   );

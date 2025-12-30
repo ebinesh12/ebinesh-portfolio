@@ -1,46 +1,39 @@
 "use client";
 
-import { useTheme } from "@/utils/ThemeProvider";
 import { cn } from "@/lib/utils";
 import Header from "@/components/admin/Header";
 import Footer from "@/components/admin/Footer";
 
-export default function AdminLayout({ children }) {
-  const { theme } = useTheme();
-
+export default function AuthLayout({ children }) {
   return (
-    <>
-      <Header themes={theme} />
+    <div className="flex min-h-screen flex-col bg-neutral-50 font-sans text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-50">
+      {/* Header (Fixed) */}
+      <Header />
 
-      <div
-        className={cn(
-          "mt-12 relative min-h-screen p-6 md:p-10 overflow-hidden transition-colors duration-300",
-          "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
-          "flex justify-center items-center",
-        )}
-      >
-        {/* Floating gradient effects with blue glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Left Blob */}
-          <div
-            className={cn(
-              "absolute top-0 right-0 w-[350px] h-[350px] opacity-20 rounded-full blur-3xl animate-pulse",
-              theme?.isGradient
-                ? theme?.primaryGradient
-                : "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
-            )}
-          ></div>
-          {/* Right Blob */}
-          <div
-            className="absolute bottom-0 left-0 w-[350px] h-[350px]
-                                bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-500
-                                dark:from-indigo-500 dark:via-blue-600 dark:to-cyan-500
-                                opacity-20 rounded-full blur-3xl animate-pulse"
-          ></div>
+      {/* Main Content Wrapper */}
+      {/* pt-20 accounts for the fixed header height so content isn't hidden */}
+      <main className="relative flex flex-1 flex-col items-center justify-center p-4 pt-24 sm:px-6 lg:px-8">
+        {/* --- Background Decoration --- */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {/* 1. Technical Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] mask-image-gradient" />
+
+          {/* 2. Central Spotlight Glow (Focuses eye on the form) */}
+          <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/5 blur-[120px] dark:bg-blue-500/10" />
+
+          {/* 3. Ambient Corner Gradients (Subtle) */}
+          <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl dark:bg-cyan-900/20" />
+          <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl dark:bg-purple-900/20" />
         </div>
-        {children}
-      </div>
-      <Footer themes={theme} />
-    </>
+
+        {/* --- Content Area --- */}
+        <div className="relative z-10 w-full max-w-md animate-in fade-in zoom-in-95 duration-500">
+          {children}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 }
