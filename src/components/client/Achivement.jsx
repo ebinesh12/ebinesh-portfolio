@@ -51,7 +51,7 @@ const Achivement = ({ data, themes }) => {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 {achievement.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-gray-600 text-justify dark:text-gray-300 leading-relaxed">
                 {achievement.description}
               </p>
             </div>
