@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   getMessages,
   deleteMessage,
   updateMessage,
 } from "@/services/contactService";
-import { Toaster, toast } from "sonner";
-import { ActionsCell } from "@/components/Actions";
-import { Tables } from "@/components/Tables";
+import { toast } from "sonner";
+import { ContactTable } from "./ContactTable"; // Imported from file below
+import { Inbox, Search, RefreshCcw } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -16,11 +18,12 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Mail, Inbox } from "lucide-react";
 
 export default function ContactAdminPage() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchMessages = async () => {
     try {
@@ -31,6 +34,7 @@ export default function ContactAdminPage() {
       toast.error("Failed to fetch messages.");
     } finally {
       setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -38,11 +42,16 @@ export default function ContactAdminPage() {
     fetchMessages();
   }, []);
 
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    fetchMessages();
+  };
+
   const handleDelete = async (id) => {
     try {
       await deleteMessage(id);
-      toast.success("Message deleted.");
-      fetchMessages();
+      toast.success("Message moved to trash.");
+      setMessages((prev) => prev.filter((msg) => msg.id !== id));
     } catch (err) {
       toast.error("Could not delete message.");
     }
@@ -51,8 +60,11 @@ export default function ContactAdminPage() {
   const handleUpdate = async (id, updatedData) => {
     try {
       await updateMessage(id, updatedData);
-      toast.success("Message updated.");
-      fetchMessages();
+      toast.success("Message updated successfully.");
+      // Optimistic update
+      setMessages((prev) =>
+        prev.map((msg) => (msg.id === id ? { ...msg, ...updatedData } : msg)),
+      );
       return true;
     } catch (err) {
       toast.error("Could not update message.");
@@ -60,46 +72,81 @@ export default function ContactAdminPage() {
     }
   };
 
-  const columns = [
-    { header: "Sender", key: "name" },
-    { header: "Email", key: "email" },
-    { header: "Subject", key: "subject" },
-    { header: "Message", key: "message" },
-  ];
+  // Search Logic
+  const filteredMessages = useMemo(() => {
+    if (!searchQuery) return messages;
+    const lowerQuery = searchQuery.toLowerCase();
+    return messages.filter(
+      (msg) =>
+        msg.name?.toLowerCase().includes(lowerQuery) ||
+        msg.email?.toLowerCase().includes(lowerQuery) ||
+        msg.subject?.toLowerCase().includes(lowerQuery),
+    );
+  }, [messages, searchQuery]);
 
   return (
-    <div className="space-y-6">
-      <Toaster position="top-center" richColors />
-
-      {/* Header / Stats */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 p-2 md:p-6 max-w-7xl mx-auto">
+      {/* Header Section */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          {/* The Layout already has a title, but this context is specific to the table */}
-          <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">
-            Inbox
+          <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Messages
           </h2>
-          <p className="text-sm text-neutral-500">Manage user inquiries.</p>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            Manage inquiries and contacts from your portfolio.
+          </p>
         </div>
-        <div className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-1 text-sm font-medium dark:border-neutral-800 dark:bg-neutral-900">
-          <Inbox className="h-4 w-4 text-neutral-500" />
-          <span>{messages.length} Messages</span>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={loading || isRefreshing}
+            className="h-9"
+          >
+            <RefreshCcw
+              className={`mr-2 h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+            Refresh
+          </Button>
+          <div className="flex items-center justify-center h-9 px-3 rounded-md bg-zinc-100 dark:bg-zinc-800 text-sm font-medium text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+            <Inbox className="mr-2 h-4 w-4" />
+            {messages.length} Total
+          </div>
         </div>
       </div>
 
-      {/* Main Table Card */}
-      <Card className="border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-        <CardContent className="p-0">
-          <Tables
-            columns={columns}
-            data={messages}
-            loading={loading}
-            renderActions={(message) => (
-              <ActionsCell
-                message={message}
-                onDelete={handleDelete}
-                onUpdate={handleUpdate}
+      {/* Main Content Card */}
+      <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm">
+        <CardHeader className="p-4 md:p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+          <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
+            <div className="space-y-1">
+              <CardTitle className="text-base font-semibold">Inbox</CardTitle>
+              <CardDescription>
+                Viewing {filteredMessages.length} of {messages.length} messages
+              </CardDescription>
+            </div>
+
+            {/* Search Bar */}
+            <div className="relative w-full md:w-72">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+              <Input
+                placeholder="Search by name, email, or subject..."
+                className="pl-9 bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-            )}
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="p-0">
+          <ContactTable
+            data={filteredMessages}
+            loading={loading}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
           />
         </CardContent>
       </Card>

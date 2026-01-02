@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import ThemeSidebar from "@/components/ThemeSidebar";
 import { Toaster } from "@/components/ui/sonner";
+import ReactQueryProvider from "@/providers/QueryProvider";
+import { ReduxProvider } from "@/providers/ReduxProvider";
 
 export const metadata = {
   title: "Ebinesh Rabin",
@@ -20,11 +22,15 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={"antialiased"}>
-        <ThemeProvider>
-          {children}
-          <ThemeSidebar />
-          <Toaster position="top-center" richColors />
-        </ThemeProvider>
+        <ReduxProvider>
+          <ReactQueryProvider>
+            <ThemeProvider>
+              {children}
+              <ThemeSidebar />
+              <Toaster position="top-center" richColors />
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

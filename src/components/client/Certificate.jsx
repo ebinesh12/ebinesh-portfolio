@@ -181,15 +181,15 @@ const Certificate = ({ data, themes }) => {
                     </div>
 
                     {/* Titles */}
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 transition-colors">
                       {cert.title}
                     </h3>
                     <p
                       className={cn(
-                        "text-sm font-medium mb-3",
+                        "text-sm font-medium mb-3 bg-clip-text text-transparent",
                         themes?.isGradient
-                          ? "text-gray-600 dark:text-gray-300"
-                          : "text-indigo-600 dark:text-indigo-400",
+                          ? themes?.primaryGradient
+                          : "bg-gradient-to-br from-indigo-500 to-purple-600",
                       )}
                     >
                       {cert.issuer}

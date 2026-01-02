@@ -15,8 +15,43 @@ import {
   Atom,
   FileType,
   Workflow,
+  Leaf,
+  Coffee,
+  TestTube,
+  Bug,
+  Github,
+  GitCompareArrows,
+  Zap,
+  ServerCog,
 } from "lucide-react";
+import {
+  RiTailwindCssFill,
+  RiCss3Fill,
+  RiJavascriptFill,
+  RiBootstrapFill,
+} from "react-icons/ri";
 import { cn } from "@/lib/utils";
+
+const hoverColorClasses = {
+  "bg-orange-600": "group-hover/skill:text-orange-600", // HTML5
+  "bg-blue-600": "group-hover/skill:text-blue-600", // CSS3
+  "bg-yellow-400": "group-hover/skill:text-yellow-400", // JavaScript
+  "bg-sky-400": "group-hover/skill:text-sky-400", // React
+  "bg-teal-400": "group-hover/skill:text-teal-400", // Tailwind CSS
+  "bg-purple-600": "group-hover/skill:text-purple-600", // Bootstrap
+  "bg-yellow-500": "group-hover/skill:text-yellow-500", // Python
+  "bg-green-700": "group-hover/skill:text-green-700", // Django
+  "bg-emerald-500": "group-hover/skill:text-emerald-500", // FastAPI
+  "bg-sky-700": "group-hover/skill:text-sky-700", // PostgreSQL
+  "bg-green-500": "group-hover/skill:text-green-500", // MongoDB
+  "bg-red-600": "group-hover/skill:text-red-600", // Java
+  "bg-orange-500": "group-hover/skill:text-orange-500", // Git
+  "bg-gray-800": "group-hover/skill:text-gray-800", // GitHub
+  "bg-sky-500": "group-hover/skill:text-sky-500", // Docker
+  "bg-indigo-500": "group-hover/skill:text-indigo-500", // Agile Method
+  "bg-red-500": "group-hover/skill:text-red-500", // Debugging
+  "bg-pink-500": "group-hover/skill:text-pink-500", // Testing
+};
 
 // --- 1. Helper: Map Category Titles to Lucide Icons ---
 const getCategoryIcon = (title) => {
@@ -36,14 +71,27 @@ const getCategoryIcon = (title) => {
 const getTechIcon = (name) => {
   const n = name?.toLowerCase() || "";
   if (n.includes("react") || n.includes("atom")) return <Atom />;
-  if (n.includes("git")) return <GitBranch />;
+  if (n.includes("gits")) return <GitBranch />;
   if (n.includes("html") || n.includes("xml")) return <Code2 />;
-  if (n.includes("css") || n.includes("design")) return <FileType />;
-  if (n.includes("node") || n.includes("js")) return <Box />;
-  if (n.includes("python") || n.includes("java")) return <FileType />;
+  if (n.includes("design")) return <FileType />;
+  if (n.includes("css3")) return <RiCss3Fill />;
+  if (n.includes("node") || n.includes("javascript"))
+    return <RiJavascriptFill />;
   if (n.includes("docker") || n.includes("container")) return <Box />;
   if (n.includes("cloud") || n.includes("aws")) return <Globe />;
-  if (n.includes("sql") || n.includes("mongo")) return <Database />;
+  if (n.includes("sql")) return <Database />;
+  if (n.includes("tailwind")) return <RiTailwindCssFill />;
+  if (n.includes("bootst")) return <RiBootstrapFill />;
+  if (n.includes("java")) return <Coffee />;
+  if (n.includes("mongo")) return <Leaf />;
+  if (n.includes("test")) return <TestTube />;
+  if (n.includes("bug")) return <Bug />;
+  if (n.includes("github")) return <Github />;
+  if (n.includes("agile")) return <GitCompareArrows />;
+  if (n.includes("fast")) return <Zap />;
+  if (n.includes("django")) return <ServerCog />;
+  if (n.includes("python")) return <Terminal />;
+
   return <Workflow />; // Default fallback
 };
 
@@ -196,7 +244,7 @@ const Skills = ({ data, themes }) => {
                            In a real generic component we might render the component function. 
                         */}
                         {React.cloneElement(getTechIcon(skill.name), {
-                          className: "w-8 h-8",
+                          className: `w-8 h-8 group-hover/skill:${skill?.color}`,
                         })}
                       </span>
 

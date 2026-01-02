@@ -11,7 +11,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-// import { useUserStore } from "@/stores/userStore";
+import { useSelector } from "react-redux";
 import TypingAnimation from "@/components/ui/typing-animation";
 
 // Helper to map string icon names from DB to Lucide components
@@ -29,7 +29,7 @@ const getIconComponent = (iconName) => {
 };
 
 const Hero = ({ data, themes }) => {
-  const user = "ebin";
+  const user = useSelector((state) => state.userInfo.user);
   const [resume, setResume] = useState(null);
   const [profile, setProfile] = useState(null);
 
@@ -85,7 +85,9 @@ const Hero = ({ data, themes }) => {
   // Determine Resume Link
   const getActionLink = (action) => {
     if (action.id === "resume") {
-      return (user ? `/api/v1/admin/${user?.id}/res` : resume) || action.href;
+      return (
+        (user != null ? `/api/v1/admin/${user?.id}/res` : resume) || action.href
+      );
     }
     return action.href;
   };
@@ -158,7 +160,7 @@ const Hero = ({ data, themes }) => {
             {/* Summary */}
             <motion.p
               variants={itemVariants}
-              className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed"
+              className="text-gray-600 dark:text-gray-300 text-base text-justify sm:text-lg max-w-2xl leading-relaxed"
             >
               {data?.about?.summary ||
                 "Building digital experiences with modern technologies."}

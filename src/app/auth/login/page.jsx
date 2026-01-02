@@ -6,8 +6,9 @@ import { loginSchema } from "@/services/schema";
 import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/slices/userSlice";
 import { useRouter } from "next/navigation";
-// import { useUserStore } from "@/stores/userStore";
 
 // UI Components
 import {
@@ -33,13 +34,15 @@ import {
   EyeOff,
   ArrowRight,
 } from "lucide-react";
+import { useTheme } from "@/providers/ThemeProvider";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // const router = useRouter();
-  // const { loginUser } = useUserStore();
+  const { theme } = useTheme();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -56,8 +59,8 @@ export default function LoginForm() {
       const res = await axios.post("/api/v1/login", data);
 
       if (res.status === 200 && res.data.user) {
-        // loginUser(res.data.user);
-        // Using window.location to ensure a full state reset for the admin panel
+        dispatch(setUser(res.data.user));
+        router.push("/admin");
         // eslint-disable-next-line react-hooks/immutability
         window.location.href = "/admin";
       }

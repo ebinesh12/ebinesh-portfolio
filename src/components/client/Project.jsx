@@ -153,17 +153,27 @@ const Projects = ({ data, themes }) => {
                   <div className="absolute inset-0 bg-black/10"></div>
 
                   {/* Floating Icon */}
-                  <div className="relative z-10 text-white transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 drop-shadow-lg">
-                    {getProjectIcon(project.icon)}
-                  </div>
 
+                  <div
+                    className={cn(
+                      "h-0 flex items-center justify-center text-white text-5xl rounded-t-xl transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 drop-shadow-lg",
+                      project.gradient, // Use gradient from data
+                    )}
+                  >
+                    <i className={project.icon}></i>
+                  </div>
                   {/* Tech Overlay (Optional visual polish) */}
                   <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
 
                 {/* 2. Content Area */}
                 <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3
+                    className={cn(
+                      "text-xl font-bold text-gray-900 dark:text-white mb-3 bg-clip-text hover:text-transparent",
+                      `hover:${themes?.primaryGradient}`,
+                    )}
+                  >
                     {project.title}
                   </h3>
 

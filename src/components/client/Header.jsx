@@ -36,7 +36,7 @@ const Header = ({ themes }) => {
       const offset = 100;
       const sections = navItems.map((item) => document.getElementById(item.id));
 
-      let currentActive = "home";
+      let currentActive = "";
       sections.forEach((section) => {
         if (section) {
           const sectionTop = section.offsetTop - offset;

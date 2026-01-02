@@ -201,19 +201,29 @@ const About = ({ data, themes }) => {
                 className={cn(
                   "group relative p-8 rounded-2xl transition-all duration-300 border",
                   "bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm",
-                  "border-gray-200 dark:border-zinc-800 hover:border-blue-300 dark:hover:border-blue-700",
                   "hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-blue-900/20",
+                  themes?.border,
+                  // "border-gray-200 dark:border-zinc-800 hover:border-blue-300 dark:hover:border-blue-700",
                 )}
               >
                 <div className="flex flex-col h-full">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white transition-colors">
                         {edu.degree}
                       </h4>
-                      <div className="flex items-center gap-2 mt-2 text-sm font-medium text-blue-600 dark:text-cyan-400">
-                        <Building2 className="w-4 h-4" />
-                        {edu.institution}
+                      <div className="flex items-center gap-2 mt-2 text-sm font-medium">
+                        <Building2 className={cn("w-5 h-5", themes?.text)} />
+                        <span
+                          className={cn(
+                            "font-medium mt-1 bg-clip-text text-transparent",
+                            themes?.isGradient
+                              ? themes?.primaryGradient
+                              : "text-blue-600 dark:text-cyan-400",
+                          )}
+                        >
+                          {edu.institution}
+                        </span>
                       </div>
                     </div>
                     <div className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 flex items-center gap-1.5 whitespace-nowrap">
@@ -222,7 +232,7 @@ const About = ({ data, themes }) => {
                     </div>
                   </div>
 
-                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mt-auto">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm text-justify leading-relaxed mt-auto">
                     {edu.description}
                   </p>
                 </div>

@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-// import { useUserStore } from "@/stores/userStore";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { removeUser } from "@/slices/userSlice";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -40,7 +42,7 @@ const navLinks = [
 
 const Header = () => {
   // const { user, logoutUser } = useUserStore();
-  const user = "ebin";
+  const user = useSelector((state) => state.userInfo.user);
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -48,7 +50,7 @@ const Header = () => {
 
   const pathname = usePathname();
   const router = useRouter();
-
+  const dispatch = useDispatch();
   // Detect Auth Pages to simplify header
   const isAuthPage = pathname.startsWith("/auth");
 
@@ -73,7 +75,7 @@ const Header = () => {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      // logoutUser();
+      dispatch(removeUser());
       await axios.post("/api/v1/logout");
       router.push("/auth/login");
       router.refresh();

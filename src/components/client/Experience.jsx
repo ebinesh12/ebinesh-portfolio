@@ -138,13 +138,19 @@ const Experience = ({ data, themes }) => {
                         <div
                           className={cn(
                             "flex items-center gap-2 font-medium mt-1",
-                            themes?.isGradient
-                              ? themes?.primaryGradient
-                              : "text-blue-600 dark:text-cyan-400",
                           )}
                         >
-                          <Building2 className="w-4 h-4" />
-                          <span>{job.company}</span>
+                          <Building2 className={cn("w-5 h-5", themes?.text)} />
+                          <span
+                            className={cn(
+                              "font-medium mt-1 bg-clip-text text-transparent",
+                              themes?.isGradient
+                                ? themes?.primaryGradient
+                                : "text-blue-600 dark:text-cyan-400",
+                            )}
+                          >
+                            {job.company}
+                          </span>
                         </div>
                       </div>
 

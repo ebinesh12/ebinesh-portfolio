@@ -449,7 +449,7 @@ export default function EditHero({ themes }) {
             type="submit"
             disabled={isSubmitting}
             className={cn(
-              "shadow-lg min-w-[150px] rounded-full font-semibold transition-all duration-300",
+              "shadow-lg min-w-[150px] text-white rounded-full font-semibold transition-all duration-300",
               themes?.isGradient
                 ? themes?.primaryGradient
                 : "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white",

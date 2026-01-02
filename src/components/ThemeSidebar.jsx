@@ -29,111 +29,135 @@ import {
 const gradients = [
   {
     name: "Holographic",
-    color: "bg-pink-400", // Representative color for the swatch
+    text: "text-pink-300",
+    border: "hover:border-pink-400",
     primaryGradient:
       "bg-gradient-to-r from-pink-400 to-blue-500 dark:from-pink-500 dark:to-blue-600",
+    outlineBtn:
+      "border border-blue-400 text-pink-300 hover:bg-gradient-to-r from-pink-400 via-blue-500 to-indigo-600 hover:text-black",
     sectionBgGradient:
       "bg-gradient-to-br from-gray-900 via-black to-blue-950 dark:from-black dark:via-gray-900 dark:to-blue-900",
-    isGradient: true,
   },
   {
     name: "Sunny Days",
-    color: "bg-orange-400",
+    text: "text-amber-600",
+    border: "hover:border-amber-500",
     primaryGradient:
       "bg-gradient-to-r from-amber-300 to-orange-400 dark:from-amber-500 dark:to-orange-700",
+    outlineBtn:
+      "border border-orange-400 text-amber-600 hover:bg-gradient-to-r from-amber-300 via-orange-400 to-red-500 hover:text-black",
     sectionBgGradient:
       "bg-gradient-to-br from-yellow-100 via-white to-orange-100 dark:from-yellow-950 dark:via-gray-900 dark:to-black",
-    isGradient: true,
   },
   {
     name: "Ocean Breeze",
-    color: "bg-cyan-400",
+    text: "text-cyan-300",
+    border: "hover:border-sky-400",
     primaryGradient:
       "bg-gradient-to-r from-cyan-300 to-blue-500 dark:from-cyan-500 dark:to-blue-700",
+    outlineBtn:
+      "border border-sky-400 text-cyan-300 hover:bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 dark:from-cyan-500 dark:via-sky-600 dark:to-blue-700",
-    isGradient: true,
   },
   {
     name: "Tropical Punch",
-    color: "bg-pink-500",
+    text: "text-pink-500",
+    border: "hover:border-pink-600",
     primaryGradient:
       "bg-gradient-to-r from-pink-400 to-orange-500 dark:from-pink-500 dark:to-orange-600",
+    outlineBtn:
+      "border border-orange-500 text-pink-500 hover:bg-gradient-to-r from-pink-500 via-orange-500 to-red-600 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-br from-pink-100 via-white to-orange-100 dark:from-pink-950 dark:via-gray-900 dark:to-black",
-    isGradient: true,
   },
   {
     name: "Aurora Purple",
-    color: "bg-purple-500",
+    text: "text-purple-400",
+    border: "hover:border-fuchsia-500",
     primaryGradient:
       "bg-gradient-to-r from-purple-400 to-pink-500 dark:from-purple-400 dark:to-pink-600",
+    outlineBtn:
+      "border border-fuchsia-500 text-purple-400 hover:bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 dark:from-purple-600 dark:via-fuchsia-700 dark:to-pink-700",
-    isGradient: true,
   },
   {
     name: "Galactic Teal",
-    color: "bg-teal-400",
+    text: "text-teal-300",
+    border: "hover:border-cyan-400",
     primaryGradient:
       "bg-gradient-to-r from-teal-300 to-sky-500 dark:from-teal-500 dark:to-sky-700",
+    outlineBtn:
+      "border border-cyan-400 text-teal-300 hover:bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 hover:text-black",
     sectionBgGradient:
       "bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 dark:from-teal-500 dark:via-cyan-600 dark:to-sky-700",
-    isGradient: true,
   },
   {
     name: "Olive Grove",
-    color: "bg-lime-600",
+    text: "text-lime-700",
+    border: "hover:border-lime-600",
     primaryGradient:
       "bg-gradient-to-r from-lime-500 to-green-700 dark:from-emerald-500 dark:to-lime-600",
+    outlineBtn:
+      "border border-green-600 text-lime-700 hover:bg-gradient-to-r from-lime-500 via-green-600 to-emerald-700 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-br from-lime-100 via-white to-green-100 dark:from-lime-900 dark:via-gray-800 dark:to-black",
-    isGradient: true,
   },
   {
     name: "Wild Berry",
-    color: "bg-fuchsia-600",
+    text: "text-fuchsia-500",
+    border: "hover:border-purple-600",
     primaryGradient:
       "bg-gradient-to-r from-fuchsia-500 to-indigo-700 dark:from-fuchsia-700 dark:to-indigo-900",
+    outlineBtn:
+      "border border-purple-600 text-fuchsia-500 hover:bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-700 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-700 dark:from-fuchsia-700 dark:via-purple-800 dark:to-indigo-900",
-    isGradient: true,
   },
   {
     name: "Volcanic Ash",
-    color: "bg-slate-500",
+    text: "text-slate-400",
+    border: "hover:border-gray-500",
     primaryGradient:
       "bg-gradient-to-r from-slate-400 to-zinc-600 dark:from-slate-600 dark:to-zinc-600",
+    outlineBtn:
+      "border border-gray-500 text-slate-400 hover:bg-gradient-to-r from-slate-400 via-gray-500 to-zinc-600 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-r from-slate-500 via-gray-600 to-zinc-700 dark:from-slate-700 dark:via-gray-800 dark:to-zinc-900",
-    isGradient: true,
   },
   {
     name: "Desert Mirage",
-    color: "bg-yellow-600",
+    text: "text-yellow-600",
+    border: "hover:border-amber-700",
     primaryGradient:
       "bg-gradient-to-r from-yellow-600 to-orange-800 dark:from-yellow-700 dark:to-orange-900",
+    outlineBtn:
+      "border border-amber-700 text-yellow-600 hover:bg-gradient-to-r from-yellow-600 via-amber-700 to-orange-800 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-r from-yellow-500 via-amber-600 to-orange-700 dark:from-yellow-700 dark:via-amber-800 dark:to-orange-900",
-    isGradient: true,
   },
   {
     name: "Maroon Majesty",
-    color: "bg-red-700",
+    text: "text-red-800",
+    border: "hover:border-red-700",
     primaryGradient:
       "bg-gradient-to-r from-red-600 to-red-800 dark:from-red-700 dark:to-red-900",
+    outlineBtn:
+      "border border-red-700 text-red-800 hover:bg-gradient-to-r from-red-600 via-red-700 to-rose-800 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-br from-red-100 via-white to-rose-100 dark:from-red-900 dark:via-gray-800 dark:to-black",
-    isGradient: true,
   },
   {
     name: "Lavender Fields",
-    color: "bg-violet-400",
+    text: "text-violet-400",
+    border: "hover:border-purple-400",
     primaryGradient:
       "bg-gradient-to-r from-violet-400 to-indigo-400 dark:from-purple-400 dark:to-indigo-600",
+    outlineBtn:
+      "border border-purple-400 text-violet-400 hover:bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 hover:text-white",
     sectionBgGradient:
       "bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 dark:from-violet-600 dark:via-purple-600 dark:to-indigo-600",
-    isGradient: true,
   },
 ];
 
@@ -166,8 +190,11 @@ export default function ThemeSidebar() {
     setCurrentTheme({
       primaryGradient:
         "bg-gradient-to-r from-pink-400 to-blue-500 dark:from-pink-500 dark:to-blue-600",
+
       sectionBgGradient:
         "bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-blue-950 dark:via-gray-900 dark:to-black",
+      outlineBtn:
+        "border border-blue-400 text-pink-300 hover:bg-gradient-to-r from-pink-400 via-blue-500 to-indigo-600 hover:text-black",
       isGradient: true,
       radius: 0.6,
     });
@@ -260,6 +287,9 @@ export default function ThemeSidebar() {
                         ...currentTheme,
                         primaryGradient: gradient.primaryGradient,
                         sectionBgGradient: gradient.sectionBgGradient, // Preserving logic
+                        border: gradient.border,
+                        outlineBtn: gradient.outlineBtn,
+                        text: gradient.text,
                         isGradient: true,
                       })
                     }
@@ -274,7 +304,7 @@ export default function ThemeSidebar() {
                     <div
                       className={cn(
                         "h-full w-full rounded-full",
-                        gradient.color,
+                        gradient.primaryGradient,
                       )}
                     />
                     {isActive && (

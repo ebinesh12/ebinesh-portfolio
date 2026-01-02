@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import getData from "@/services/dataService";
 import { useTheme } from "@/providers/ThemeProvider";
+import { usePortfolioData } from "@/services/dataService";
 
 import Header from "@/components/client/Header";
 import Hero from "@/components/client/Hero";
@@ -15,36 +14,23 @@ import Certificate from "@/components/client/Certificate";
 import Contact from "@/components/client/Contact";
 import Footer from "@/components/client/Footer";
 import Skeletons from "@/components/client/Skeletons";
+import GlobalError from "./global-error";
 
 const Page = () => {
-  const [portfolioData, setPortfolioData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { theme } = useTheme();
 
-  useEffect(() => {
-    // Define an async function inside useEffect to call the data fetcher
-    const fetchData = async () => {
-      try {
-        const data = await getData();
-        setPortfolioData(data);
-      } catch (err) {
-        setError(err?.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // 1. Fetch data using the hook
+  const { data: portfolioData, isLoading, isError } = usePortfolioData();
 
-    fetchData();
-  }, []);
-
-  if (loading) {
+  // 2. Handle Loading State
+  if (isLoading) {
     return <Skeletons />;
   }
 
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
+  // 3. Handle Error State (Optional but recommended)
+  if (isError) {
+    return <GlobalError />;
+  }
 
   return (
     <>
@@ -61,4 +47,5 @@ const Page = () => {
     </>
   );
 };
+
 export default Page;

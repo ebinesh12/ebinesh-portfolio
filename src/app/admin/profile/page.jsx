@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "sonner";
-// import { useUserStore } from "@/stores/userStore";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "@/slices/userSlice";
 import { useTheme } from "@/providers/ThemeProvider";
 
 // Schemas
@@ -50,8 +51,9 @@ import {
 export default function ProfilePage() {
   const { theme } = useTheme();
   const router = useRouter();
-  // const { user, loginUser } = useUserStore();
-  const user = "ebin";
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userInfo.user);
+
   // State
   const [previewImage, setPreviewImage] = useState(null);
   const [isInfoEditable, setIsInfoEditable] = useState(false);
@@ -62,7 +64,7 @@ export default function ProfilePage() {
   const refetchUserData = async () => {
     try {
       const { data } = await axios.get("/api/v1/admin/detail");
-      // loginUser(data.user);
+      dispatch(setUser(data.user));
     } catch (error) {
       console.error("Refetch error:", error);
     }

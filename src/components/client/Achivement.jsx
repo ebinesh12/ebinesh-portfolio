@@ -10,6 +10,7 @@ import {
   BadgeCheck,
   ScrollText,
   Bookmark,
+  Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -81,13 +82,14 @@ const Achievement = ({ data, themes }) => {
           <motion.div variants={itemVariants}>
             <span
               className={cn(
-                "inline-block mb-3 text-sm font-bold tracking-[0.2em] uppercase bg-clip-text text-transparent",
+                "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4 border",
                 themes?.isGradient
-                  ? themes?.primaryGradient
-                  : "bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-cyan-300",
+                  ? "border-white/30 text-white bg-white/10"
+                  : "border-indigo-200 text-indigo-600 bg-indigo-50 dark:border-indigo-900 dark:text-indigo-400 dark:bg-indigo-900/20",
               )}
             >
-              {data?.superTitle || "Honors & Awards"}
+              <Cpu className="w-3 h-3" />
+              {data?.superTitle || "Competencies"}
             </span>
           </motion.div>
 
@@ -134,7 +136,7 @@ const Achievement = ({ data, themes }) => {
                 {/* Gradient Border Glow (Optional effect) */}
                 <div
                   className={cn(
-                    "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm",
+                    "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10 blur-sm",
                     themes?.isGradient
                       ? themes?.primaryGradient
                       : "bg-gradient-to-br from-blue-500/30 to-purple-500/30",
@@ -157,7 +159,7 @@ const Achievement = ({ data, themes }) => {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3  transition-colors">
                   {achievement.title}
                 </h3>
 

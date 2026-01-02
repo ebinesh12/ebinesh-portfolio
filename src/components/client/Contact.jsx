@@ -40,6 +40,9 @@ const getContactIcon = (iconString) => {
 };
 
 const Contact = ({ themes, data }) => {
+  const border = (themes?.border).replace("hover:", "");
+  const ring = (themes?.border).replace("hover:border", "ring");
+  console.log(border, ring);
   const {
     register,
     handleSubmit,
@@ -181,7 +184,7 @@ const Contact = ({ themes, data }) => {
                       "bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md",
                       "border-gray-200 dark:border-white/10 shadow-sm",
                       isLink &&
-                        "hover:shadow-lg hover:-translate-y-1 hover:border-blue-300 dark:hover:border-blue-700 cursor-pointer",
+                        `hover:shadow-lg hover:-translate-y-1 ${themes?.border} cursor-pointer`,
                     )}
                   >
                     <div
@@ -238,7 +241,8 @@ const Contact = ({ themes, data }) => {
                       "bg-gray-50 dark:bg-white/5",
                       "border-gray-200 dark:border-white/10",
                       "text-gray-900 dark:text-white placeholder:text-gray-400",
-                      "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
+                      `${themes.border} focus:ring-1 focus:${ring}/50 focus:${border} focus:bg-white dark:focus:bg-zinc-900`,
+                      // "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
                     )}
                   />
                   {errors.name && (
@@ -266,7 +270,8 @@ const Contact = ({ themes, data }) => {
                       "bg-gray-50 dark:bg-white/5",
                       "border-gray-200 dark:border-white/10",
                       "text-gray-900 dark:text-white placeholder:text-gray-400",
-                      "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
+                      `${themes.border} focus:ring-1 focus:${ring}/50 focus:${border} focus:bg-white dark:focus:bg-zinc-900`,
+                      // "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
                     )}
                   />
                   {errors.email && (
@@ -294,7 +299,8 @@ const Contact = ({ themes, data }) => {
                       "bg-gray-50 dark:bg-white/5",
                       "border-gray-200 dark:border-white/10",
                       "text-gray-900 dark:text-white placeholder:text-gray-400",
-                      "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
+                      `${themes.border} focus:ring-1 focus:${ring}/50 focus:${border} focus:bg-white dark:focus:bg-zinc-900`,
+                      // "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
                     )}
                   />
                   {errors.subject && (
@@ -322,7 +328,8 @@ const Contact = ({ themes, data }) => {
                       "bg-gray-50 dark:bg-white/5",
                       "border-gray-200 dark:border-white/10",
                       "text-gray-900 dark:text-white placeholder:text-gray-400",
-                      "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
+                      `${themes.border} focus:ring-1 focus:${ring}/50 focus:${border} focus:bg-white dark:focus:bg-zinc-900`,
+                      // "focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900",
                     )}
                   ></textarea>
                   {errors.message && (
