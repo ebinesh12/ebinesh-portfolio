@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Trophy,
   Award,
@@ -20,6 +20,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { achievementsSchema } from "@/services/schema";
 import { achievementsValues } from "@/utils/constant";
+
+// Import API service functions
+import {
+  fetchAchievementsData,
+  updateAchievementsData,
+} from "@/services/AchievementService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -40,8 +46,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditAchievements({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -57,39 +64,51 @@ export default function EditAchievements({ themes }) {
     fields: itemFields,
     append: appendItem,
     remove: removeItem,
-    move: moveItem, // Destructure move for reordering
+    move: moveItem,
   } = useFieldArray({
     control,
     name: "items",
   });
 
-  useEffect(() => {
-    const fetchAchievementsData = async () => {
-      try {
-        const response = await axios.get("/api/v1/achievement");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch achievements data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchAchievementsData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: achievementsData, isLoading } = useQuery({
+    queryKey: ["achievements"],
+    queryFn: fetchAchievementsData,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false, // Prevent form reset on window focus
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (achievementsData) {
+      reset(achievementsData);
+    }
+  }, [achievementsData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateAchievementsData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["achievements"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/achievement", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving achievements...",
       success: "Achievements section updated successfully!",
-      error: "Failed to update achievements.",
+      error: (err) => {
+        console.error(err);
+        return "Failed to update achievements.";
+      },
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Info,
   BookOpen,
@@ -20,6 +20,9 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { aboutSchema } from "@/services/schema";
 import { aboutValues } from "@/utils/constant";
+
+// Import API service functions
+import { fetchAboutData, updateAboutData } from "@/services/AboutService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -40,8 +43,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditAbout({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -57,31 +61,40 @@ export default function EditAbout({ themes }) {
     fields: educationFields,
     append: appendEducation,
     remove: removeEducation,
-    move: moveEducation, // Destructure move for reordering
+    move: moveEducation,
   } = useFieldArray({
     control,
     name: "education",
   });
 
-  useEffect(() => {
-    const fetchAboutData = async () => {
-      try {
-        const response = await axios.get("/api/v1/about");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch about data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchAboutData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: aboutData, isLoading } = useQuery({
+    queryKey: ["about"],
+    queryFn: fetchAboutData,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false, // Prevent form reset on window switch
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (aboutData) {
+      reset(aboutData);
+    }
+  }, [aboutData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateAboutData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data (optional for simple forms, but good practice)
+      queryClient.invalidateQueries({ queryKey: ["about"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/about", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving changes...",
       success: "About section updated successfully!",
@@ -90,7 +103,7 @@ export default function EditAbout({ themes }) {
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />

@@ -35,14 +35,6 @@ import {
   User,
   Type,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export function MessageActions({ message, onDelete, onUpdate }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);

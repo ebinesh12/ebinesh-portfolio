@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Contact,
   MessageSquare,
@@ -21,6 +21,9 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { linksSchema } from "@/services/schema";
 import { linksValues } from "@/utils/constant";
+
+// Import API service functions
+import { fetchLinkData, updateLinkData } from "@/services/LinkService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -40,8 +43,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditContact({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -57,41 +61,51 @@ export default function EditContact({ themes }) {
     fields: methodFields,
     append: appendMethod,
     remove: removeMethod,
-    move: moveMethod, // Destructure move for reordering
+    move: moveMethod,
   } = useFieldArray({
     control,
     name: "connect.methods",
   });
 
-  useEffect(() => {
-    const fetchContactData = async () => {
-      try {
-        const response = await axios.get("/api/v1/link");
-        if (response.data.success) {
-          reset(response.data.data);
-        } else {
-          toast.error(response.data.message || "Failed to fetch contact data.");
-        }
-      } catch (error) {
-        toast.error("An error occurred while fetching contact data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchContactData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: linkData, isLoading } = useQuery({
+    queryKey: ["links"], // Unique key for this data
+    queryFn: fetchLinkData,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false, // Prevent form reset on window focus
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (linkData) {
+      reset(linkData);
+    }
+  }, [linkData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateLinkData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/link", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving contact info...",
       success: "Contact section updated!",
-      error: "Failed to update contact section.",
+      error: (err) => {
+        console.error(err);
+        return "Failed to update contact section.";
+      },
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />

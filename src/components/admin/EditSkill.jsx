@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Cpu,
   Layers,
@@ -19,6 +19,9 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { skillsSchema } from "@/services/schema";
 import { skillsValues } from "@/utils/constant";
+
+// Import API service functions
+import { fetchSkillsData, updateSkillsData } from "@/services/SkillService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -43,7 +46,7 @@ function SkillsList({ control, catIndex, register }) {
     fields: skillFields,
     append: appendSkill,
     remove: removeSkill,
-    move: moveSkill, // Destructure move
+    move: moveSkill,
   } = useFieldArray({
     control,
     name: `categories.${catIndex}.items`,
@@ -185,8 +188,9 @@ function SkillsList({ control, catIndex, register }) {
 
 // --- Main Component ---
 export default function EditSkills({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -202,31 +206,39 @@ export default function EditSkills({ themes }) {
     fields: categoryFields,
     append: appendCategory,
     remove: removeCategory,
-    move: moveCategory, // Destructure move
+    move: moveCategory,
   } = useFieldArray({
     control,
     name: "categories",
   });
 
-  useEffect(() => {
-    const fetchSkillsData = async () => {
-      try {
-        const response = await axios.get("/api/v1/skill");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch skills data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchSkillsData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: skillsData, isLoading } = useQuery({
+    queryKey: ["skills"],
+    queryFn: fetchSkillsData,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (skillsData) {
+      reset(skillsData);
+    }
+  }, [skillsData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateSkillsData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["skills"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/skill", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving skills...",
       success: "Skills section updated successfully!",
@@ -234,7 +246,7 @@ export default function EditSkills({ themes }) {
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
@@ -367,7 +379,7 @@ export default function EditSkills({ themes }) {
                     <div className="flex items-center justify-between w-full">
                       <AccordionTrigger className="flex-1 hover:no-underline">
                         <span className="font-semibold text-lg text-gray-700 dark:text-gray-200">
-                          {/* Fallback title if input is empty, using optional chaining carefully */}
+                          {/* Fallback title if input is empty */}
                           Category {catIndex + 1}
                         </span>
                       </AccordionTrigger>
@@ -404,7 +416,7 @@ export default function EditSkills({ themes }) {
                           className="h-8 w-8 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
                           onClick={() => removeCategory(catIndex)}
                         >
-                          <Trash2 className="h-4 h-4" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>

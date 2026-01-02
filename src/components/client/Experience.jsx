@@ -87,7 +87,12 @@ const Experience = ({ data, themes }) => {
         {/* --- Timeline Structure --- */}
         <div className="relative">
           {/* Vertical Line */}
-          <div className="absolute left-4 md:left-1/2 top-4 bottom-0 w-0.5 bg-gradient-to-b from-blue-200 via-indigo-200 to-transparent dark:from-blue-900 dark:via-indigo-900 ml-[1px] md:ml-0" />
+          <div
+            className={cn(
+              "absolute left-4 md:left-1/2 top-4 bottom-0 w-0.5  ml-[1px] md:ml-0",
+              themes?.primaryGradient,
+            )}
+          />
 
           <motion.div
             variants={containerVariants}
@@ -110,8 +115,13 @@ const Experience = ({ data, themes }) => {
                 <div className="hidden md:block w-1/2" />
 
                 {/* 2. Timeline Node (Dot) */}
-                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 z-20 mt-6 shadow-[0_0_0_4px_rgba(59,130,246,0.2)] bg-blue-500 dark:bg-blue-400">
-                  <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-blue-500" />
+                <div
+                  className={cn(
+                    "absolute left-4 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 z-20 mt-6 shadow-[0_0_0_4px_rgba(59,130,246,0.2)]",
+                    themes.primaryGradient,
+                  )}
+                >
+                  <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-red-500" />
                 </div>
 
                 {/* 3. Card Content */}

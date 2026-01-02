@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
   FileText,
@@ -22,6 +22,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { certificatesSchema } from "@/services/schema";
 import { certificatesValues } from "@/utils/constant";
+
+// Import API service functions
+import {
+  fetchCertificatesData,
+  updateCertificatesData,
+} from "@/services/CertificateService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -42,8 +48,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditCertificates({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -59,39 +66,51 @@ export default function EditCertificates({ themes }) {
     fields: itemFields,
     append: appendItem,
     remove: removeItem,
-    move: moveItem, // Destructure move for reordering
+    move: moveItem,
   } = useFieldArray({
     control,
     name: "items",
   });
 
-  useEffect(() => {
-    const fetchCertificatesData = async () => {
-      try {
-        const response = await axios.get("/api/v1/certificate");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch certificates data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchCertificatesData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: certificatesData, isLoading } = useQuery({
+    queryKey: ["certificates"],
+    queryFn: fetchCertificatesData,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false, // Prevent form reset while editing
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (certificatesData) {
+      reset(certificatesData);
+    }
+  }, [certificatesData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateCertificatesData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["certificates"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/certificate", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving certificates...",
       success: "Certificates section updated!",
-      error: "Failed to update certificates.",
+      error: (err) => {
+        console.error(err);
+        return "Failed to update certificates.";
+      },
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />

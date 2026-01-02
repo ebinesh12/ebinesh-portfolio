@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   FolderGit,
   Github,
@@ -22,6 +22,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { projectsSchema } from "@/services/schema";
 import { projectsValues } from "@/utils/constant";
+
+// Import API service functions
+import {
+  fetchProjectsData,
+  updateProjectsData,
+} from "@/services/ProjectService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -42,8 +48,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditProjects({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -59,39 +66,51 @@ export default function EditProjects({ themes }) {
     fields: itemFields,
     append: appendItem,
     remove: removeItem,
-    move: moveItem, // Destructure move for reordering
+    move: moveItem,
   } = useFieldArray({
     control,
     name: "items",
   });
 
-  useEffect(() => {
-    const fetchProjectsData = async () => {
-      try {
-        const response = await axios.get("/api/v1/project");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch projects data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchProjectsData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: projectsData, isLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: fetchProjectsData,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false,
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (projectsData) {
+      reset(projectsData);
+    }
+  }, [projectsData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateProjectsData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/project", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving projects...",
       success: "Projects section updated!",
-      error: "Failed to update projects.",
+      error: (err) => {
+        console.error(err);
+        return "Failed to update projects.";
+      },
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />

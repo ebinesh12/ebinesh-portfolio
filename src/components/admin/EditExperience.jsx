@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Briefcase,
   Building2,
@@ -20,6 +20,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { experienceSchema } from "@/services/schema";
 import { experienceValues } from "@/utils/constant";
+
+// Import API service functions
+import {
+  fetchExperienceData,
+  updateExperienceData,
+} from "@/services/ExperienceService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -40,8 +46,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditExperience({ themes }) {
-  const [isFetching, setIsFetching] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -57,39 +64,51 @@ export default function EditExperience({ themes }) {
     fields: jobFields,
     append: appendJob,
     remove: removeJob,
-    move: moveJob, // Destructure move for reordering
+    move: moveJob,
   } = useFieldArray({
     control,
     name: "jobs",
   });
 
-  useEffect(() => {
-    const fetchExperienceData = async () => {
-      try {
-        const response = await axios.get("/api/v1/experience");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch experience data.");
-        console.error("Fetch error:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchExperienceData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: experienceData, isLoading } = useQuery({
+    queryKey: ["experience"],
+    queryFn: fetchExperienceData,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false, // Prevent form reset on window focus
+  });
 
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (experienceData) {
+      reset(experienceData);
+    }
+  }, [experienceData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateExperienceData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["experience"] });
+    },
+  });
+
+  // 5. Handle Form Submission
   const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/experience", data);
+    const promise = mutation.mutateAsync(data);
+
     toast.promise(promise, {
       loading: "Saving experience...",
       success: "Experience section updated successfully!",
-      error: "Failed to update experience.",
+      error: (err) => {
+        console.error(err);
+        return "Failed to update experience.";
+      },
     });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />

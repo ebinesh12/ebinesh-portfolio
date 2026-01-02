@@ -59,7 +59,7 @@ export function ContactTable({ data, loading, onDelete, onUpdate }) {
             <TableHead className="w-[200px]">Sender</TableHead>
             <TableHead className="w-[200px]">Subject</TableHead>
             <TableHead className="min-w-[300px]">Message Preview</TableHead>
-            <TableHead className="w-[100px] text-right">Actions</TableHead>
+            <TableHead className="w-[100px] text-left">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

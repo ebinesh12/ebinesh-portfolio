@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   User,
   FileText,
@@ -21,6 +21,9 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { heroSchema } from "@/services/schema";
 import { heroValues } from "@/utils/constant";
+
+// Import the separated API service functions
+import { fetchHeroData, updateHeroData } from "@/services/HeroService";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -41,8 +44,9 @@ import {
 } from "@/components/ui/card";
 
 export default function EditHero({ themes }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
 
+  // 1. React Hook Form Setup
   const {
     register,
     control,
@@ -58,7 +62,7 @@ export default function EditHero({ themes }) {
     fields: actionFields,
     append: appendAction,
     remove: removeAction,
-    move: moveAction, // Destructure move for reordering
+    move: moveAction,
   } = useFieldArray({
     control,
     name: "actions",
@@ -68,31 +72,52 @@ export default function EditHero({ themes }) {
     fields: socialLinkFields,
     append: appendSocialLink,
     remove: removeSocialLink,
-    move: moveSocialLink, // Destructure move for reordering
+    move: moveSocialLink,
   } = useFieldArray({
     control,
     name: "socialLinks",
   });
 
-  // Fetch Data
-  useEffect(() => {
-    const fetchHeroData = async () => {
-      try {
-        const response = await axios.get("/api/v1/hero");
-        if (response.data.success) {
-          reset(response.data.data);
-        }
-      } catch (error) {
-        toast.error("Failed to fetch hero data.");
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchHeroData();
-  }, [reset]);
+  // 2. Fetch Data using useQuery
+  const { data: heroData, isLoading } = useQuery({
+    queryKey: ["hero"],
+    queryFn: fetchHeroData,
+    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    refetchOnWindowFocus: false,
+  });
 
-  // Error Handling
+  // 3. Sync fetched data with Form
+  useEffect(() => {
+    if (heroData) {
+      reset(heroData);
+    }
+  }, [heroData, reset]);
+
+  // 4. Mutation for Saving Data
+  const mutation = useMutation({
+    mutationFn: updateHeroData,
+    onSuccess: () => {
+      // Invalidate query to ensure fresh data next time
+      queryClient.invalidateQueries({ queryKey: ["hero"] });
+    },
+  });
+
+  // 5. Handle Form Submission
+  const onSubmit = async (data) => {
+    // We wrap the mutation in a toast promise for better UX
+    const promise = mutation.mutateAsync(data);
+
+    toast.promise(promise, {
+      loading: "Saving changes...",
+      success: "Hero section updated successfully!",
+      error: (err) => {
+        console.error(err);
+        return "Failed to update hero section.";
+      },
+    });
+  };
+
+  // 6. Handle Validation Errors (Feedback)
   useEffect(() => {
     const allErrors = [
       ...Object.values(errors.personalInfo ?? {}),
@@ -105,15 +130,6 @@ export default function EditHero({ themes }) {
       toast.error("Please check the form for errors");
     }
   }, [errors]);
-
-  const onSubmit = async (data) => {
-    const promise = axios.post("/api/v1/hero", data);
-    toast.promise(promise, {
-      loading: "Saving changes...",
-      success: "Hero section updated successfully!",
-      error: "Failed to update hero section.",
-    });
-  };
 
   if (isLoading) {
     return (
