@@ -105,7 +105,8 @@ const Header = ({ data, themes }) => {
             <Code2 className="h-5 w-5" />
           </div>
           <span className="text-xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            {data?.personalInfo?.name || "Developer"}<span className="text-neutral-400">.dev</span>
+            {data?.personalInfo?.name || "Developer"}
+            <span className="text-neutral-400">.dev</span>
           </span>
         </a>
 

@@ -63,7 +63,8 @@ export default function LoginForm() {
         router.push("/admin");
         // eslint-disable-next-line react-hooks/immutability
         window.location.href = "/admin";
-}} catch (error) {
+      }
+    } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setServerError(
           error.response.data.message ||

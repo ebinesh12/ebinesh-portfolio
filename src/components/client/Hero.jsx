@@ -209,25 +209,28 @@ const Hero = ({ data, themes }) => {
 
             {/* Social Links */}
             <motion.div variants={itemVariants} className="flex gap-4 pt-4">
-              {data?.socialLinks?.map((social) => (
-                social?.show && <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "p-3 rounded-full transition-all duration-300 border border-transparent",
-                    "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400",
-                    "hover:scale-110 hover:shadow-lg hover:text-white hover:border-white/20",
-                    themes?.isGradient
-                      ? `hover:${themes?.primaryGradient}`
-                      : "hover:bg-blue-600 dark:hover:bg-blue-600",
-                  )}
-                  aria-label={social.name}
-                >
-                  {getIconComponent(social.name)}
-                </a>
-              ))}
+              {data?.socialLinks?.map(
+                (social) =>
+                  social?.show && (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={cn(
+                        "p-3 rounded-full transition-all duration-300 border border-transparent",
+                        "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400",
+                        "hover:scale-110 hover:shadow-lg hover:text-white hover:border-white/20",
+                        themes?.isGradient
+                          ? `hover:${themes?.primaryGradient}`
+                          : "hover:bg-blue-600 dark:hover:bg-blue-600",
+                      )}
+                      aria-label={social.name}
+                    >
+                      {getIconComponent(social.name)}
+                    </a>
+                  ),
+              )}
             </motion.div>
           </motion.div>
 

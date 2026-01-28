@@ -6,14 +6,14 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 const ThemeContext = createContext();
 
 const defaultTheme = {
-text: "text-teal-300",
-    border: "hover:border-cyan-400",
-    primaryGradient:
-      "bg-gradient-to-r from-teal-300 to-sky-500 dark:from-teal-500 dark:to-sky-700",
-    outlineBtn:
-      "border border-cyan-400 text-teal-300 hover:bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 hover:text-black",
-    sectionBgGradient:
-      "bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 dark:from-teal-500 dark:via-cyan-600 dark:to-sky-700",
+  text: "text-teal-300",
+  border: "hover:border-cyan-400",
+  primaryGradient:
+    "bg-gradient-to-r from-teal-300 to-sky-500 dark:from-teal-500 dark:to-sky-700",
+  outlineBtn:
+    "border border-cyan-400 text-teal-300 hover:bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 hover:text-black",
+  sectionBgGradient:
+    "bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-500 dark:from-teal-500 dark:via-cyan-600 dark:to-sky-700",
   isGradient: true,
   radius: 0.6,
 };

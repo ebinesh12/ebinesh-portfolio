@@ -27,7 +27,7 @@ const actionSchema = z.object({
 const socialLinkSchema = z.object({
   name: z.string().min(1, "Social link name cannot be empty."),
   url: z.string().url("Invalid URL format."),
-  color: z.string().min(1, "Color cannot be empty."), 
+  color: z.string().min(1, "Color cannot be empty."),
   show: z.boolean().default(true),
 });
 
@@ -230,7 +230,7 @@ export const registerSchema = z.object({
       return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
     }, ".jpg, .jpeg, .png and .webp files are accepted."),
 
-    isAdmin: z.boolean().default(false),
+  isAdmin: z.boolean().default(false),
 });
 
 /*---------------------- Register Zod schemas for validation---------------------*/

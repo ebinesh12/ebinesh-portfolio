@@ -17,7 +17,8 @@ import {
 const getIconComponent = (iconName) => {
   const normalized = iconName?.toLowerCase() || "";
   if (normalized.includes("facebook")) return <Facebook className="w-5 h-5" />;
-  if (normalized.includes("instagram")) return <Instagram className="w-5 h-5" />;
+  if (normalized.includes("instagram"))
+    return <Instagram className="w-5 h-5" />;
   if (normalized.includes("github")) return <Github className="w-5 h-5" />;
   if (normalized.includes("linkedin")) return <Linkedin className="w-5 h-5" />;
   if (normalized.includes("twitter") || normalized.includes("x"))
@@ -38,7 +39,7 @@ const navLinks = [
   "contact",
 ];
 
-const Footer = ({ data,  themes }) => {
+const Footer = ({ data, themes }) => {
   const currentYear = new Date().getFullYear();
 
   const handleScrollToTop = (e) => {
@@ -96,21 +97,21 @@ const Footer = ({ data,  themes }) => {
           {/* 3. Social Icons */}
           <div className="flex items-center gap-4">
             {data?.socialLinks.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={item.name}
-                  className={cn(
-                    "group relative flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-neutral-900",
-                    "text-neutral-500 dark:text-neutral-400",
-                    item.color,
-                  )}
-                >
-                  {getIconComponent(item.name)}
-                </a>
-              ))}
+              <a
+                key={item.name}
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={item.name}
+                className={cn(
+                  "group relative flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-neutral-900",
+                  "text-neutral-500 dark:text-neutral-400",
+                  item.color,
+                )}
+              >
+                {getIconComponent(item.name)}
+              </a>
+            ))}
           </div>
 
           {/* 4. Divider */}
@@ -124,7 +125,7 @@ const Footer = ({ data,  themes }) => {
                 href="/admin"
                 className="hover:text-neutral-900 dark:hover:text-white transition-colors"
               >
-               {data?.personalInfo?.name || "Developer"}
+                {data?.personalInfo?.name || "Developer"}
               </a>
               . All Rights Reserved.
             </p>
