@@ -70,7 +70,7 @@ export default function RegisterForm() {
 
       if (res.status === 201) {
         // Optional: Redirect to login with a query param to show success message
-        router.push("/auth/login?registered=true");
+        router.push("/auth/login");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

@@ -8,41 +8,26 @@ import {
   Linkedin,
   Github,
   ArrowUpRight,
+  Mail,
+  FileText,
+  ExternalLink,
 } from "lucide-react";
 
-// Social Data Configuration
-const socialLinks = [
-  {
-    href: "https://www.facebook.com/",
-    label: "Facebook",
-    icon: Facebook,
-    color: "hover:text-blue-600 dark:hover:text-blue-500",
-  },
-  {
-    href: "https://twitter.com/",
-    label: "Twitter",
-    icon: Twitter,
-    color: "hover:text-sky-500 dark:hover:text-sky-400",
-  },
-  {
-    href: "https://www.instagram.com/",
-    label: "Instagram",
-    icon: Instagram,
-    color: "hover:text-pink-600 dark:hover:text-pink-500",
-  },
-  {
-    href: "https://www.linkedin.com/in/ebinesh-rabin-c19",
-    label: "LinkedIn",
-    icon: Linkedin,
-    color: "hover:text-blue-700 dark:hover:text-blue-400",
-  },
-  {
-    href: "https://github.com/ebinesh12",
-    label: "GitHub",
-    icon: Github,
-    color: "hover:text-neutral-900 dark:hover:text-white",
-  },
-];
+// Helper to map string icon names from DB to Lucide components
+const getIconComponent = (iconName) => {
+  const normalized = iconName?.toLowerCase() || "";
+  if (normalized.includes("facebook")) return <Facebook className="w-5 h-5" />;
+  if (normalized.includes("instagram")) return <Instagram className="w-5 h-5" />;
+  if (normalized.includes("github")) return <Github className="w-5 h-5" />;
+  if (normalized.includes("linkedin")) return <Linkedin className="w-5 h-5" />;
+  if (normalized.includes("twitter") || normalized.includes("x"))
+    return <Twitter className="w-5 h-5" />;
+  if (normalized.includes("mail") || normalized.includes("envelope"))
+    return <Mail className="w-5 h-5" />;
+  if (normalized.includes("resume") || normalized.includes("file"))
+    return <FileText className="w-5 h-5" />;
+  return <ExternalLink className="w-5 h-5" />;
+};
 
 const navLinks = [
   "home",
@@ -53,7 +38,7 @@ const navLinks = [
   "contact",
 ];
 
-const Footer = ({ themes }) => {
+const Footer = ({ data,  themes }) => {
   const currentYear = new Date().getFullYear();
 
   const handleScrollToTop = (e) => {
@@ -110,25 +95,22 @@ const Footer = ({ themes }) => {
 
           {/* 3. Social Icons */}
           <div className="flex items-center gap-4">
-            {socialLinks.map((item) => {
-              const Icon = item.icon;
-              return (
+            {data?.socialLinks.map((item) => (
                 <a
-                  key={item.label}
-                  href={item.href}
+                  key={item.name}
+                  href={item.url}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={item.label}
+                  aria-label={item.name}
                   className={cn(
                     "group relative flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-neutral-900",
                     "text-neutral-500 dark:text-neutral-400",
                     item.color,
                   )}
                 >
-                  <Icon className="h-5 w-5" />
+                  {getIconComponent(item.name)}
                 </a>
-              );
-            })}
+              ))}
           </div>
 
           {/* 4. Divider */}
@@ -142,7 +124,7 @@ const Footer = ({ themes }) => {
                 href="/admin"
                 className="hover:text-neutral-900 dark:hover:text-white transition-colors"
               >
-                Ebinesh Rabin
+               {data?.personalInfo?.name || "Developer"}
               </a>
               . All Rights Reserved.
             </p>

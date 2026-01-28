@@ -139,7 +139,7 @@ const Hero = ({ data, themes }) => {
             >
               <TypingAnimation
                 text={data?.personalInfo?.name || "Developer"}
-                duration={100}
+                duration={500}
                 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white"
               />
             </motion.div>
@@ -210,7 +210,7 @@ const Hero = ({ data, themes }) => {
             {/* Social Links */}
             <motion.div variants={itemVariants} className="flex gap-4 pt-4">
               {data?.socialLinks?.map((social) => (
-                <a
+                social?.show && <a
                   key={social.name}
                   href={social.url}
                   target="_blank"

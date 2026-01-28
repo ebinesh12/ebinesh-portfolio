@@ -27,7 +27,8 @@ const actionSchema = z.object({
 const socialLinkSchema = z.object({
   name: z.string().min(1, "Social link name cannot be empty."),
   url: z.string().url("Invalid URL format."),
-  icon: z.string().min(1, "Icon class cannot be empty."),
+  color: z.string().min(1, "Color cannot be empty."), 
+  show: z.boolean().default(true),
 });
 
 export const heroSchema = z.object({
@@ -214,6 +215,7 @@ export const registerSchema = z.object({
 
   profileImage: z
     // .instanceof(FileList)
+    .any()
     .optional() // Make the file optional
     .refine((files) => {
       // If no file is selected, refinement passes.
@@ -227,6 +229,8 @@ export const registerSchema = z.object({
       // Check file type
       return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
     }, ".jpg, .jpeg, .png and .webp files are accepted."),
+
+    isAdmin: z.boolean().default(false),
 });
 
 /*---------------------- Register Zod schemas for validation---------------------*/

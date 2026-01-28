@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectMongo from "@/utils/connectMongo";
 import User from "@/models/userModel";
 import bcrypt from "bcryptjs";
+import { is } from "zod/v4/locales";
 
 export async function POST(req) {
   try {
@@ -44,6 +45,7 @@ export async function POST(req) {
       username,
       email,
       password: hashedPassword,
+      isAdmin: false,
     });
 
     if (profileImageFile instanceof File && profileImageFile.size > 0) {

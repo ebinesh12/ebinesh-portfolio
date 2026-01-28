@@ -32,6 +32,13 @@ export async function POST(req) {
       );
     }
 
+    if (user.isAdmin !== true) {
+      return NextResponse.json(
+        { message: "Your account does not have admin privileges." },
+        { status: 401 },
+      );
+    }
+
     // --- Create JWT Token ---
     const tokenPayload = {
       id: user._id,
@@ -49,6 +56,7 @@ export async function POST(req) {
       email: user.email,
       profileImage: user.profileImage,
       resume: user.resume,
+      isAdmin: user.isAdmin,
     };
 
     // --- Create the response and set the cookie ---

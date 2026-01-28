@@ -13,7 +13,7 @@ const navItems = [
   { id: "contact", label: "Contact" },
 ];
 
-const Header = ({ themes }) => {
+const Header = ({ data, themes }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("home");
   const [progress, setProgress] = useState(0);
@@ -105,7 +105,7 @@ const Header = ({ themes }) => {
             <Code2 className="h-5 w-5" />
           </div>
           <span className="text-xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            Ebinesh<span className="text-neutral-400">.dev</span>
+            {data?.personalInfo?.name || "Developer"}<span className="text-neutral-400">.dev</span>
           </span>
         </a>
 

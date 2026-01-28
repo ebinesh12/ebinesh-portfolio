@@ -20,7 +20,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 // Icons
 import {
   LogOut,
@@ -31,6 +36,7 @@ import {
   User,
   ChevronDown,
   ShieldCheck,
+  ExternalLink
 } from "lucide-react";
 
 // Navigation Configuration
@@ -117,6 +123,24 @@ const Header = () => {
             Admin<span className="text-neutral-400">Panel</span>
           </span>
         </Link>
+
+{/* View Live Site Button (Desktop) */}
+          <div className="hidden md:block">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 gap-2 text-muted-foreground rounded-full border-dashed" asChild>
+                    <Link href="/" target="_blank">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Live Site
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>View your public portfolio</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
 
         {/* Right Side Actions */}
         <div className="flex items-center gap-4">

@@ -4,8 +4,7 @@ import User from "@/models/userModel";
 
 export async function GET(req) {
   try {
-    // const id = "68cc3f1a8aa2943ea1458f6a"; // DEV
-    const id = "68cb246bfa97fb3a36ac5b7a"; // PROD
+    const id = "697a0c55938a6b4755582666"; // PROD
 
     if (!id) {
       return NextResponse.json(

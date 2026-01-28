@@ -34,7 +34,7 @@ const Page = () => {
 
   return (
     <>
-      <Header themes={theme} />
+      <Header data={portfolioData?.hero} themes={theme} />
       <Hero data={portfolioData?.hero} themes={theme} />
       <About data={portfolioData?.about} themes={theme} />
       <Experience data={portfolioData?.experience} themes={theme} />
@@ -43,7 +43,7 @@ const Page = () => {
       <Achievement data={portfolioData?.achievement} themes={theme} />
       <Certificate data={portfolioData?.certificate} themes={theme} />
       <Contact data={portfolioData?.link} themes={theme} />
-      <Footer themes={theme} />
+      <Footer data={portfolioData?.hero} themes={theme} />
     </>
   );
 };
